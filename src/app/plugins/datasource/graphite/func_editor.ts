@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import coreModule from 'app/core/core_module';
-import { TemplateSrv } from 'app/features/templating/template_srv';
+// import { TemplateSrv } from 'app/features/templating/template_srv';
 
 /** @ngInject */
-export function graphiteFuncEditor($compile: any, templateSrv: TemplateSrv) {
+export function graphiteFuncEditor($compile: any, templateSrv: any) {
   const funcSpanTemplate = `
     <function-editor
       func="func"
