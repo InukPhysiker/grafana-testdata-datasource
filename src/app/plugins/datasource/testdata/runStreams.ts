@@ -56,8 +56,8 @@ export function runSignalStream(
 
     const { spread, speed, bands, noise } = query;
 
-    for (let i = 0; i < bands; i++) {
-      const suffix = bands > 1 ? ` ${i + 1}` : '';
+    for (let i = 0; i < bands!; i++) {
+      const suffix = bands! > 1 ? ` ${i + 1}` : '';
       data.addField({ name: 'Min' + suffix, type: FieldType.number });
       data.addField({ name: 'Max' + suffix, type: FieldType.number });
     }
@@ -75,7 +75,7 @@ export function runSignalStream(
       let min = value;
       let max = value;
 
-      for (let i = 0; i < bands; i++) {
+      for (let i = 0; i < bands!; i++) {
         min = min - Math.random() * noise;
         max = max + Math.random() * noise;
 
@@ -217,8 +217,8 @@ export function runFetchStream(
       return reader.read().then(processChunk);
     };
 
-    fetch(new Request(query.url)).then(response => {
-      reader = response.body.getReader();
+    fetch(new Request(query.url!)).then(response => {
+      reader = response.body!.getReader();
       reader.read().then(processChunk);
     });
 
