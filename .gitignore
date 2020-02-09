@@ -27,3 +27,4 @@ ci/
 e2e-results/
 
 *.bak
+*.7z
