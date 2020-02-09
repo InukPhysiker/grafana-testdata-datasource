@@ -15,9 +15,9 @@ const TAG_PREFIX = 'tag: ';
 export class GraphiteQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
 
-  queryModel: GraphiteQuery;
-  segments: any[];
-  addTagSegments: any[];
+  queryModel!: GraphiteQuery;
+  segments!: any[];
+  addTagSegments!: any[];
   removeTagValue: string;
   supportsTags: boolean;
   paused: boolean;

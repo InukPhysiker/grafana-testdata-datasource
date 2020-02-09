@@ -6,12 +6,12 @@ import { ScopedVars } from '@grafana/data';
 export default class GraphiteQuery {
   datasource: any;
   target: any;
-  functions: any[];
-  segments: any[];
-  tags: any[];
+  functions!: any[];
+  segments!: any[];
+  tags!: any[];
   error: any;
-  seriesByTagUsed: boolean;
-  checkOtherSegmentsIndex: number;
+  seriesByTagUsed!: boolean;
+  checkOtherSegmentsIndex!: number;
   removeTagValue: string;
   templateSrv: any;
   scopedVars: any;
