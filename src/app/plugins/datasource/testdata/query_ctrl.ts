@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { dateMath, dateTime } from '@grafana/data';
-import { e2e } from '@grafana/e2e';
+// import { e2e } from '@grafana/e2e';
+import { e2e } from 'e2e';
 
 import { QueryCtrl } from 'app/plugins/sdk';
 import { defaultQuery } from './runStreams';
@@ -28,9 +29,11 @@ export class TestDataQueryCtrl extends QueryCtrl {
 
   scenarioList: any;
   scenario: any;
-  newPointValue: number;
+  // The problem is most likely due to the strictPropertyInitialization  flag firstly introduced in TypeScript 2.7
+  newPointValue!: number;
   newPointTime: any;
   selectedPoint: any;
+    // The problem is most likely due to the strictPropertyInitialization  flag firstly introduced in TypeScript 2.7
   digest: (promise: Promise<any>) => Promise<any>;
 
   showLabels = false;
