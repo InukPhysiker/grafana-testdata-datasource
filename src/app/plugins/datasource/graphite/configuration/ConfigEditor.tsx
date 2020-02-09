@@ -12,7 +12,7 @@ export const ConfigEditor = (props: DataSourcePluginOptionsEditorProps<GraphiteO
       <DataSourceHttpSettings
         defaultUrl="http://localhost:8080"
         dataSourceConfig={options}
-        onChange={onOptionsChange}
+        onChange={onOptionsChange as any}
       />
       <GraphiteDetails value={options} onChange={onOptionsChange} />
     </>
