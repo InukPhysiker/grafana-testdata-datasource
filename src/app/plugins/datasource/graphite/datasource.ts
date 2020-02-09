@@ -26,6 +26,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
   cacheTimeout: any;
   withCredentials: boolean;
   funcDefs: any = null;
+  // @ts-ignore
   funcDefsPromise: Promise<any> = null;
   _seriesRefLetters: string;
 
@@ -41,6 +42,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
     this.cacheTimeout = instanceSettings.cacheTimeout;
     this.withCredentials = instanceSettings.withCredentials;
     this.funcDefs = null;
+    // @ts-ignore: this.funcDefsPromise is really assigned before being used
     this.funcDefsPromise = null;
     this._seriesRefLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   }
