@@ -2,7 +2,7 @@ import { EventEmitter } from 'eventemitter3';
 import { AppEvent } from '@grafana/data';
 
 export class Emitter {
-  private emitter: EventEmitter;
+  private emitter: any;
 
   constructor() {
     this.emitter = new EventEmitter();
