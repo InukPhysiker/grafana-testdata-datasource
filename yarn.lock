@@ -883,15 +883,15 @@
     tiny-invariant "^1.0.1"
     tiny-warning "^0.0.3"
 
-"@grafana/toolkit@next":
-  version "6.6.0-beta.1.0"
-  resolved "https://registry.yarnpkg.com/@grafana/toolkit/-/toolkit-6.6.0-beta.1.0.tgz#f8f2992b84977294f99f206187eceab81627b8cb"
-  integrity sha512-s4QFXSKkk+w/QkLmIArjOzPR2CIBp6KyJf/aJrBLUcpdlVrYLqPeBLpPv5AqYTZn/5mKxKZ3NcPFR0PeyU6RoA==
+"@grafana/toolkit@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@grafana/toolkit/-/toolkit-6.6.1.tgz#24b2f67bf316f8f526235cdffc517ae2b5f6c736"
+  integrity sha512-kygqkhPkQDzCpeqNvkibgY0JuiLkXM2XYjP/49mWToFAk0zjk0qLeeWD6BR3xo7QQ57Y9wZ9xMHXxYG+yZ5AgQ==
   dependencies:
     "@babel/core" "7.6.4"
     "@babel/preset-env" "7.6.3"
-    "@grafana/data" "6.6.0-beta.1.0"
-    "@grafana/ui" "6.6.0-beta.1.0"
+    "@grafana/data" "6.6.1"
+    "@grafana/ui" "6.6.1"
     "@types/command-exists" "^1.2.0"
     "@types/execa" "^0.9.0"
     "@types/expect-puppeteer" "3.3.1"
@@ -924,6 +924,7 @@
     html-webpack-plugin "^3.2.0"
     inquirer "^6.3.1"
     jest "24.8.0"
+    jest-canvas-mock "2.1.2"
     jest-cli "^24.8.0"
     jest-coverage-badges "^1.1.2"
     jest-junit "^6.4.0"
@@ -961,12 +962,12 @@
     url-loader "^2.0.1"
     webpack "4.35.0"
 
-"@grafana/ui@6.6.0-beta.1.0", "@grafana/ui@next":
-  version "6.6.0-beta.1.0"
-  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.6.0-beta.1.0.tgz#a42e142d1265552ef5afa299b316aac06fc273d5"
-  integrity sha512-naH+agK095EzMtQ2671txDO/dLrf5XvPiXZlheW5AEUcNO25t8GHyWwcvofr5q/yY7BnufZMI9EGkkUOMtt2dg==
+"@grafana/ui@6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.6.1.tgz#81f7c485cbaf00a9706a6923aab44a6e89aeb767"
+  integrity sha512-tVXjNi/hT2R8AZnT/I+UjG0nXgRfscY1OSjKmOAhkKON0YrOEHxfdkZpiXKNeIY/s5nCbmLP5WcciyrRvB2PcA==
   dependencies:
-    "@grafana/data" "6.6.0-beta.1.0"
+    "@grafana/data" "6.6.1"
     "@grafana/slate-react" "0.22.9-grafana"
     "@torkelo/react-select" "2.1.1"
     "@types/react-color" "2.17.0"
@@ -998,12 +999,12 @@
     slate "0.47.8"
     tinycolor2 "1.4.1"
 
-"@grafana/ui@6.6.1":
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.6.1.tgz#81f7c485cbaf00a9706a6923aab44a6e89aeb767"
-  integrity sha512-tVXjNi/hT2R8AZnT/I+UjG0nXgRfscY1OSjKmOAhkKON0YrOEHxfdkZpiXKNeIY/s5nCbmLP5WcciyrRvB2PcA==
+"@grafana/ui@next":
+  version "6.6.0-beta.1.0"
+  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.6.0-beta.1.0.tgz#a42e142d1265552ef5afa299b316aac06fc273d5"
+  integrity sha512-naH+agK095EzMtQ2671txDO/dLrf5XvPiXZlheW5AEUcNO25t8GHyWwcvofr5q/yY7BnufZMI9EGkkUOMtt2dg==
   dependencies:
-    "@grafana/data" "6.6.1"
+    "@grafana/data" "6.6.0-beta.1.0"
     "@grafana/slate-react" "0.22.9-grafana"
     "@torkelo/react-select" "2.1.1"
     "@types/react-color" "2.17.0"
@@ -3086,6 +3087,11 @@ color-convert@^2.0.1:
   dependencies:
     color-name "~1.1.4"
 
+color-convert@~0.5.0:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-0.5.3.tgz#bdb6c69ce660fadffe0b0007cc447e1b9f7282bd"
+  integrity sha1-vbbGnOZg+t/+CwAHzER+G59ygr0=
+
 color-name@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
@@ -3518,6 +3524,11 @@ cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
+
+cssfontparser@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/cssfontparser/-/cssfontparser-1.2.1.tgz#f4022fc8f9700c68029d542084afbaf425a3f3e3"
+  integrity sha1-9AIvyPlwDGgCnVQghK+69CWj8+M=
 
 cssnano-preset-default@^4.0.7:
   version "4.0.7"
@@ -5974,6 +5985,14 @@ istanbul-reports@^2.2.6:
   dependencies:
     html-escaper "^2.0.0"
 
+jest-canvas-mock@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/jest-canvas-mock/-/jest-canvas-mock-2.1.2.tgz#0d16c9f91534f773fd132fc289f2e6b6db8faa28"
+  integrity sha512-1VI4PK4/X70yrSjYScYVkYJYbXYlZLKJkUrAlyHjQsfolv64aoFyIrmMDtqCjpYrpVvWYEcAGUaYv5DVJj00oQ==
+  dependencies:
+    cssfontparser "^1.2.1"
+    parse-color "^1.0.0"
+
 jest-changed-files@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-24.9.0.tgz#08d8c15eb79a7fa3fc98269bc14b451ee82f8039"
@@ -7728,6 +7747,13 @@ parse-asn1@^5.0.0:
     evp_bytestokey "^1.0.0"
     pbkdf2 "^3.0.3"
     safe-buffer "^5.1.1"
+
+parse-color@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/parse-color/-/parse-color-1.0.0.tgz#7b748b95a83f03f16a94f535e52d7f3d94658619"
+  integrity sha1-e3SLlag/A/FqlPU15S1/PZRlhhk=
+  dependencies:
+    color-convert "~0.5.0"
 
 parse-json@^2.2.0:
   version "2.2.0"

@@ -14,7 +14,7 @@
     "@grafana/data": "next",
     "@grafana/e2e": "^6.6.1",
     "@grafana/runtime": "^6.6.1",
-    "@grafana/toolkit": "next",
+    "@grafana/toolkit": "^6.6.1",
     "@grafana/ui": "next",
     "@types/angular": "^1.6.57",
     "@types/lodash": "latest",
