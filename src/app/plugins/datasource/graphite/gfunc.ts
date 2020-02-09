@@ -1078,7 +1078,7 @@ function createFuncInstance(funcDef: any, options?: { withDefaultParams: any }, 
   if (_.isString(funcDef)) {
     funcDef = getFuncDef(funcDef, idx);
   }
-  return new FuncInstance(funcDef, options);
+  return new FuncInstance(funcDef, options!);
 }
 
 function getFuncDef(name: string, idx?: any) {
