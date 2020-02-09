@@ -3,10 +3,10 @@ import _ from 'lodash';
 const versionPattern = /^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:-([0-9A-Za-z\.]+))?/;
 
 export class SemVersion {
-  major: number;
-  minor: number;
-  patch: number;
-  meta: string;
+  major!: number;
+  minor!: number;
+  patch!: number;
+  meta!: string;
 
   constructor(version: string) {
     const match = versionPattern.exec(version);
