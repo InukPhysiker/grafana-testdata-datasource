@@ -62,8 +62,8 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
 
   async query(options: DataQueryRequest<GraphiteQuery>): Promise<DataQueryResponse> {
     const graphOptions = {
-      from: this.translateTime(options.rangeRaw.from, false, options.timezone),
-      until: this.translateTime(options.rangeRaw.to, true, options.timezone),
+      from: this.translateTime(options.rangeRaw!.from, false, options.timezone),
+      until: this.translateTime(options.rangeRaw!.to, true, options.timezone),
       targets: options.targets,
       format: (options as any).format,
       cacheTimeout: options.cacheTimeout || this.cacheTimeout,
