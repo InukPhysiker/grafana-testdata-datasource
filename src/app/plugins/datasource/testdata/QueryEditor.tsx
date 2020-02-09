@@ -43,7 +43,7 @@ export class QueryEditor extends PureComponent<Props> {
   onScenarioChange = (item: SelectableValue<string>) => {
     this.props.onChange({
       ...this.props.query,
-      scenarioId: item.value,
+      scenarioId: item.value as any,
     });
   };
 
