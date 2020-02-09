@@ -12,9 +12,12 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "next",
+    "@grafana/e2e": "^6.6.1",
     "@grafana/runtime": "^6.6.1",
     "@grafana/toolkit": "next",
     "@grafana/ui": "next",
-    "@types/lodash": "latest"
+    "@types/angular": "^1.6.57",
+    "@types/lodash": "latest",
+    "angular": "^1.7.9"
   }
 }
