@@ -1,9 +1,16 @@
 {
-  "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
-  "include": ["src", "types"],
   "compilerOptions": {
     "rootDir": "./src",
     "baseUrl": "./src",
-    "typeRoots": ["./node_modules/@types"]
-  }
+    "outDir": "dist",
+    "paths": {
+      "@grafana/slate-react": ["../node_modules/@types/slate-react"],
+      "app": ["app/"],
+      "sass": ["sass/"]
+    },
+    "rootDirs": ["public/"],
+    "typeRoots": ["node_modules/@types"]
+  },
+  "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
+  "include": ["src", "types"]
 }
