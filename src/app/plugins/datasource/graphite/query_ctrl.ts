@@ -6,7 +6,7 @@ import GraphiteQuery from './graphite_query';
 import { QueryCtrl } from 'app/plugins/sdk';
 import appEvents from 'app/core/app_events';
 import { auto } from 'angular';
-import { TemplateSrv } from 'app/features/templating/template_srv';
+// import { TemplateSrv } from 'app/features/templating/template_srv';
 import { AppEvents } from '@grafana/data';
 
 const GRAPHITE_TAG_OPERATORS = ['=', '!=', '=~', '!=~'];
@@ -27,7 +27,7 @@ export class GraphiteQueryCtrl extends QueryCtrl {
     $scope: any,
     $injector: auto.IInjectorService,
     private uiSegmentSrv: any,
-    private templateSrv: TemplateSrv,
+    private templateSrv: any,
     $timeout: any
   ) {
     super($scope, $injector);
