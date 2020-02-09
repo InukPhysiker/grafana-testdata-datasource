@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { dateMath, dateTime } from '@grafana/data';
+// @grafana/e2e is currently in ALPHA. Core API is unstable and can be a subject of breaking changes!
 import { e2e } from '@grafana/e2e';
 
 import { QueryCtrl } from 'app/plugins/sdk';
