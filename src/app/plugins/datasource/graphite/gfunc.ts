@@ -973,7 +973,7 @@ export class FuncInstance {
   def: any;
   params: any;
   text: any;
-  added: boolean;
+  added!: boolean;
 
   constructor(funcDef: any, options: { withDefaultParams: any }) {
     this.def = funcDef;
