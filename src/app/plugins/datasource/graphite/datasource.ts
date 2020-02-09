@@ -11,7 +11,7 @@ import {
 import { isVersionGtOrEq, SemVersion } from 'app/core/utils/version';
 import gfunc from './gfunc';
 import { getBackendSrv } from '@grafana/runtime';
-import { TemplateSrv } from 'app/features/templating/template_srv';
+// import { TemplateSrv } from 'app/features/templating/template_srv';
 //Types
 import { GraphiteOptions, GraphiteQuery, GraphiteType } from './types';
 import { getSearchFilterScopedVar } from '../../../features/templating/variable';
@@ -30,7 +30,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
   _seriesRefLetters: string;
 
   /** @ngInject */
-  constructor(instanceSettings: any, private templateSrv: TemplateSrv) {
+  constructor(instanceSettings: any, private templateSrv: any) {
     super(instanceSettings);
     this.basicAuth = instanceSettings.basicAuth;
     this.url = instanceSettings.url;
