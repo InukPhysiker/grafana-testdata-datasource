@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Parser } from './parser';
-import { TemplateSrv } from 'app/features/templating/template_srv';
+// import { TemplateSrv } from 'app/features/templating/template_srv';
 import { ScopedVars } from '@grafana/data';
 
 export default class GraphiteQuery {
@@ -17,7 +17,7 @@ export default class GraphiteQuery {
   scopedVars: any;
 
   /** @ngInject */
-  constructor(datasource: any, target: any, templateSrv?: TemplateSrv, scopedVars?: ScopedVars) {
+  constructor(datasource: any, target: any, templateSrv?: any, scopedVars?: ScopedVars) {
     this.datasource = datasource;
     this.target = target;
     this.templateSrv = templateSrv;
