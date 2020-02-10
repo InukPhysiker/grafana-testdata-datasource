@@ -4,7 +4,8 @@ import _ from 'lodash';
 import $ from 'jquery';
 // @ts-ignore
 import Drop from 'tether-drop';
-import coreModule from 'app/core/core_module';
+// import coreModule from 'app/core/core_module';
+import angular from 'angular';
 import { FuncDef } from './gfunc';
 
 /** @ngInject */
@@ -135,7 +136,8 @@ export function graphiteAddFunc($compile: any) {
   };
 }
 
-coreModule.directive('graphiteAddFunc', graphiteAddFunc);
+// coreModule.directive('graphiteAddFunc', graphiteAddFunc);
+angular.module('grafana.directives').directive("graphiteAddFunc", graphiteAddFunc);
 
 function createFunctionDropDownMenu(funcDefs: FuncDef[]) {
   const categories: any = {};

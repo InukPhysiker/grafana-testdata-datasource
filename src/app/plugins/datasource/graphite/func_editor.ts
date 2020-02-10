@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import coreModule from 'app/core/core_module';
+// import coreModule from 'app/core/core_module';
+import angular from 'angular';
 // import { TemplateSrv } from 'app/features/templating/template_srv';
 
 /** @ngInject */
@@ -247,4 +248,5 @@ export function graphiteFuncEditor($compile: any, templateSrv: any) {
   };
 }
 
-coreModule.directive('graphiteFuncEditor', graphiteFuncEditor);
+// coreModule.directive('graphiteFuncEditor', graphiteFuncEditor);
+angular.module('grafana.directives').directive("graphiteFuncEditor", graphiteFuncEditor);
