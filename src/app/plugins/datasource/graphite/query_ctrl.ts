@@ -196,7 +196,6 @@ export class GraphiteQueryCtrl extends QueryCtrl {
   }
 
   segmentValueChanged(segment: { type: string; value: string; expandable: any }, segmentIndex: number) {
-    // @ts-ignore
     this.error = null;
     this.queryModel.updateSegmentValue(segment, segmentIndex);
 
