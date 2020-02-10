@@ -17,7 +17,12 @@
     "@grafana/toolkit": "^6.6.1",
     "@grafana/ui": "next",
     "@types/angular": "^1.6.57",
+    "@types/jquery": "^3.3.32",
     "@types/lodash": "latest",
-    "angular": "^1.7.9"
+    "angular": "^1.7.9",
+    "eventemitter3": "^4.0.0",
+    "jquery": "^3.4.1",
+    "rst2html": "^1.0.4",
+    "tether-drop": "^1.4.2"
   }
 }
