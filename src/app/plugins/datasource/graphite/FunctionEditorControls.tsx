@@ -55,7 +55,7 @@ export const FunctionEditorControls = (
       <span className="pointer fa fa-arrow-left" onClick={() => onMoveLeft(func)} />
       <FunctionHelpButton
         name={func.def.name}
-        description={func.def.description}
+        description={func.def.description!}
         onDescriptionShow={onDescriptionShow}
       />
       <span className="pointer fa fa-remove" onClick={() => onRemove(func)} />
