@@ -45,7 +45,7 @@ class FunctionEditor extends React.PureComponent<FunctionEditorProps, FunctionEd
         <div style={{ overflow: 'auto', maxHeight: '30rem', textAlign: 'left', fontWeight: 'normal' }}>
           <h4 style={{ color: 'white' }}> {name} </h4>
           <Suspense fallback={<span>Loading description...</span>}>
-            <FunctionDescription description={description} />
+            <FunctionDescription description={description!} />
           </Suspense>
         </div>
       );
@@ -80,7 +80,7 @@ class FunctionEditor extends React.PureComponent<FunctionEditorProps, FunctionEd
               {this.triggerRef && (
                 <Popover
                   {...popperProps}
-                  referenceElement={this.triggerRef.current}
+                  referenceElement={this.triggerRef.current!}
                   wrapperClassName="popper"
                   className="popper__background"
                   onMouseLeave={() => {
