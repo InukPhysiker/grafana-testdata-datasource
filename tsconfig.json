@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib" : [ "es2019", "dom" ],
     "rootDir": "./src",
     "baseUrl": "./src",
     "outDir": "dist",
@@ -9,7 +10,8 @@
       "sass": ["sass/"]
     },
     "rootDirs": ["public/"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types", "app/types"],
+    "strictNullChecks" : false
   },
   "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
   "include": ["src", "types", "app"]
