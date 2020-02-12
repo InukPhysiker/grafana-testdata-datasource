@@ -1,5 +1,3 @@
-/// <reference path="../../../../app/types/jquery/jquery.d.ts"/>
-
 import _ from 'lodash';
 import $ from 'jquery';
 // @ts-ignore
