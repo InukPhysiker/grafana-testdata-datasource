@@ -1,5 +1,5 @@
 {
-  "name": "Graphite",
+  "name": "Graphite-Test",
   "type": "datasource",
   "id": "graphite-test",
   "category": "tsdb",
