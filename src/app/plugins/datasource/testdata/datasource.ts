@@ -49,16 +49,16 @@ export class TestDataDataSource extends DataSourceApi<TestDataQuery> {
 
     if (queries.length) {
       const { range } = options;
-      const range_from = range!.from.valueOf();
-      const range_to = range!.to.valueOf();
-      
+      const rangeFrom = range!.from.valueOf();
+      const rangeTo = range!.to.valueOf();
+
       const req: Promise<DataQueryResponse> = getBackendSrv()
         .datasourceRequest({
           method: 'POST',
           url: '/api/tsdb/query',
           data: {
-            from: range_from.valueOf().toString(),
-            to: range_to.valueOf().toString(),
+            from: rangeFrom.valueOf().toString(),
+            to: rangeTo.valueOf().toString(),
             queries: queries,
           },
           // This sets up a cancel token
