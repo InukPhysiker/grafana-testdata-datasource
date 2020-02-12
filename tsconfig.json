@@ -9,10 +9,13 @@
       "app": ["app/"],
       "sass": ["sass/"]
     },
-    "rootDirs": ["public/"],
+    "rootDirs": ["src/"],
     "typeRoots": ["node_modules/@types", "app/types"],
     "strictNullChecks" : false
   },
   "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
-  "include": ["src", "types", "app"]
+  "include": [
+    "src/app/**/*.ts",
+    "src/app/**/*.tsx"
+  ]
 }
