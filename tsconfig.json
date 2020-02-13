@@ -10,9 +10,6 @@
       "@grafana/slate-react": ["../node_modules/@types/slate-react"],
       "app": ["app/"]
     },
-    "rootDirs": [
-      "src/"
-    ],
     "strictNullChecks": false
   }
 }
