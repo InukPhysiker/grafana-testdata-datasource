@@ -1,21 +1,18 @@
 {
+  "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
+  "include": ["src"],
   "compilerOptions": {
-    "lib" : [ "es2019", "dom" ],
     "rootDir": "./src",
     "baseUrl": "./src",
+    "typeRoots": ["./node_modules/@types","app/types"],
     "outDir": "dist",
     "paths": {
       "@grafana/slate-react": ["../node_modules/@types/slate-react"],
-      "app": ["app/"],
-      "sass": ["sass/"]
+      "app": ["app/"]
     },
-    "rootDirs": ["src/"],
-    "typeRoots": ["node_modules/@types", "app/types"],
-    "strictNullChecks" : false
-  },
-  "extends": "./node_modules/@grafana/toolkit/src/config/tsconfig.plugin.json",
-  "include": [
-    "src/app/**/*.ts",
-    "src/app/**/*.tsx"
-  ]
+    "rootDirs": [
+      "src/"
+    ],
+    "strictNullChecks": false
+  }
 }
