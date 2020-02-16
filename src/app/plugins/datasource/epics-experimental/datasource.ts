@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import * as dateMath from 'app/core/utils/datemath';
 import moment from 'moment';
 
 export default class EPICSArchAppDatasource {
@@ -40,7 +39,7 @@ export default class EPICSArchAppDatasource {
         var startTime_ms = startTime.getTime();
         var stopTime_ms = stopTime.getTime();
 
-        var time_range = new moment.duration(stopTime_ms - startTime_ms);
+        var time_range = moment.duration(stopTime_ms - startTime_ms);
 
         // EPICS Archiver Appliances uses the following sampling values:
         //
