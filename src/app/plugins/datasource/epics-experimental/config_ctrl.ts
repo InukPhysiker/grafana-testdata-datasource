@@ -1,5 +1,3 @@
-///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-
 import angular from 'angular';
 import _ from 'lodash';
 
