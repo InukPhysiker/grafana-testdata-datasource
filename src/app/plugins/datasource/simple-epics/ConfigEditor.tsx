@@ -1,9 +1,9 @@
 import React, { PureComponent, ChangeEvent } from 'react';
 import { SecretFormField, FormField } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { MyDataSourceOptions, MySecureJsonData } from './types';
+import { EpicsDataSourceOptions, EpicsSecureJsonData } from './types';
 
-interface Props extends DataSourcePluginOptionsEditorProps<MyDataSourceOptions> {}
+interface Props extends DataSourcePluginOptionsEditorProps<EpicsDataSourceOptions> {}
 
 interface State {}
 
@@ -46,7 +46,7 @@ export class ConfigEditor extends PureComponent<Props, State> {
   render() {
     const { options } = this.props;
     const { jsonData, secureJsonFields } = options;
-    const secureJsonData = (options.secureJsonData || {}) as MySecureJsonData;
+    const secureJsonData = (options.secureJsonData || {}) as EpicsSecureJsonData;
 
     return (
       <div className="gf-form-group">
