@@ -28,3 +28,22 @@ e2e-results/
 
 *.bak
 *.7z
+
+src/app/plugins/datasource/cloudwatch/
+src/app/plugins/datasource/datasource-zabbix/
+src/app/plugins/datasource/elasticsearch/
+src/app/plugins/datasource/experimental/
+src/app/plugins/datasource/grafana-azure-monitor-datasource/
+src/app/plugins/datasource/grafana/
+src/app/plugins/datasource/influxdb/
+src/app/plugins/datasource/input/
+src/app/plugins/datasource/loki/
+src/app/plugins/datasource/meta-queries/
+src/app/plugins/datasource/mixed/
+src/app/plugins/datasource/mssql/
+src/app/plugins/datasource/mysql/
+src/app/plugins/datasource/opentsdb/
+src/app/plugins/datasource/postgres/
+src/app/plugins/datasource/prometheus/
+src/app/plugins/datasource/sql/
+src/app/plugins/datasource/stackdriver/
