@@ -1,4 +1,4 @@
-import angular from 'angular';
+// import angular from 'angular';
 import _ from 'lodash';
 
 export class EPICSArchAppConfigCtrl {
@@ -7,7 +7,7 @@ export class EPICSArchAppConfigCtrl {
   suggestUrl: string;
   datasources: any;
 
-  constructor($scope, private backendSrv) {
+  constructor($scope: any, private backendSrv: any) {
     this.current.jsonData.identity = this.current.jsonData.identity || '';
     this.current.jsonData.engineURL = this.current.jsonData.engineURL || '';
     this.current.jsonData.retrievalURL = this.current.jsonData.retrievalURL || '';
@@ -20,14 +20,14 @@ export class EPICSArchAppConfigCtrl {
         url: `api/datasources/proxy/${this.current.id}/archiverappliance/mgmt/bpl/getApplianceInfo`,
         method: 'GET'
       })
-      .then(res => {
+      .then((res: any) => {
         this.current.jsonData.identity = res.data.identity;
         this.current.jsonData.engineURL = res.data.engineURL;
         this.current.jsonData.retrievalURL = res.data.retrievalURL;
         this.current.jsonData.dataRetrievalURL = res.data.dataRetrievalURL;
         return;
       })
-      .catch(err => {
+      .catch((err: any) => {
         console.log(err);
       });
   }
