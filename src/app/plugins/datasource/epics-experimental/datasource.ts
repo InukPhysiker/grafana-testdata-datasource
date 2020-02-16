@@ -8,7 +8,12 @@ export default class EPICSArchAppDatasource {
     jsonData: any;
 
     /** @ngInject */
-    constructor(instanceSettings, private backendSrv, private templateSrv, private $q) {
+    constructor(
+        instanceSettings: any,
+        private backendSrv: any,
+        private templateSrv: any,
+        private $q: any
+        ) {
 
         this.id = instanceSettings.id;
         this.url = instanceSettings.url;
@@ -16,7 +21,7 @@ export default class EPICSArchAppDatasource {
 
     }
 
-    query(options) {
+    query(options: any) {
 
         if (options.targets.length <= 0) {
             return this.$q.when({ data: [] });
@@ -70,10 +75,10 @@ export default class EPICSArchAppDatasource {
             sampleRate = 3600 * Math.round(time_range.asMonths());
         }
 
-        const grafanaResponse = { data: [] };
+        const grafanaResponse = {};
 
         // For each one of the metrics the user entered:
-        const requests = options.targets.map((target) => {
+        const requests = options.targets.map((target: any) => {
             return new Promise((resolve) => {
 
                 if (target.hide || target.pvname == 'pv name') { // If the user clicked on the eye icon to hide, don't fetch the metrics.
@@ -92,7 +97,7 @@ export default class EPICSArchAppDatasource {
 
     }
 
-    getMetrics(target, grafanaResponse, startTime, stopTime, sampleRate, callback) {
+    getMetrics(target: any, grafanaResponse: any, startTime: string, stopTime: string, sampleRate: string | number, callback: { (value?: unknown): void; (): void; }) {
 
         const pvname = target.pvname;
 
@@ -129,7 +134,7 @@ export default class EPICSArchAppDatasource {
         return this.backendSrv.datasourceRequest({
             // url: `api/datasources/proxy/${this.id}/dataRetrievalURL/data/getData.qw?${retrieval_query}`
             url: this.url + `/retrieval/data/getData.qw?${retrieval_query}`
-        }).then((response) => {
+        }).then((response: any) => {
 
             var data = [], datapoints = [], titles = [];
             var i = 0;
@@ -151,13 +156,13 @@ export default class EPICSArchAppDatasource {
 
         }).then(() => {
             callback();
-        }).catch((err) => { // Unable to get metrics
+        }).catch((err: any) => { // Unable to get metrics
             let errMsg = 'Error getting metrics.';
             callback();
         });
     }
 
-    annotationQuery(options) {
+    annotationQuery(options: any) {
         throw new Error("Annotation Support not implemented yet.");
     }
 
@@ -172,21 +177,21 @@ export default class EPICSArchAppDatasource {
     // limit
     // An optional argument that specifies the number of matched PV's that are returned. If unspecified, we return 500 PV names. To get all the PV names, (potentially in the millions), set limit to 1.
 
-    getPVNames(query) {
-        const templatedQuery = this.templateSrv.replace(query);
+    getPVNames(query: string) {
+        // const templatedQuery = this.templateSrv.replace(query);
         return this.backendSrv.datasourceRequest({
             url: this.url + '/retrieval/bpl/getMatchingPVs?limit=36&pv=' + query + '*',
             method: 'GET',
             params: { output: 'json' }
-        }).then((response) => {
+        }).then((response: { status: number; data: any; }) => {
             if (response.status === 200) {
                 return response.data;
             } else {
                 return [];
             }
 
-        }).catch((error) => {
-            return [];
+        }).catch((error: any) => {
+            return;
         });
     }
 
@@ -196,13 +201,13 @@ export default class EPICSArchAppDatasource {
                 url: this.url,
                 method: 'GET'
             })
-            .then(res => {
+            .then((res: any) => {
                 return {
                     status: 'success',
                     message: 'EPICS Archiver Appliance Connection OK'
                 };
             })
-            .catch(err => {
+            .catch((err: { data: { message: any; }; status: any; }) => {
                 console.log(err);
                 if (err.data && err.data.message) {
                     return {
