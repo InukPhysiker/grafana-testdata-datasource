@@ -1,5 +1,3 @@
-///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-
 import _ from 'lodash';
 import * as dateMath from 'app/core/utils/datemath';
 import moment from 'moment';
