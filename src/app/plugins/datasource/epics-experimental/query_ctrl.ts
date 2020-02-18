@@ -26,7 +26,7 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
   selectedProcessVariableSegment: any;
 
   /** @ngInject **/
-  constructor($scope, $injector, private templateSrv, private uiSegmentSrv) {
+  constructor($scope: any, $injector: any, private templateSrv: any, private uiSegmentSrv: any) {
     super($scope, $injector);
 
     _.defaultsDeep(this.target, this.defaults);
@@ -45,13 +45,13 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
 
   }
 
-  getOptions(query) {
+  getOptions(query: any) {
     return this.datasource.metricFindQuery(query || '');
   }
 
-  getProcessVariableSegments(query) {
-    return this.datasource.getPVNames(query).then(values => {
-      return values.map(value => {
+  getProcessVariableSegments(query: any) {
+    return this.datasource.getPVNames(query).then((values: any) => {
+      return values.map((value: any) => {
         return this.uiSegmentSrv.newSegment({
           value
         });
@@ -71,24 +71,24 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
   }
 
 
-    isValidQueryType(type) {
+    isValidQueryType(type: any) {
       return _.has(this.queryTypeValidators, type);
     }
     
 
-validateFirstSampleQuery(target, errs) {
+validateFirstSampleQuery(target: any, errs: any) {
       return true;
     }
-    validateLastSampleQuery(target, errs) {
+    validateLastSampleQuery(target: any, errs: any) {
       return true;
     }
-    validateMinQuery(target, errs) {
+    validateMinQuery(target: any, errs: any) {
       return true;
     }
-    validateMaxQuery(target, errs) {
+    validateMaxQuery(target: any, errs: any) {
       return true;
     }
-    validateMeanQuery(target, errs) {
+    validateMeanQuery(target: any, errs: any) {
       return true;
     }
 
