@@ -6,9 +6,14 @@ import ResponseParser from './response_parser';
 
 import UrlBuilder from './url_builder';
 
-import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceSettings, MutableDataFrame, FieldType } from '@grafana/data';
+import {
+  DataQueryRequest,
+  DataQueryResponse,
+  DataSourceApi,
+  DataSourceInstanceSettings
+} from '@grafana/data';
 
-import { EpicsQuery, EpicsDataSourceOptions, defaultQuery } from './types';
+import { EpicsQuery, EpicsDataSourceOptions } from './types';
 
 export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions> {
   backendSrv: any;
