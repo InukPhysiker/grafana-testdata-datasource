@@ -1,6 +1,7 @@
 import { DataQuery, DataSourceJsonData } from '@grafana/data';
 
 export interface EpicsQuery extends DataQuery {
+  queryText?: string;
   operator: 'min' | 'max' | 'mean';
   alias?: string;
   pvname: string;
