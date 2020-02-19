@@ -1,11 +1,11 @@
 {
   "type": "datasource",
   "name": "Simple Data Source",
-  "id": "myorgid-simple-datasource",
+  "id": "epics-simple-datasource",
   "metrics": true,
 
   "info": {
-    "description": "Simple Data Source",
+    "description": "Simple EPICS Data Source",
     "author": {
       "name": "Your Name"
     },
