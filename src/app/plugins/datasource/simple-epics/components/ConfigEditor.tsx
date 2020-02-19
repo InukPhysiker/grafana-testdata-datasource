@@ -1,7 +1,7 @@
 import React, { PureComponent, ChangeEvent } from 'react';
 import { SecretFormField, FormField } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { EpicsDataSourceOptions, EpicsSecureJsonData } from './types';
+import { EpicsDataSourceOptions, EpicsSecureJsonData } from '../types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<EpicsDataSourceOptions> {}
 
