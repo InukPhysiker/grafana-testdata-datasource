@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
-import defaults from 'lodash/defaults';
+// import defaults from 'lodash/defaults';
+
+import ResponseParser from './response_parser';
+
+import UrlBuilder from './url_builder';
 
 import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceSettings, MutableDataFrame, FieldType } from '@grafana/data';
 
@@ -8,37 +12,91 @@ import { EpicsQuery, EpicsDataSourceOptions, defaultQuery } from './types';
 
 export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions> {
   backendSrv: any;
+  templateSrv: any;
+  defaultDropdownValue: 'pv name';
   baseUrl: string;
   url: string;
+  servlet: string;
+
   constructor(
     instanceSettings: DataSourceInstanceSettings<EpicsDataSourceOptions>,
-    backendSrv: any
+    backendSrv: any,
+    templateSrv: any
     ) {
     super(instanceSettings);
-    this.baseUrl = `/retrieval/`;
     this.url = instanceSettings.url;
+    this.baseUrl = `/retrieval/`;
+    this.servlet = `data/getData.qw?`;    
+    this.backendSrv = backendSrv;
+    this.templateSrv = templateSrv;
   }
 
-  async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
-    const { range } = options;
-    const from = range!.from.valueOf();
-    const to = range!.to.valueOf();
+   async query(options: DataQueryRequest<EpicsQuery>) : Promise<DataQueryResponse> {
+    // const queries: any[] = [];
+    // const streams: Array<Observable<DataQueryResponse>> = [];
+    
+    const queries = _.filter(options.targets, item => {
+      return (
+        item.hide !== true &&
+        item.pvname &&
+        item.pvname !== this.defaultDropdownValue
+      );
+    }).map(target => {
+      const item = target;
 
-    // Return a constant for each query.
-    const data = options.targets.map(target => {
-      const query = defaults(target, defaultQuery);
-      return new MutableDataFrame({
-        refId: query.refId,
-        fields: [
-          { name: 'Time', values: [from, to], type: FieldType.time },
-          { name: 'Value', values: [query.constant, query.constant], type: FieldType.number },
-        ],
-      });
+      const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(
+        item.pvname,
+        item.operator,
+        options.range,
+        options.intervalMs,
+        options.maxDataPoints
+      );
+
+      return{
+        // refId: string;
+        // hide?: boolean;
+        // key?: string;
+        // datasource?: string | null;
+        // metric?: any;
+        refId: target.refId,
+        // intervalMs: options.intervalMs,
+        // maxDataPoints: options.maxDataPoints,
+        datasourceId: this.id,
+        url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
+        alias: item.alias,
+        requestId: options.requestId,
+        // dashboardId: number;
+        // interval: string;
+        intervalMs: options.intervalMs,
+        maxDataPoints: options.maxDataPoints,
+        // panelId: number;
+        range: options.range,
+        // reverse?: boolean;
+        // scopedVars: ScopedVars;
+        // targets: TQuery[];
+        // timezone: string;
+        // app: CoreApp | string;
+        // cacheTimeout?: string;
+        // exploreMode?: 'Logs' | 'Metrics';
+        // rangeRaw?: RawTimeRange;
+        // timeInfo?: string;
+        // startTime: number;
+        // endTime?: number;
+      };
+
     });
 
-    return { data };
+    if (!queries || queries.length === 0) {
+      return { data: [] };
+    }
+
+    const promises = this.doQueries(queries);
+
+    return Promise.all(promises).then(results => {
+      return new ResponseParser(results).parseArchiverResponse();
+    });
   }
-  
+
   doQueries(queries: any) {
     return _.map(queries, query => {
       return this.doRequest(query.url)
