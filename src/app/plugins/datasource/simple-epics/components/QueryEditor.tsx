@@ -3,8 +3,8 @@ import defaults from 'lodash/defaults';
 import React, { PureComponent, ChangeEvent } from 'react';
 import { FormField } from '@grafana/ui';
 import { QueryEditorProps } from '@grafana/data';
-import { DataSource } from './DataSource';
-import { EpicsQuery, EpicsDataSourceOptions, defaultQuery } from './types';
+import { DataSource } from '../DataSource';
+import { EpicsQuery, EpicsDataSourceOptions, defaultQuery } from '../types';
 
 type Props = QueryEditorProps<DataSource, EpicsQuery, EpicsDataSourceOptions>;
 
