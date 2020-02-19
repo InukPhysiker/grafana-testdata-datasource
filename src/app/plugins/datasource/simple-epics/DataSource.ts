@@ -38,6 +38,24 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
 
     return { data };
   }
+  
+  doQueries(queries: any) {
+    return _.map(queries, query => {
+      return this.doRequest(query.url)
+        .then(result => {
+          return {
+            result: result,
+            query: query,
+          };
+        })
+        .catch(err => {
+          throw {
+            error: err,
+            query: query,
+          };
+        });
+    });
+  }
 
   async testDatasource() {
     let status: any, message: any;
