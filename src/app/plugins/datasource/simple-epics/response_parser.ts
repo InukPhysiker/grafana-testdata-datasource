@@ -4,7 +4,7 @@ export default class ResponseParser {
   constructor(private results: any) {}
 
   parseArchiverResponse() {
-    const data: { target?: any; datapoints?: any; }[] = [];
+    const data: Array<{ target?: any; datapoints?: any; }> = [];
 
     if (!this.results || this.results.results.length === 0) {
       return { data: data };

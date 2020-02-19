@@ -27,19 +27,19 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
     instanceSettings: DataSourceInstanceSettings<EpicsDataSourceOptions>,
     backendSrv: any,
     templateSrv: any
-    ) {
+  ) {
     super(instanceSettings);
     this.url = instanceSettings.url;
     this.baseUrl = `/retrieval/`;
-    this.servlet = `data/getData.qw?`;    
+    this.servlet = `data/getData.qw?`;
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
   }
 
-   async query(options: DataQueryRequest<EpicsQuery>) : Promise<DataQueryResponse> {
+  async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
     // const queries: any[] = [];
     // const streams: Array<Observable<DataQueryResponse>> = [];
-    
+
     const queries = _.filter(options.targets, item => {
       return (
         item.hide !== true &&
@@ -57,7 +57,7 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
         options.maxDataPoints
       );
 
-      return{
+      return {
         // refId: string;
         // hide?: boolean;
         // key?: string;

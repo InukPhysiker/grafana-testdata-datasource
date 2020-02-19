@@ -13,7 +13,7 @@ export default class EPICSArchAppDatasource {
         private backendSrv: any,
         // private templateSrv: any,
         private $q: any
-        ) {
+    ) {
 
         this.id = instanceSettings.id;
         this.url = instanceSettings.url;
@@ -29,22 +29,22 @@ export default class EPICSArchAppDatasource {
 
         const pvname = options.targets[0].pvname;
 
-        if (pvname == '' || pvname == undefined) {
+        if (pvname === '' || pvname === undefined) {
             return this.$q.when({ data: [] });
         }
 
-        var startTime = new Date(options.range.from);
-        var stopTime = new Date(options.range.to);
+        const startTime = new Date(options.range.from);
+        const stopTime = new Date(options.range.to);
 
         // ISO string required by EPICS Archiver Appliance
-        var startTimeISO = startTime.toISOString();
-        var stopTimeISO = stopTime.toISOString();
+        const startTimeISO = startTime.toISOString();
+        const stopTimeISO = stopTime.toISOString();
 
         // milliseconds required for time range calculation
-        var startTime_ms = startTime.getTime();
-        var stopTime_ms = stopTime.getTime();
+        const startTimems = startTime.getTime();
+        const stopTimems = stopTime.getTime();
 
-        var time_range = moment.duration(stopTime_ms - startTime_ms);
+        const timeRange = moment.duration(stopTimems - startTimems);
 
         // EPICS Archiver Appliances uses the following sampling values:
         //
@@ -61,18 +61,18 @@ export default class EPICSArchAppDatasource {
 
         // setSamplingOption does the same and interpolates for other time ranges
 
-        var sampleRate = 1; // retrieve all data points
+        let sampleRate = 1; // retrieve all data points
 
-        if (time_range.asDays() < 1) {
-            sampleRate = 5 * Math.round((3.5 * (time_range.asHours()) + 1) / 5.0) || 1;
-        } else if (time_range.asWeeks() < 1) {
-            sampleRate = 60 * Math.round(time_range.asDays());
-        } else if (time_range.asMonths() < 1) {
-            sampleRate = 600 * Math.round(time_range.asWeeks());
-        } else if (Math.round(time_range.asMonths()) == 6) {
-            sampleRate = 14440
-        } else if (time_range.asMonths() >= 1) {
-            sampleRate = 3600 * Math.round(time_range.asMonths());
+        if (timeRange.asDays() < 1) {
+            sampleRate = 5 * Math.round((3.5 * (timeRange.asHours()) + 1) / 5.0) || 1;
+        } else if (timeRange.asWeeks() < 1) {
+            sampleRate = 60 * Math.round(timeRange.asDays());
+        } else if (timeRange.asMonths() < 1) {
+            sampleRate = 600 * Math.round(timeRange.asWeeks());
+        } else if (Math.round(timeRange.asMonths()) === 6) {
+            sampleRate = 14440;
+        } else if (timeRange.asMonths() >= 1) {
+            sampleRate = 3600 * Math.round(timeRange.asMonths());
         }
 
         const grafanaResponse = {};
@@ -81,7 +81,7 @@ export default class EPICSArchAppDatasource {
         const requests = options.targets.map((target: any) => {
             return new Promise(resolve => {
 
-                if (target.hide || target.pvname == 'pv name') { // If the user clicked on the eye icon to hide, don't fetch the metrics.
+                if (target.hide || target.pvname === 'pv name') { // If the user clicked on the eye icon to hide, don't fetch the metrics.
                     return resolve();
                 } else {
                     return new Promise((innerResolve) => {
@@ -97,52 +97,61 @@ export default class EPICSArchAppDatasource {
 
     }
 
-    getMetrics(target: any, grafanaResponse: any, startTime: string, stopTime: string, sampleRate: string | number, callback: { (value?: unknown): void; (): void; }) {
+    getMetrics(
+        target: any,
+        grafanaResponse: any,
+        startTime: string,
+        stopTime: string,
+        sampleRate: string | number,
+        callback: { (value?: unknown): void; (): void; }
+    ) {
 
         const pvname = target.pvname;
 
-        switch(target.queryType) { 
-            case 'firstSample': { 
-                var retrieval_query = 'pv=firstSample_' 
-               break; 
-            } 
-            case 'lastSample': { 
-                var retrieval_query = 'pv=lastSample_' 
-               break; 
-            } 
-            case 'min': { 
-                var retrieval_query = 'pv=min_' 
-               break; 
-            } 
-            case 'max': { 
-                var retrieval_query = 'pv=max_' 
-               break; 
-            } 
-            case 'mean': { 
-                var retrieval_query = 'pv=mean_' 
-               break; 
-            } 
-            default: { 
-                // Fix later
-                var retrieval_query = 'pv=lastSample_' 
-               break; 
-            } 
-         } 
+        let retrievalQuery = '';
 
-        retrieval_query += sampleRate + '(' + pvname + ')' + '&from=' + startTime + '&to=' + stopTime + '&fetchLatestMetadata=true';
+        switch (target.queryType) {
+            case 'firstSample': {
+                retrievalQuery = 'pv=firstSample_';
+                break;
+            }
+            case 'lastSample': {
+                retrievalQuery = 'pv=lastSample_';
+                break;
+            }
+            case 'min': {
+                retrievalQuery = 'pv=min_';
+                break;
+            }
+            case 'max': {
+                retrievalQuery = 'pv=max_';
+                break;
+            }
+            case 'mean': {
+                retrievalQuery = 'pv=mean_';
+                break;
+            }
+            default: {
+                // Fix later
+                retrievalQuery = 'pv=lastSample_';
+                break;
+            }
+        }
+
+        retrievalQuery += sampleRate + '(' + pvname + ')' + '&from=' + startTime + '&to=' + stopTime + '&fetchLatestMetadata=true';
 
         return this.backendSrv.datasourceRequest({
-            // url: `api/datasources/proxy/${this.id}/dataRetrievalURL/data/getData.qw?${retrieval_query}`
-            url: this.url + `/retrieval/data/getData.qw?${retrieval_query}`
+            // url: `api/datasources/proxy/${this.id}/dataRetrievalURL/data/getData.qw?${retrievalQuery}`
+            url: this.url + `/retrieval/data/getData.qw?${retrievalQuery}`
         }).then((response: any) => {
 
-            // var data = [], datapoints = [], titles = [];
-            var datapoints = [];
-            // var i = 0;
-            var j = 0;
+            // valetr data = [], datapoints = [], titles = [];
+            const datapoints = [];
+            // let i = 0;
+            let j = 0;
 
             if (response.data[0].data) {
-                // var timepos = 0;
+                // let timepos = 0;
                 for (j = 0; j < response.data[0].data.length; j++) {
                     datapoints.push([
                         response.data[0].data[j]["val"], +new Date(response.data[0].data[j]["millis"])
@@ -172,11 +181,14 @@ export default class EPICSArchAppDatasource {
     }
 
     // pv
-    // An optional argument that can contain a GLOB wildcard. We will return PVs that match this GLOB. For example, if pv=KLYS*, the server will return all PVs that start with the string KLYS.
+    // An optional argument that can contain a GLOB wildcard. We will return PVs that match this GLOB.
+    // For example, if pv=KLYS*, the server will return all PVs that start with the string KLYS.
     // regex
-    // An optional argument that can contain a Java regex wildcard. We will return PVs that match this regex. For example, if pv=KLYS.*, the server will return all PVs that start with the string KLYS.
+    // An optional argument that can contain a Java regex wildcard. We will return PVs that match this regex.
+    // For example, if pv=KLYS.*, the server will return all PVs that start with the string KLYS.
     // limit
-    // An optional argument that specifies the number of matched PV's that are returned. If unspecified, we return 500 PV names. To get all the PV names, (potentially in the millions), set limit to 1.
+    // An optional argument that specifies the number of matched PV's that are returned.
+    // If unspecified, we return 500 PV names. To get all the PV names, (potentially in the millions), set limit to 1.
 
     getPVNames(query: string) {
         // const templatedQuery = this.templateSrv.replace(query);
@@ -224,4 +236,4 @@ export default class EPICSArchAppDatasource {
             });
     }
 
-    }
+}
