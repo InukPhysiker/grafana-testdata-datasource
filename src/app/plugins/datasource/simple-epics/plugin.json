@@ -1,6 +1,6 @@
 {
   "type": "datasource",
-  "name": "Simple Data Source",
+  "name": "Simple Data Source - EPICS",
   "id": "epics-simple-datasource",
   "metrics": true,
 
