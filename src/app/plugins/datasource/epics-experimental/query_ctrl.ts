@@ -11,9 +11,9 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
 
   errors: any;
 
-  queryTypes: any;
+  queryTypes: string[];
 
-    queryTypeValidators = {
+    queryTypeValidators: {[index: string]:any}  = {
       "firstSample": this.validateFirstSampleQuery.bind(this),
       "lastSample": this.validateLastSampleQuery.bind(this),
       "min": this.validateMinQuery.bind(this),
@@ -26,7 +26,7 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
   selectedProcessVariableSegment: any;
 
   /** @ngInject **/
-  constructor($scope: any, $injector: any, private templateSrv: any, private uiSegmentSrv: any) {
+  constructor($scope: any, $injector: any, private uiSegmentSrv: any) {
     super($scope, $injector);
 
     _.defaultsDeep(this.target, this.defaults);
