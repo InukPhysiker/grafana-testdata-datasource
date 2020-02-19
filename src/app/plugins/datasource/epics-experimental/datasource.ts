@@ -11,7 +11,7 @@ export default class EPICSArchAppDatasource {
     constructor(
         instanceSettings: any,
         private backendSrv: any,
-        private templateSrv: any,
+        // private templateSrv: any,
         private $q: any
         ) {
 
@@ -79,10 +79,10 @@ export default class EPICSArchAppDatasource {
 
         // For each one of the metrics the user entered:
         const requests = options.targets.map((target: any) => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
 
                 if (target.hide || target.pvname == 'pv name') { // If the user clicked on the eye icon to hide, don't fetch the metrics.
-                    resolve();
+                    return resolve();
                 } else {
                     return new Promise((innerResolve) => {
                         this.getMetrics(target, grafanaResponse, startTimeISO, stopTimeISO, sampleRate, resolve);
@@ -136,12 +136,13 @@ export default class EPICSArchAppDatasource {
             url: this.url + `/retrieval/data/getData.qw?${retrieval_query}`
         }).then((response: any) => {
 
-            var data = [], datapoints = [], titles = [];
-            var i = 0;
+            // var data = [], datapoints = [], titles = [];
+            var datapoints = [];
+            // var i = 0;
             var j = 0;
 
             if (response.data[0].data) {
-                var timepos = 0;
+                // var timepos = 0;
                 for (j = 0; j < response.data[0].data.length; j++) {
                     datapoints.push([
                         response.data[0].data[j]["val"], +new Date(response.data[0].data[j]["millis"])
@@ -157,7 +158,7 @@ export default class EPICSArchAppDatasource {
         }).then(() => {
             callback();
         }).catch((err: any) => { // Unable to get metrics
-            let errMsg = 'Error getting metrics.';
+            // let errMsg = 'Error getting metrics.';
             callback();
         });
     }
