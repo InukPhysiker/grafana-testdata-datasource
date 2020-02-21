@@ -5,23 +5,21 @@ import { QueryCtrl } from 'app/plugins/sdk';
 export class EPICSArchAppQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
 
-  defaults = {
-  };
-
+  defaults = {};
 
   errors: any;
 
   queryTypes: string[];
 
   queryTypeValidators: { [index: string]: any } = {
-    "firstSample": this.validateFirstSampleQuery.bind(this),
-    "lastSample": this.validateLastSampleQuery.bind(this),
-    "min": this.validateMinQuery.bind(this),
-    "max": this.validateMaxQuery.bind(this),
-    "mean": this.validateMeanQuery.bind(this),
+    firstSample: this.validateFirstSampleQuery.bind(this),
+    lastSample: this.validateLastSampleQuery.bind(this),
+    min: this.validateMinQuery.bind(this),
+    max: this.validateMaxQuery.bind(this),
+    mean: this.validateMeanQuery.bind(this),
   };
 
-  defaultQueryType = "lastSample";
+  defaultQueryType = 'lastSample';
 
   selectedProcessVariableSegment: any;
 
@@ -36,13 +34,11 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
 
     if (!this.target.queryType) {
       this.target.queryType = this.defaultQueryType;
-
     }
 
     this.queryTypes = _.keys(this.queryTypeValidators);
 
     this.errors = this.validateTarget();
-
   }
 
   getOptions(query: any) {
@@ -53,7 +49,7 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
     return this.datasource.getPVNames(query).then((values: any) => {
       return values.map((value: any) => {
         return this.uiSegmentSrv.newSegment({
-          value
+          value,
         });
       });
     });
@@ -64,17 +60,14 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
     this.panelCtrl.refresh(); // Asks the panel to refresh data.
   }
 
-
   targetBlur() {
     this.errors = this.validateTarget();
     this.refresh();
   }
 
-
   isValidQueryType(type: any) {
     return _.has(this.queryTypeValidators, type);
   }
-
 
   validateFirstSampleQuery(target: any, errs: any) {
     return true;
@@ -96,9 +89,9 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
     const errs: any = {};
 
     if (!this.target.queryType) {
-      errs.queryType = "You must supply a query type.";
+      errs.queryType = 'You must supply a query type.';
     } else if (!this.isValidQueryType(this.target.queryType)) {
-      errs.queryType = "Unknown query type: " + this.target.queryType + ".";
+      errs.queryType = 'Unknown query type: ' + this.target.queryType + '.';
     } else {
       this.queryTypeValidators[this.target.queryType](this.target, errs);
     }
@@ -110,7 +103,5 @@ export class EPICSArchAppQueryCtrl extends QueryCtrl {
     // }
 
     return errs;
-
   }
-
 }

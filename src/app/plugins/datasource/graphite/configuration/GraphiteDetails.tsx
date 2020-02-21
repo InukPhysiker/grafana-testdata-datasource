@@ -47,23 +47,15 @@ export class GraphiteDetails extends PureComponent<Props, State> {
     const { value } = this.props;
     const { showMetricTankHelp } = this.state;
 
-    const currentVersion =
-      graphiteVersions.find(item => item.value === value.jsonData.graphiteVersion) ?? graphiteVersions[2];
+    const currentVersion = graphiteVersions.find(item => item.value === value.jsonData.graphiteVersion) ?? graphiteVersions[2];
 
     return (
       <>
         <h3 className="page-heading">Graphite details</h3>
         <div className="gf-form-group">
           <div className="gf-form">
-            <FormLabel tooltip="This option controls what functions are available in the Graphite query editor.">
-              Version
-            </FormLabel>
-            <Select
-              value={currentVersion}
-              options={graphiteVersions}
-              width={8}
-              onChange={this.onChangeHandler('graphiteVersion')}
-            />
+            <FormLabel tooltip="This option controls what functions are available in the Graphite query editor.">Version</FormLabel>
+            <Select value={currentVersion} options={graphiteVersions} width={8} onChange={this.onChangeHandler('graphiteVersion')} />
           </div>
           <div className="gf-form-inline">
             <FormLabel>Type</FormLabel>
@@ -78,9 +70,7 @@ export class GraphiteDetails extends PureComponent<Props, State> {
               style={{ marginLeft: '8px', marginTop: '5px' }}
               variant="secondary"
               size="sm"
-              onClick={() =>
-                this.setState((prevState: State) => ({ showMetricTankHelp: !prevState.showMetricTankHelp }))
-              }
+              onClick={() => this.setState((prevState: State) => ({ showMetricTankHelp: !prevState.showMetricTankHelp }))}
             >
               Help <i className={showMetricTankHelp ? 'fa fa-caret-down' : 'fa fa-caret-right'} />
             </Button>
@@ -89,13 +79,12 @@ export class GraphiteDetails extends PureComponent<Props, State> {
             <div className="grafana-info-box m-t-2">
               <div className="alert-body">
                 <p>
-                  There are different types of Graphite compatible backends. Here you can specify the type you are
-                  using. If you are using{' '}
+                  There are different types of Graphite compatible backends. Here you can specify the type you are using. If you are using{' '}
                   <a href="https://github.com/grafana/metrictank" className="pointer" target="_blank">
                     Metrictank
                   </a>{' '}
-                  then select that here. This will enable Metrictank specific features like query processing meta data.
-                  Metrictank is a multi-tenant timeseries engine for Graphite and friends.
+                  then select that here. This will enable Metrictank specific features like query processing meta data. Metrictank is a multi-tenant
+                  timeseries engine for Graphite and friends.
                 </p>
               </div>
             </div>

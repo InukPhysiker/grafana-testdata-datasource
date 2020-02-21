@@ -8,11 +8,7 @@ export const ConfigEditor = (props: DataSourcePluginOptionsEditorProps<EpicsData
 
   return (
     <>
-      <DataSourceHttpSettings
-        defaultUrl="http://archiver.clsi.ca:17668"
-        dataSourceConfig={options}
-        onChange={onOptionsChange as any}
-      />
+      <DataSourceHttpSettings defaultUrl="http://archiver.clsi.ca:17668" dataSourceConfig={options} onChange={onOptionsChange as any} />
     </>
   );
 };

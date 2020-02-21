@@ -1,13 +1,5 @@
 import _ from 'lodash';
-import {
-  DataFrame,
-  dateMath,
-  ScopedVars,
-  DataQueryResponse,
-  DataQueryRequest,
-  toDataFrame,
-  DataSourceApi,
-} from '@grafana/data';
+import { DataFrame, dateMath, ScopedVars, DataQueryResponse, DataQueryRequest, toDataFrame, DataSourceApi } from '@grafana/data';
 import { isVersionGtOrEq, SemVersion } from 'app/core/utils/version';
 import gfunc from './gfunc';
 import { getBackendSrv } from '@grafana/runtime';
@@ -283,10 +275,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
 
   metricFindQuery(query: string, optionalOptions: any) {
     const options: any = optionalOptions || {};
-    let interpolatedQuery = this.templateSrv.replace(
-      query,
-      getSearchFilterScopedVar({ query, wildcardChar: '', options: optionalOptions })
-    );
+    let interpolatedQuery = this.templateSrv.replace(query, getSearchFilterScopedVar({ query, wildcardChar: '', options: optionalOptions }));
 
     // special handling for tag_values(<tag>[,<expression>]*), this is used for template variables
     let matches = interpolatedQuery.match(/^tag_values\(([^,]+)((, *[^,]+)*)\)$/);
@@ -319,10 +308,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
       return this.getTagsAutoComplete(expressions, undefined, options);
     }
 
-    interpolatedQuery = this.templateSrv.replace(
-      query,
-      getSearchFilterScopedVar({ query, wildcardChar: '*', options: optionalOptions })
-    );
+    interpolatedQuery = this.templateSrv.replace(query, getSearchFilterScopedVar({ query, wildcardChar: '*', options: optionalOptions }));
 
     const httpOptions: any = {
       method: 'POST',
@@ -554,14 +540,7 @@ export class GraphiteDatasource extends DataSourceApi<GraphiteQuery, GraphiteOpt
     });
   }
 
-  doGraphiteRequest(options: {
-    method?: string;
-    url: any;
-    requestId?: any;
-    withCredentials?: any;
-    headers?: any;
-    inspect?: any;
-  }) {
+  doGraphiteRequest(options: { method?: string; url: any; requestId?: any; withCredentials?: any; headers?: any; inspect?: any }) {
     if (this.basicAuth || this.withCredentials) {
       options.withCredentials = true;
     }

@@ -6,12 +6,7 @@ import ResponseParser from './response_parser';
 
 import UrlBuilder from './url_builder';
 
-import {
-  DataQueryRequest,
-  DataQueryResponse,
-  DataSourceApi,
-  DataSourceInstanceSettings
-} from '@grafana/data';
+import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceSettings } from '@grafana/data';
 
 import { EpicsQuery, EpicsDataSourceOptions } from './types';
 
@@ -23,11 +18,7 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
   url: string;
   servlet: string;
 
-  constructor(
-    instanceSettings: DataSourceInstanceSettings<EpicsDataSourceOptions>,
-    backendSrv: any,
-    templateSrv: any
-  ) {
+  constructor(instanceSettings: DataSourceInstanceSettings<EpicsDataSourceOptions>, backendSrv: any, templateSrv: any) {
     super(instanceSettings);
     this.url = instanceSettings.url;
     this.baseUrl = `/retrieval/`;
@@ -41,11 +32,7 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
     // const streams: Array<Observable<DataQueryResponse>> = [];
 
     const queries = _.filter(options.targets, item => {
-      return (
-        item.hide !== true &&
-        item.pvname &&
-        item.pvname !== this.defaultDropdownValue
-      );
+      return item.hide !== true && item.pvname && item.pvname !== this.defaultDropdownValue;
     }).map(target => {
       const item = target;
 
@@ -88,7 +75,6 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
         // startTime: number;
         // endTime?: number;
       };
-
     });
 
     if (!queries || queries.length === 0) {
@@ -165,5 +151,4 @@ export class DataSource extends DataSourceApi<EpicsQuery, EpicsDataSourceOptions
         throw error;
       });
   }
-
 }

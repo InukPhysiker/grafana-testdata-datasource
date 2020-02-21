@@ -1,15 +1,7 @@
 import { defaults } from 'lodash';
 import { Observable } from 'rxjs';
 
-import {
-  DataQueryRequest,
-  DataQueryResponse,
-  FieldType,
-  CircularDataFrame,
-  CSVReader,
-  Field,
-  LoadingState,
-} from '@grafana/data';
+import { DataQueryRequest, DataQueryResponse, FieldType, CircularDataFrame, CSVReader, Field, LoadingState } from '@grafana/data';
 
 import { TestDataQuery, StreamingQuery } from './types';
 import { getRandomLine } from './LogIpsum';
@@ -36,11 +28,7 @@ export function runStream(target: TestDataQuery, req: DataQueryRequest<TestDataQ
   throw new Error(`Unknown Stream Type: ${query.type}`);
 }
 
-export function runSignalStream(
-  target: TestDataQuery,
-  query: StreamingQuery,
-  req: DataQueryRequest<TestDataQuery>
-): Observable<DataQueryResponse> {
+export function runSignalStream(target: TestDataQuery, query: StreamingQuery, req: DataQueryRequest<TestDataQuery>): Observable<DataQueryResponse> {
   return new Observable<DataQueryResponse>(subscriber => {
     const streamId = `signal-${req.panelId}-${target.refId}`;
     const maxDataPoints = req.maxDataPoints || 1000;
@@ -113,11 +101,7 @@ export function runSignalStream(
   });
 }
 
-export function runLogsStream(
-  target: TestDataQuery,
-  query: StreamingQuery,
-  req: DataQueryRequest<TestDataQuery>
-): Observable<DataQueryResponse> {
+export function runLogsStream(target: TestDataQuery, query: StreamingQuery, req: DataQueryRequest<TestDataQuery>): Observable<DataQueryResponse> {
   return new Observable<DataQueryResponse>(subscriber => {
     const streamId = `logs-${req.panelId}-${target.refId}`;
     const maxDataPoints = req.maxDataPoints || 1000;
@@ -157,11 +141,7 @@ export function runLogsStream(
   });
 }
 
-export function runFetchStream(
-  target: TestDataQuery,
-  query: StreamingQuery,
-  req: DataQueryRequest<TestDataQuery>
-): Observable<DataQueryResponse> {
+export function runFetchStream(target: TestDataQuery, query: StreamingQuery, req: DataQueryRequest<TestDataQuery>): Observable<DataQueryResponse> {
   return new Observable<DataQueryResponse>(subscriber => {
     const streamId = `fetch-${req.panelId}-${target.refId}`;
     const maxDataPoints = req.maxDataPoints || 1000;

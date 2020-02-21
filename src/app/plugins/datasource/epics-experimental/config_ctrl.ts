@@ -18,7 +18,7 @@ export class EPICSArchAppConfigCtrl {
     this.backendSrv
       .datasourceRequest({
         url: `api/datasources/proxy/${this.current.id}/archiverappliance/mgmt/bpl/getApplianceInfo`,
-        method: 'GET'
+        method: 'GET',
       })
       .then((res: any) => {
         this.current.jsonData.identity = res.data.identity;
@@ -35,5 +35,4 @@ export class EPICSArchAppConfigCtrl {
   getSuggestUrls = () => {
     return [this.suggestUrl];
   };
-
 }

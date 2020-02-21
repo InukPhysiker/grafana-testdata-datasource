@@ -13,9 +13,7 @@ const FunctionDescription = React.lazy(async () => {
   // @ts-ignore
   const { default: rst2html } = await import(/* webpackChunkName: "rst2html" */ 'rst2html');
   return {
-    default: (props: { description: string }) => (
-      <div dangerouslySetInnerHTML={{ __html: rst2html(props.description) }} />
-    ),
+    default: (props: { description: string }) => <div dangerouslySetInnerHTML={{ __html: rst2html(props.description) }} />,
   };
 });
 
@@ -88,9 +86,7 @@ class FunctionEditor extends React.PureComponent<FunctionEditorProps, FunctionEd
                     hidePopper();
                   }}
                   onMouseEnter={showPopper}
-                  renderArrow={({ arrowProps, placement }) => (
-                    <div className="popper__arrow" data-placement={placement} {...arrowProps} />
-                  )}
+                  renderArrow={({ arrowProps, placement }) => <div className="popper__arrow" data-placement={placement} {...arrowProps} />}
                 />
               )}
 

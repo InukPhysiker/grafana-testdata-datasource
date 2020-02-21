@@ -23,13 +23,7 @@ export class GraphiteQueryCtrl extends QueryCtrl {
   paused: boolean;
 
   /** @ngInject */
-  constructor(
-    $scope: any,
-    $injector: auto.IInjectorService,
-    private uiSegmentSrv: any,
-    private templateSrv: any,
-    $timeout: any
-  ) {
+  constructor($scope: any, $injector: auto.IInjectorService, private uiSegmentSrv: any, private templateSrv: any, $timeout: any) {
     super($scope, $injector);
     this.supportsTags = this.datasource.supportsTags;
     this.paused = false;

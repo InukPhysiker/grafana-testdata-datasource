@@ -10,8 +10,7 @@ import { FuncDef } from './gfunc';
 
 /** @ngInject */
 export function graphiteAddFunc($compile: any) {
-  const inputTemplate =
-    '<input type="text"' + ' class="gf-form-input"' + ' spellcheck="false" style="display:none"></input>';
+  const inputTemplate = '<input type="text"' + ' class="gf-form-input"' + ' spellcheck="false" style="display:none"></input>';
 
   const buttonTemplate =
     '<a class="gf-form-label query-part dropdown-toggle"' +
@@ -137,7 +136,7 @@ export function graphiteAddFunc($compile: any) {
 }
 
 // coreModule.directive('graphiteAddFunc', graphiteAddFunc);
-angular.module('grafana.directives').directive("graphiteAddFunc", graphiteAddFunc);
+angular.module('grafana.directives').directive('graphiteAddFunc', graphiteAddFunc);
 
 function createFunctionDropDownMenu(funcDefs: FuncDef[]) {
   const categories: any = {};

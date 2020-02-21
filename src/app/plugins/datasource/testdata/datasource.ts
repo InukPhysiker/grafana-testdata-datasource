@@ -20,8 +20,7 @@ import { getSearchFilterScopedVar } from '../../../features/templating/variable'
 type TestData = TimeSeries | TableData;
 
 export class TestDataDataSource extends DataSourceApi<TestDataQuery> {
-  constructor(instanceSettings: DataSourceInstanceSettings,
-    private templateSrv: any) {
+  constructor(instanceSettings: DataSourceInstanceSettings, private templateSrv: any) {
     super(instanceSettings);
   }
 
@@ -140,10 +139,7 @@ export class TestDataDataSource extends DataSourceApi<TestDataQuery> {
   metricFindQuery(query: string, options: any) {
     return new Promise<MetricFindValue[]>((resolve, reject) => {
       setTimeout(() => {
-        const interpolatedQuery = this.templateSrv.replace(
-          query,
-          getSearchFilterScopedVar({ query, wildcardChar: '*', options })
-        );
+        const interpolatedQuery = this.templateSrv.replace(query, getSearchFilterScopedVar({ query, wildcardChar: '*', options }));
         const children = queryMetricTree(interpolatedQuery);
         const items = children.map(item => ({ value: item.name, text: item.name }));
         resolve(items);
