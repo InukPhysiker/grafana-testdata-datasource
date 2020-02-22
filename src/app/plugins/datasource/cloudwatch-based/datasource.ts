@@ -161,5 +161,4 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
         throw error;
       });
   }
-  
 }
