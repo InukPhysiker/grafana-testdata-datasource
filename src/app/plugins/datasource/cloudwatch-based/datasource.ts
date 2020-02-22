@@ -30,6 +30,8 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   // Cloudwatch
   standardStatistics: any;
   variables: any;
+  standardAreas: any;
+  standardDevices: any;
 
   constructor(instanceSettings: DataSourceInstanceSettings<EpicsJsonData>, backendSrv: any, templateSrv: any) {
     super(instanceSettings);
@@ -39,7 +41,9 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
     this.variables = this.templateSrv.variables;
-    this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'SampleCount','Standard Deviation'];
+    this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'SampleCount', 'Standard Deviation'];
+    this.standardAreas = ['1401', '1402', '1403', '1404', '1405', '1406'];
+    this.standardDevices = ['TM', 'HM', 'PT', 'IOP', 'CCG'];
     // this.summaryStatistics = ['mean', 'min', 'max','count','jitter','std','variance','popvariance'];
   }
 
@@ -131,15 +135,15 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     // let region;
     let pvstring;
 
-    // const regionQuery = query.match(/^regions\(\)/);
-    // if (regionQuery) {
-    //   return this.getRegions();
-    // }
+    const areaQuery = query.match(/^areas\(\)/);
+    if (areaQuery) {
+      return this.standardAreas.map((s: string) => ({ value: s, label: s, text: s }));
+    }
 
-    // const namespaceQuery = query.match(/^namespaces\(\)/);
-    // if (namespaceQuery) {
-    //   return this.getNamespaces();
-    // }
+    const deviceQuery = query.match(/^devices\(\)/);
+    if (deviceQuery) {
+      return this.standardDevices.map((s: string) => ({ value: s, label: s, text: s }));
+    }
 
     // Regular expression must match allowable process variable names
     const metricNameQuery = query.match(/^metrics\(([a-zA-Z0-9\-:)]*)\)/);

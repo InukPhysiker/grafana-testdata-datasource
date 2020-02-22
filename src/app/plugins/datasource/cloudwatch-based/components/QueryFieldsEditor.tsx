@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SelectableValue } from '@grafana/data';
 // import { Segment, SegmentAsync } from '@grafana/ui';
-import { SegmentAsync } from '@grafana/ui';
+import { Segment, SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
 // import { Stats, Dimensions, QueryInlineField } from './';
@@ -16,8 +16,8 @@ export type Props = {
 };
 
 interface State {
-  // regions: SelectableStrings;
-  // namespaces: SelectableStrings;
+  areas: SelectableStrings;
+  devices: SelectableStrings;
   metricNames: SelectableStrings;
   variableOptionGroup: SelectableValue<string>;
   showMeta: boolean;
@@ -31,8 +31,8 @@ export function QueryFieldsEditor({
   hideWilcard = false,
 }: React.PropsWithChildren<Props>) {
   const [state, setState] = useState<State>({
-    // regions: [],
-    // namespaces: [],
+    areas: [],
+    devices: [],
     metricNames: [],
     variableOptionGroup: {},
     showMeta: false,
@@ -44,12 +44,12 @@ export function QueryFieldsEditor({
       options: datasource.variables.map(toOption),
     };
 
-    Promise.all([datasource.metricFindQuery('regions()'), datasource.metricFindQuery('namespaces()')]).then(
-      ([regions, namespaces]) => {
+    Promise.all([datasource.metricFindQuery('areas()'), datasource.metricFindQuery('devices()')]).then(
+      ([areas, devices]) => {
         setState({
           ...state,
-          // regions: [...regions, variableOptionGroup],
-          // namespaces: [...namespaces, variableOptionGroup],
+          areas: [...areas, variableOptionGroup],
+          devices: [...devices, variableOptionGroup],
           variableOptionGroup,
         });
       }
@@ -57,8 +57,8 @@ export function QueryFieldsEditor({
   }, []);
 
   const loadMetricNames = async () => {
-    const { namespace, region } = query;
-    return datasource.metricFindQuery(`metrics(${namespace},${region})`).then(appendTemplateVariables);
+    const { device, area } = query;
+    return datasource.metricFindQuery(`metrics(${device}${area})`).then(appendTemplateVariables);
   };
 
   const appendTemplateVariables = (values: SelectableValue[]) => [
@@ -87,31 +87,30 @@ export function QueryFieldsEditor({
   //     .then(appendTemplateVariables);
   // };
 
-  // const { regions, namespaces, variableOptionGroup } = state;
-  const { variableOptionGroup } = state;
+  const { areas, devices, variableOptionGroup } = state;
   return (
     <>
-      {/* <QueryInlineField label="Region">
+      <QueryInlineField label="Area">
         <Segment
-          value={query.region}
-          placeholder="Select region"
-          options={regions}
+          value={query.area}
+          placeholder="Select Area"
+          options={areas}
           allowCustomValue
-          onChange={({ value: region }) => onQueryChange({ ...query, region })}
+          onChange={({ value: area }) => onQueryChange({ ...query, area })}
         />
-      </QueryInlineField> */}
+      </QueryInlineField>
 
       {query.expression.length === 0 && (
         <>
-          {/* <QueryInlineField label="Namespace">
+          <QueryInlineField label="Device">
             <Segment
-              value={query.namespace}
-              placeholder="Select namespace"
+              value={query.device}
+              placeholder="Select Device"
               allowCustomValue
-              options={namespaces}
-              onChange={({ value: namespace }) => onQueryChange({ ...query, namespace })}
+              options={devices}
+              onChange={({ value: device }) => onQueryChange({ ...query, device })}
             />
-          </QueryInlineField> */}
+          </QueryInlineField>
 
           <QueryInlineField label="Process Variable">
             <SegmentAsync

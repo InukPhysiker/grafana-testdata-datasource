@@ -8,11 +8,11 @@ export class EpicsAnnotationsQueryCtrl {
   /** @ngInject */
   constructor() {
     _.defaultsDeep(this.annotation, {
-      namespace: '',
+      device: '',
       metricName: '',
       expression: '',
       dimensions: {},
-      region: 'default',
+      area: 'default',
       id: '',
       alias: '',
       statistics: ['Average'],

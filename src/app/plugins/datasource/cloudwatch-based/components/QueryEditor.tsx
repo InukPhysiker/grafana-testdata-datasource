@@ -40,8 +40,8 @@ export class QueryEditor extends PureComponent<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
     const { query } = props;
 
-    if (!query.namespace) {
-      query.namespace = '';
+    if (!query.device) {
+      query.device = '';
     }
 
     if (!query.metricName) {
@@ -56,9 +56,9 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.dimensions = {};
     }
 
-    // if (!query.region) {
-    //   query.region = 'default';
-    // }
+    if (!query.area) {
+      query.area = '';
+    }
 
     // if (!query.id) {
     //   query.id = '';
@@ -146,7 +146,7 @@ export class QueryEditor extends PureComponent<Props, State> {
           <div className="gf-form">
             <QueryField
               label="Alias"
-              tooltip="Alias replacement variables: {{metric}}, {{stat}}, {{namespace}}, {{region}}, {{period}}, {{label}}, {{YOUR_DIMENSION_NAME}}"
+              tooltip="Alias replacement variables: {{metric}}, {{stat}}, {{device}}, {{area}}, {{label}}"
             >
               <Alias value={query.alias} onChange={(value: string) => this.onChange({ ...query, alias: value })} />
             </QueryField>

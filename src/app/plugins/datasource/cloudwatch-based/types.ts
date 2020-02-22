@@ -7,9 +7,9 @@ export interface EpicsQuery extends DataQuery {
   // alias?: string;
   pvname: string;
   constant: number;
-  id: string;
-  region: string;
-  namespace: string;
+  // id: string;
+  area: string;
+  device: string;
   metricName: string;
   dimensions: { [key: string]: string | string[] };
   statistics: string[];
