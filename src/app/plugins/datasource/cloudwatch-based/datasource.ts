@@ -15,6 +15,9 @@ import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceS
 
 import { EpicsQuery, EpicsJsonData } from './types';
 
+import EpicsMetricFindQuery from './EpicsMetricFindQuery';
+
+
 export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJsonData> {
 
 
@@ -116,6 +119,11 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           };
         });
     });
+  }
+
+  async metricFindQuery(query: any) {
+    const epicsMetricFindQuery = new EpicsMetricFindQuery(this);
+    return epicsMetricFindQuery.execute(query);
   }
 
   async testDatasource() {

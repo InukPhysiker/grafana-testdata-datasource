@@ -41,3 +41,15 @@ export interface EpicsSecureJsonData {
   accessKey: string;
   secretKey: string;
 }
+
+// Stackdriver code
+export enum MetricFindQueryTypes {
+  Services = 'services',
+  MetricTypes = 'metricTypes',
+  LabelKeys = 'labelKeys',
+  LabelValues = 'labelValues',
+  ResourceTypes = 'resourceTypes',
+  Aggregations = 'aggregations',
+  Aligners = 'aligners',
+  AlignmentPeriods = 'alignmentPeriods',
+}
