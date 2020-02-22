@@ -90,16 +90,6 @@ export function QueryFieldsEditor({
   const { areas, devices, variableOptionGroup } = state;
   return (
     <>
-      <QueryInlineField label="Area">
-        <Segment
-          value={query.area}
-          placeholder="Select Area"
-          options={areas}
-          allowCustomValue
-          onChange={({ value: area }) => onQueryChange({ ...query, area })}
-        />
-      </QueryInlineField>
-
       {query.expression.length === 0 && (
         <>
           <QueryInlineField label="Device">
@@ -109,6 +99,16 @@ export function QueryFieldsEditor({
               allowCustomValue
               options={devices}
               onChange={({ value: device }) => onQueryChange({ ...query, device })}
+            />
+          </QueryInlineField>
+
+          <QueryInlineField label="Area">
+            <Segment
+              value={query.area}
+              placeholder="Select Area"
+              options={areas}
+              allowCustomValue
+              onChange={({ value: area }) => onQueryChange({ ...query, area })}
             />
           </QueryInlineField>
 
