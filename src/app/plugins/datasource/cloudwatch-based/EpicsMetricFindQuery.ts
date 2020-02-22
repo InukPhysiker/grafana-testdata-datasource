@@ -10,7 +10,7 @@ import {
 } from './functions';
 
 export default class EpicsMetricFindQuery {
-  constructor(private datasource: any) {}
+  constructor(private datasource: any) { }
 
   async execute(query: any) {
     try {
@@ -50,7 +50,7 @@ export default class EpicsMetricFindQuery {
     }));
   }
 
-  async handleMetricTypesQuery({ selectedService }:{[key:string]:any}) {
+  async handleMetricTypesQuery({ selectedService }: { [key: string]: any }) {
     if (!selectedService) {
       return [];
     }
@@ -62,7 +62,7 @@ export default class EpicsMetricFindQuery {
     }));
   }
 
-  async handleLabelKeysQuery({ selectedMetricType }:{[key:string]:any}) {
+  async handleLabelKeysQuery({ selectedMetricType }: { [key: string]: any }) {
     if (!selectedMetricType) {
       return [];
     }
@@ -70,7 +70,7 @@ export default class EpicsMetricFindQuery {
     return labelKeys.map(this.toFindQueryResult);
   }
 
-  async handleLabelValuesQuery({ selectedMetricType, labelKey }:{[key:string]:any}) {
+  async handleLabelValuesQuery({ selectedMetricType, labelKey }: { [key: string]: any }) {
     if (!selectedMetricType) {
       return [];
     }
@@ -88,7 +88,7 @@ export default class EpicsMetricFindQuery {
     return values.map(this.toFindQueryResult);
   }
 
-  async handleResourceTypeQuery({ selectedMetricType }:{[key:string]:any}) {
+  async handleResourceTypeQuery({ selectedMetricType }: { [key: string]: any }) {
     if (!selectedMetricType) {
       return [];
     }
@@ -97,24 +97,24 @@ export default class EpicsMetricFindQuery {
     return response.meta.resourceTypes ? response.meta.resourceTypes.map(this.toFindQueryResult) : [];
   }
 
-  async handleAlignersQuery({ selectedMetricType }:{[key:string]:any}) {
+  async handleAlignersQuery({ selectedMetricType }: { [key: string]: any }) {
     if (!selectedMetricType) {
       return [];
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
     const { valueType, metricKind } = metricDescriptors.find(
-      (      m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
+      (m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
     );
     return getAlignmentOptionsByMetric(valueType, metricKind).map(this.toFindQueryResult);
   }
 
-  async handleAggregationQuery({ selectedMetricType }:{[key:string]:any}) {
+  async handleAggregationQuery({ selectedMetricType }: { [key: string]: any }) {
     if (!selectedMetricType) {
       return [];
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
     const { valueType, metricKind } = metricDescriptors.find(
-      (      m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
+      (m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
     );
     return getAggregationOptionsByMetric(valueType, metricKind).map(this.toFindQueryResult);
   }
