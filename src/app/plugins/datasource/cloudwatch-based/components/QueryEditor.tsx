@@ -85,15 +85,16 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { data, query, onRunQuery } = this.props;
-    const { showMeta } = this.state;
-    const metaDataExist = data && Object.values(data).length && data.state === 'Done';
+    // const { data, query, onRunQuery } = this.props;
+    const { query, onRunQuery } = this.props;
+    // const { showMeta } = this.state;
+    // const metaDataExist = data && Object.values(data).length && data.state === 'Done';
     return (
       <>
         <QueryFieldsEditor {...this.props}></QueryFieldsEditor>
         {query.statistics.length <= 1 && (
           <div className="gf-form-inline">
-            <div className="gf-form">
+            {/* <div className="gf-form">
               <QueryField
                 label="Id"
                 tooltip="Id can include numbers, letters, and underscore, and must start with a lowercase letter."
@@ -108,7 +109,7 @@ export class QueryEditor extends PureComponent<Props, State> {
                   value={query.id || ''}
                 />
               </QueryField>
-            </div>
+            </div> */}
             <div className="gf-form gf-form--grow">
               <QueryField
                 className="gf-form--grow"
@@ -128,7 +129,7 @@ export class QueryEditor extends PureComponent<Props, State> {
           </div>
         )}
         <div className="gf-form-inline">
-          <div className="gf-form">
+          {/* <div className="gf-form">
             <QueryField label="Period" tooltip="Minimum interval between points in seconds">
               <Input
                 className="gf-form-input width-8"
@@ -140,7 +141,7 @@ export class QueryEditor extends PureComponent<Props, State> {
                 }
               />
             </QueryField>
-          </div>
+          </div> */}
           <div className="gf-form">
             <QueryField
               label="Alias"
@@ -148,14 +149,14 @@ export class QueryEditor extends PureComponent<Props, State> {
             >
               <Alias value={query.alias} onChange={(value: string) => this.onChange({ ...query, alias: value })} />
             </QueryField>
-            <Switch
+            {/* <Switch
               label="Match Exact"
               labelClass="query-keyword"
               tooltip="Only show metrics that exactly match all defined dimension names."
               checked={query.matchExact}
               onChange={() => this.onChange({ ...query, matchExact: !query.matchExact })}
-            />
-            <label className="gf-form-label">
+            /> */}
+            {/* <label className="gf-form-label">
               <a
                 onClick={() =>
                   metaDataExist &&
@@ -167,7 +168,7 @@ export class QueryEditor extends PureComponent<Props, State> {
                 <i className={`fa fa-caret-${showMeta ? 'down' : 'right'}`} /> {showMeta ? 'Hide' : 'Show'} Query
                 Preview
               </a>
-            </label>
+            </label> */}
           </div>
           <div className="gf-form gf-form--grow">
             <div className="gf-form-label gf-form-label--grow" />
