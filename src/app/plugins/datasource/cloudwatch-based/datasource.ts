@@ -39,7 +39,8 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
     this.variables = this.templateSrv.variables;
-    this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'Sum', 'SampleCount'];
+    this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'SampleCount','Standard Deviation'];
+    // this.summaryStatistics = ['mean', 'min', 'max','count','jitter','std','variance','popvariance'];
   }
 
   async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
