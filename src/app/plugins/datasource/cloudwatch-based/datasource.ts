@@ -24,9 +24,9 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   baseUrl: string;
   url: string;
   servlet: string;
-  variables: any;
   // Cloudwatch
   standardStatistics: any;
+  variables: any;
 
   constructor(instanceSettings: DataSourceInstanceSettings<EpicsJsonData>, backendSrv: any, templateSrv: any) {
     super(instanceSettings);
@@ -35,6 +35,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.servlet = `data/getData.qw?`;
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
+    this.variables = this.templateSrv.variables;
   }
 
   async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
