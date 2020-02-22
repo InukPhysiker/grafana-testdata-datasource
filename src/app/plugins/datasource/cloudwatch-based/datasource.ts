@@ -52,12 +52,12 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     // const streams: Array<Observable<DataQueryResponse>> = [];
 
     const queries = _.filter(options.targets, item => {
-      return item.hide !== true && item.pvname && item.pvname !== this.defaultDropdownValue;
+      return item.hide !== true && item.metricName && item.metricName !== this.defaultDropdownValue;
     }).map(target => {
       const item = target;
 
       const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(
-        item.pvname,
+        item.metricName,
         item.operator,
         options.range,
         options.intervalMs,
