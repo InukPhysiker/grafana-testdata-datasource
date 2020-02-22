@@ -1,6 +1,7 @@
 import React, { PureComponent, ChangeEvent } from 'react';
 // import { ExploreQueryFieldProps } from '@grafana/data';
-import { Input, ValidationEvents, EventsWithValidation, Switch } from '@grafana/ui';
+// import { Input, ValidationEvents, EventsWithValidation, Switch } from '@grafana/ui';
+import { Input, ValidationEvents, EventsWithValidation } from '@grafana/ui';
 import { EpicsQuery } from '../types';
 import EpicsDataSource from '../datasource';
 import { QueryField, Alias, QueryFieldsEditor } from './';
@@ -24,14 +25,14 @@ interface State {
   showMeta: boolean;
 }
 
-const idValidationEvents: ValidationEvents = {
-  [EventsWithValidation.onBlur]: [
-    {
-      rule: value => new RegExp(/^$|^[a-z][a-zA-Z0-9_]*$/).test(value),
-      errorMessage: 'Invalid format. Only alphanumeric characters and underscores are allowed',
-    },
-  ],
-};
+// const idValidationEvents: ValidationEvents = {
+//   [EventsWithValidation.onBlur]: [
+//     {
+//       rule: value => new RegExp(/^$|^[a-z][a-zA-Z0-9_]*$/).test(value),
+//       errorMessage: 'Invalid format. Only alphanumeric characters and underscores are allowed',
+//     },
+//   ],
+// };
 
 export class QueryEditor extends PureComponent<Props, State> {
   state: State = { showMeta: false };
