@@ -5,7 +5,7 @@ export interface EpicsQuery extends DataQuery {
   queryText?: string;
   operator: 'min' | 'max' | 'mean';
   // alias?: string;
-  pvname: string;
+  // pvname: string;
   constant: number;
   // id: string;
   area: string;
