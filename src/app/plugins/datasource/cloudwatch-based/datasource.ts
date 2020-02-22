@@ -15,7 +15,7 @@ import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceS
 
 import { EpicsQuery, EpicsJsonData } from './types';
 
-import EpicsMetricFindQuery from './EpicsMetricFindQuery';
+// import EpicsMetricFindQuery from './EpicsMetricFindQuery';
 
 
 export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJsonData> {
@@ -122,9 +122,69 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     });
   }
 
-  async metricFindQuery(query: any) {
-    const epicsMetricFindQuery = new EpicsMetricFindQuery(this);
-    return epicsMetricFindQuery.execute(query);
+  // async metricFindQuery(query: any) {
+  //   const epicsMetricFindQuery = new EpicsMetricFindQuery(this);
+  //   return epicsMetricFindQuery.execute(query);
+  // }
+
+  async metricFindQuery(query: string) {
+    // let region;
+    let pvstring;
+
+    // const regionQuery = query.match(/^regions\(\)/);
+    // if (regionQuery) {
+    //   return this.getRegions();
+    // }
+
+    // const namespaceQuery = query.match(/^namespaces\(\)/);
+    // if (namespaceQuery) {
+    //   return this.getNamespaces();
+    // }
+
+    // Regular expression must match allowable process variable names
+    const metricNameQuery = query.match(/^metrics\(([a-zA-Z0-9\-:)]*)\)/);
+    if (metricNameQuery) {
+      pvstring = metricNameQuery[1];
+      return this.getPVNames(pvstring);
+    }
+
+    const statsQuery = query.match(/^statistics\(\)/);
+    if (statsQuery) {
+      return this.standardStatistics.map((s: string) => ({ value: s, label: s, text: s }));
+    }
+
+    return Promise.resolve([]);
+  }
+
+  // async getMetrics(namespace: string, region?: string) {
+  //   if (!namespace) {
+  //     return [];
+  //   }
+
+  //   return this.doMetricQueryRequest('metrics', {
+  //     region: this.templateSrv.replace(this.getActualRegion(region)),
+  //     namespace: this.templateSrv.replace(namespace),
+  //   });
+  // }
+
+  getPVNames(pvstring: string) {
+    // const templatedQuery = this.templateSrv.replace(query);
+    return this.backendSrv
+      .datasourceRequest({
+        url: this.url + '/retrieval/bpl/getMatchingPVs?limit=36&pv=' + pvstring + '*',
+        method: 'GET',
+        params: { output: 'json' },
+      })
+      .then((response: { status: number; data: any }) => {
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          return [];
+        }
+      })
+      .catch((error: any) => {
+        return;
+      });
   }
 
   async testDatasource() {
