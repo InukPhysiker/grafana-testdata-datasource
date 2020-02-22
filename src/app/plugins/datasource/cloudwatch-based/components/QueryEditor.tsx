@@ -48,21 +48,21 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.metricName = '';
     }
 
-    if (!query.expression) {
-      query.expression = '';
-    }
+    // if (!query.expression) {
+    //   query.expression = '';
+    // }
 
     if (!query.dimensions) {
       query.dimensions = {};
     }
 
-    if (!query.region) {
-      query.region = 'default';
-    }
+    // if (!query.region) {
+    //   query.region = 'default';
+    // }
 
-    if (!query.id) {
-      query.id = '';
-    }
+    // if (!query.id) {
+    //   query.id = '';
+    // }
 
     if (!query.alias) {
       query.alias = '';
@@ -72,9 +72,9 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.statistics = ['Average'];
     }
 
-    if (!query.hasOwnProperty('matchExact')) {
-      query.matchExact = true;
-    }
+    // if (!query.hasOwnProperty('matchExact')) {
+    //   query.matchExact = true;
+    // }
 
     return state;
   }
