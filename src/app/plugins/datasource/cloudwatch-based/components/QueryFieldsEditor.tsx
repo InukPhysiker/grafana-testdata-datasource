@@ -15,7 +15,7 @@ export type Props = {
 };
 
 interface State {
-  regions: SelectableStrings;
+  // regions: SelectableStrings;
   namespaces: SelectableStrings;
   metricNames: SelectableStrings;
   variableOptionGroup: SelectableValue<string>;
@@ -30,7 +30,7 @@ export function QueryFieldsEditor({
   hideWilcard = false,
 }: React.PropsWithChildren<Props>) {
   const [state, setState] = useState<State>({
-    regions: [],
+    // regions: [],
     namespaces: [],
     metricNames: [],
     variableOptionGroup: {},
@@ -47,7 +47,7 @@ export function QueryFieldsEditor({
       ([regions, namespaces]) => {
         setState({
           ...state,
-          regions: [...regions, variableOptionGroup],
+          // regions: [...regions, variableOptionGroup],
           namespaces: [...namespaces, variableOptionGroup],
           variableOptionGroup,
         });
@@ -86,10 +86,11 @@ export function QueryFieldsEditor({
   //     .then(appendTemplateVariables);
   // };
 
-  const { regions, namespaces, variableOptionGroup } = state;
+  // const { regions, namespaces, variableOptionGroup } = state;
+  const { namespaces, variableOptionGroup } = state;
   return (
     <>
-      <QueryInlineField label="Region">
+      {/* <QueryInlineField label="Region">
         <Segment
           value={query.region}
           placeholder="Select region"
@@ -97,7 +98,7 @@ export function QueryFieldsEditor({
           allowCustomValue
           onChange={({ value: region }) => onQueryChange({ ...query, region })}
         />
-      </QueryInlineField>
+      </QueryInlineField> */}
 
       {query.expression.length === 0 && (
         <>
@@ -111,17 +112,17 @@ export function QueryFieldsEditor({
             />
           </QueryInlineField>
 
-          <QueryInlineField label="Metric Name">
+          <QueryInlineField label="Process Variable Name">
             <SegmentAsync
               value={query.metricName}
-              placeholder="Select metric name"
+              placeholder="Select PV name"
               allowCustomValue
               loadOptions={loadMetricNames}
               onChange={({ value: metricName }) => onQueryChange({ ...query, metricName })}
             />
           </QueryInlineField>
 
-          <QueryInlineField label="Stats">
+          <QueryInlineField label="SummaryStatistics">
             <Stats
               stats={datasource.standardStatistics.map(toOption)}
               values={query.statistics}
