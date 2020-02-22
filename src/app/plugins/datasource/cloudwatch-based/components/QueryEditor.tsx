@@ -1,7 +1,7 @@
 import React, { PureComponent, ChangeEvent } from 'react';
 // import { ExploreQueryFieldProps } from '@grafana/data';
 // import { Input, ValidationEvents, EventsWithValidation, Switch } from '@grafana/ui';
-import { Input, ValidationEvents, EventsWithValidation } from '@grafana/ui';
+import { Input } from '@grafana/ui';
 import { EpicsQuery } from '../types';
 import EpicsDataSource from '../datasource';
 import { QueryField, Alias, QueryFieldsEditor } from './';
