@@ -48,9 +48,9 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.metricName = '';
     }
 
-    // if (!query.expression) {
-    //   query.expression = '';
-    // }
+    if (!query.expression) {
+      query.expression = '';
+    }
 
     if (!query.dimensions) {
       query.dimensions = {};
