@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { SelectableValue } from '@grafana/data';
-// import { Segment, SegmentAsync } from '@grafana/ui';
 import { Segment, SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
