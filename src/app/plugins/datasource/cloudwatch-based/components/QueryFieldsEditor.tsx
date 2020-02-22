@@ -112,7 +112,7 @@ export function QueryFieldsEditor({
             />
           </QueryInlineField>
 
-          <QueryInlineField label="Process Variable Name">
+          <QueryInlineField label="Process Variable">
             <SegmentAsync
               value={query.metricName}
               placeholder="Select PV name"
@@ -122,7 +122,7 @@ export function QueryFieldsEditor({
             />
           </QueryInlineField>
 
-          <QueryInlineField label="SummaryStatistics">
+          <QueryInlineField label="Statistics">
             <Stats
               stats={datasource.standardStatistics.map(toOption)}
               values={query.statistics}
