@@ -172,7 +172,7 @@ export class QueryEditor extends PureComponent<Props, State> {
           <div className="gf-form gf-form--grow">
             <div className="gf-form-label gf-form-label--grow" />
           </div>
-          {showMeta && metaDataExist && (
+          {/* {showMeta && metaDataExist && (
             <table className="filter-table form-inline">
               <thead>
                 <tr>
@@ -192,7 +192,7 @@ export class QueryEditor extends PureComponent<Props, State> {
                 ))}
               </tbody>
             </table>
-          )}
+          )} */}
         </div>
       </>
     );
