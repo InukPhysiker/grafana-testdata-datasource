@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SelectableValue } from '@grafana/data';
-import { Segment, SegmentAsync } from '@grafana/ui';
+// import { Segment, SegmentAsync } from '@grafana/ui';
+import { SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
 // import { Stats, Dimensions, QueryInlineField } from './';
@@ -16,7 +17,7 @@ export type Props = {
 
 interface State {
   // regions: SelectableStrings;
-  namespaces: SelectableStrings;
+  // namespaces: SelectableStrings;
   metricNames: SelectableStrings;
   variableOptionGroup: SelectableValue<string>;
   showMeta: boolean;
@@ -31,7 +32,7 @@ export function QueryFieldsEditor({
 }: React.PropsWithChildren<Props>) {
   const [state, setState] = useState<State>({
     // regions: [],
-    namespaces: [],
+    // namespaces: [],
     metricNames: [],
     variableOptionGroup: {},
     showMeta: false,
@@ -48,7 +49,7 @@ export function QueryFieldsEditor({
         setState({
           ...state,
           // regions: [...regions, variableOptionGroup],
-          namespaces: [...namespaces, variableOptionGroup],
+          // namespaces: [...namespaces, variableOptionGroup],
           variableOptionGroup,
         });
       }
@@ -87,7 +88,7 @@ export function QueryFieldsEditor({
   // };
 
   // const { regions, namespaces, variableOptionGroup } = state;
-  const { namespaces, variableOptionGroup } = state;
+  const { variableOptionGroup } = state;
   return (
     <>
       {/* <QueryInlineField label="Region">
@@ -102,7 +103,7 @@ export function QueryFieldsEditor({
 
       {query.expression.length === 0 && (
         <>
-          <QueryInlineField label="Namespace">
+          {/* <QueryInlineField label="Namespace">
             <Segment
               value={query.namespace}
               placeholder="Select namespace"
@@ -110,7 +111,7 @@ export function QueryFieldsEditor({
               options={namespaces}
               onChange={({ value: namespace }) => onQueryChange({ ...query, namespace })}
             />
-          </QueryInlineField>
+          </QueryInlineField> */}
 
           <QueryInlineField label="Process Variable">
             <SegmentAsync
