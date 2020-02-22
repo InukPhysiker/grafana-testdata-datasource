@@ -1,12 +1,12 @@
 import uniqBy from 'lodash/uniqBy';
-import { alignOptions, aggOptions } from './constants';
+import { alignOptions, aggOptions, ValueTypes, MetricKind } from './constants';
 
-export const extractServicesFromMetricDescriptors = metricDescriptors => uniqBy(metricDescriptors, 'service');
+export const extractServicesFromMetricDescriptors = (metricDescriptors: any) => uniqBy(metricDescriptors, 'service');
 
-export const getMetricTypesByService = (metricDescriptors, service) =>
+export const getMetricTypesByService = (metricDescriptors: any[], service: any) =>
   metricDescriptors.filter(m => m.service === service);
 
-export const getMetricTypes = (metricDescriptors, metricType, interpolatedMetricType, selectedService) => {
+export const getMetricTypes = (metricDescriptors: any[], metricType: any, interpolatedMetricType: any, selectedService: any) => {
   const metricTypes = getMetricTypesByService(metricDescriptors, selectedService).map(m => ({
     value: m.type,
     name: m.displayName,
@@ -19,7 +19,7 @@ export const getMetricTypes = (metricDescriptors, metricType, interpolatedMetric
   };
 };
 
-export const getAlignmentOptionsByMetric = (metricValueType, metricKind) => {
+export const getAlignmentOptionsByMetric = (metricValueType: ValueTypes, metricKind: MetricKind) => {
   return !metricValueType
     ? []
     : alignOptions.filter(i => {
@@ -27,7 +27,7 @@ export const getAlignmentOptionsByMetric = (metricValueType, metricKind) => {
       });
 };
 
-export const getAggregationOptionsByMetric = (valueType, metricKind) => {
+export const getAggregationOptionsByMetric = (valueType: ValueTypes, metricKind: MetricKind) => {
   return !metricKind
     ? []
     : aggOptions.filter(i => {
@@ -35,7 +35,7 @@ export const getAggregationOptionsByMetric = (valueType, metricKind) => {
       });
 };
 
-export const getLabelKeys = async (datasource, selectedMetricType) => {
+export const getLabelKeys = async (datasource: { getLabels: (arg0: any, arg1: string) => any; }, selectedMetricType: any) => {
   const refId = 'handleLabelKeysQuery';
   const response = await datasource.getLabels(selectedMetricType, refId);
   const labelKeys = response.meta
@@ -47,7 +47,7 @@ export const getLabelKeys = async (datasource, selectedMetricType) => {
   return labelKeys;
 };
 
-export const getAlignmentPickerData = ({ valueType, metricKind, perSeriesAligner }, templateSrv) => {
+export const getAlignmentPickerData = ({ valueType, metricKind, perSeriesAligner }: any, templateSrv: { replace: (arg0: any) => string; }) => {
   const options = getAlignmentOptionsByMetric(valueType, metricKind).map(option => ({
     ...option,
     label: option.text,
