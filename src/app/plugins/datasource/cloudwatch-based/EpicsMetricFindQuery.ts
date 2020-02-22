@@ -55,7 +55,9 @@ export default class EpicsMetricFindQuery {
       return [];
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
-    return getMetricTypesByService(metricDescriptors, this.datasource.templateSrv.replace(selectedService)).map((s: { displayName: any; type: any; }) => ({
+    return getMetricTypesByService(
+      metricDescriptors,
+      this.datasource.templateSrv.replace(selectedService)).map((s: { displayName: any; type: any; }) => ({
       text: s.displayName,
       value: s.type,
       expandable: true,
