@@ -149,9 +149,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     const metricNameQuery = query.match(/^metrics\(([a-zA-Z0-9\-:)]*)\)/);
     if (metricNameQuery) {
       pvstring = metricNameQuery[1];
-      return this.getPVNames(pvstring).array.forEach((element: any) => {
-        ({value: element, label: element, text: element})
-      });;
+      return this.getPVNames(pvstring).array.map((s: string) => ({ value: s, label: s, text: s }));
 
     }
 
