@@ -10,13 +10,13 @@ export default class ResponseParser {
       return { data: data };
     }
 
-    const archiverResults = this.results[0].result;
-    if (!archiverResults.meta.name || !archiverResults.data) {
-      return { data: data };
-    }
-
-    data.push({ target: this.results[0].meta.name });
-    data.push({ datapoints: this.results[0].data.map((item: any) => [item.val, item.millis]) });
+    this.results.array.forEach((element: any) => {
+      data.push({
+        target: element.meta.name,
+        datapoints: element.data.map((item: any) => [item.val, item.millis])
+      })
+      
+    });
 
     return { data: data };
   }
