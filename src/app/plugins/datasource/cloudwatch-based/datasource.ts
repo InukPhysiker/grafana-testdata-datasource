@@ -17,10 +17,7 @@ import { EpicsQuery, EpicsJsonData } from './types';
 
 // import EpicsMetricFindQuery from './EpicsMetricFindQuery';
 
-
 export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJsonData> {
-
-
   backendSrv: any;
   templateSrv: any;
   defaultDropdownValue: 'pv name';
@@ -56,45 +53,47 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     }).map(target => {
       const item = target;
 
-      const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(
-        item.metricName,
-        item.operator,
-        options.range,
-        options.intervalMs,
-        options.maxDataPoints
-      );
+      return Object.values(item.statistics).map((statistic: string) => {
+        const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(
+          item.metricName,
+          statistic,
+          options.range,
+          options.intervalMs,
+          options.maxDataPoints
+        );
 
-      return {
-        // refId: string;
-        // hide?: boolean;
-        // key?: string;
-        // datasource?: string | null;
-        // metric?: any;
-        refId: target.refId,
-        // intervalMs: options.intervalMs,
-        // maxDataPoints: options.maxDataPoints,
-        datasourceId: this.id,
-        url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
-        alias: item.alias,
-        requestId: options.requestId,
-        // dashboardId: number;
-        // interval: string;
-        intervalMs: options.intervalMs,
-        maxDataPoints: options.maxDataPoints,
-        // panelId: number;
-        range: options.range,
-        // reverse?: boolean;
-        // scopedVars: ScopedVars;
-        // targets: TQuery[];
-        // timezone: string;
-        // app: CoreApp | string;
-        // cacheTimeout?: string;
-        // exploreMode?: 'Logs' | 'Metrics';
-        // rangeRaw?: RawTimeRange;
-        // timeInfo?: string;
-        // startTime: number;
-        // endTime?: number;
-      };
+        return {
+          // refId: string;
+          // hide?: boolean;
+          // key?: string;
+          // datasource?: string | null;
+          // metric?: any;
+          refId: target.refId,
+          // intervalMs: options.intervalMs,
+          // maxDataPoints: options.maxDataPoints,
+          datasourceId: this.id,
+          url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
+          alias: item.alias,
+          requestId: options.requestId,
+          // dashboardId: number;
+          // interval: string;
+          intervalMs: options.intervalMs,
+          maxDataPoints: options.maxDataPoints,
+          // panelId: number;
+          range: options.range,
+          // reverse?: boolean;
+          // scopedVars: ScopedVars;
+          // targets: TQuery[];
+          // timezone: string;
+          // app: CoreApp | string;
+          // cacheTimeout?: string;
+          // exploreMode?: 'Logs' | 'Metrics';
+          // rangeRaw?: RawTimeRange;
+          // timeInfo?: string;
+          // startTime: number;
+          // endTime?: number;
+        };
+      });
     });
 
     if (!queries || queries.length === 0) {
@@ -158,7 +157,6 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           };
         });
       });
-
     }
 
     const statsQuery = query.match(/^statistics\(\)/);
