@@ -6,17 +6,17 @@ export default class ResponseParser {
   parseArchiverResponse() {
     const data: Array<{ target?: any; datapoints?: any }> = [];
 
-    if (!this.results || this.results.results.length === 0) {
+    if (!this.results || this.results.length === 0) {
       return { data: data };
     }
 
-    const archiverResults = this.results.results[0];
+    const archiverResults = this.results[0].result;
     if (!archiverResults.meta.name || !archiverResults.data) {
       return { data: data };
     }
 
-    data.push({ target: this.results.meta.name });
-    data.push({ datapoints: this.results.data.map((item: any) => [item.val, item.millis]) });
+    data.push({ target: this.results[0].meta.name });
+    data.push({ datapoints: this.results[0].data.map((item: any) => [item.val, item.millis]) });
 
     return { data: data };
   }
