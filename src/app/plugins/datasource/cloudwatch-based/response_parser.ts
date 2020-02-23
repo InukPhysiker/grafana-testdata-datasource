@@ -10,12 +10,14 @@ export default class ResponseParser {
       return { data: data };
     }
 
-    this.results.array.forEach((element: any) => {
+    Object.values(this.results).forEach((element: any) => {
+      if (!element.result.data[0].meta.name || element.result.data[0].data.length === 0) {
+        return;
+      }
       data.push({
-        target: element.meta.name,
-        datapoints: element.data.map((item: any) => [item.val, item.millis])
-      })
-      
+        target: element.result.data[0].meta.name,
+        datapoints: element.result.data[0].data.map((item: any) => [item.val, item.millis]),
+      });
     });
 
     return { data: data };
