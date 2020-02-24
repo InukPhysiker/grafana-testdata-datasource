@@ -73,7 +73,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           // maxDataPoints: options.maxDataPoints,
           datasourceId: this.id,
           url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
-          alias: item.alias,
+          alias: item.alias + '_' + statistic,
           requestId: options.requestId,
           // dashboardId: number;
           // interval: string;
