@@ -68,7 +68,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           // key?: string;
           // datasource?: string | null;
           // metric?: any;
-          refId: target.refId,
+          refId: target.refId + statistic,
           // intervalMs: options.intervalMs,
           // maxDataPoints: options.maxDataPoints,
           datasourceId: this.id,
