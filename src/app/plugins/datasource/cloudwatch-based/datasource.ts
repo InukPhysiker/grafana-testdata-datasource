@@ -62,6 +62,10 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           options.maxDataPoints
         );
 
+        if (item.alias) {
+          item.alias = this.templateSrv.replace(target.alias + statistic, options.scopedVars);
+        }
+
         return {
           // refId: string;
           // hide?: boolean;
