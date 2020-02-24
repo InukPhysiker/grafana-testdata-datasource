@@ -100,7 +100,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
       return { data: [] };
     }
 
-    const promises = this.doQueries(queries);
+    const promises = this.doQueries(_.flatten(queries));
 
     return Promise.all(promises).then(results => {
       return new ResponseParser(results).parseArchiverResponse();
