@@ -58,15 +58,15 @@ export default class UrlBuilder {
         retrievalParameters = 'pv=lastSample_';
         break;
       }
-      case 'min': {
+      case 'Minimum': {
         retrievalParameters = 'pv=min_';
         break;
       }
-      case 'max': {
+      case 'Maximum': {
         retrievalParameters = 'pv=max_';
         break;
       }
-      case 'mean': {
+      case 'Average': {
         retrievalParameters = 'pv=mean_';
         break;
       }
