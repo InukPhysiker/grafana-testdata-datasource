@@ -55,7 +55,7 @@ function determineBinSize(intervalMs: number, maxDataPoints: number) {
 	}
 	const potentialBinSizes = [5, 10, 15, 30, 60, 120, 180, 300, 600, 1200, 1800, 3600, 7200, 14400, 21600, 43200, 86400];
 	for(const i in potentialBinSizes) {
-		var potentialBinSize = potentialBinSizes[i];
+		const potentialBinSize = potentialBinSizes[i];
 		if((duration/potentialBinSize) <= 2*maxDataPoints) {
 			binSize = potentialBinSize;
 			break;
