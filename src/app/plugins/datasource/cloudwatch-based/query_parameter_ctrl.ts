@@ -7,8 +7,8 @@ import _ from 'lodash';
 export class EpicsQueryParameterCtrl {
   /** @ngInject */
   // constructor($scope: any, templateSrv: any, uiSegmentSrv: any, datasourceSrv: DatasourceSrv) {
-    constructor($scope: any, templateSrv: any, uiSegmentSrv: any) {
-      $scope.init = () => {
+  constructor($scope: any, templateSrv: any, uiSegmentSrv: any) {
+    $scope.init = () => {
       const target = $scope.target;
       target.namespace = target.namespace || '';
       target.metricName = target.metricName || '';
@@ -114,13 +114,7 @@ export class EpicsQueryParameterCtrl {
       } else if (segment.type === 'value') {
         const dimensionKey = $scope.dimSegments[$index - 2].value;
         delete target.dimensions[dimensionKey];
-        query = $scope.datasource.getDimensionValues(
-          target.region,
-          target.namespace,
-          target.metricName,
-          dimensionKey,
-          target.dimensions
-        );
+        query = $scope.datasource.getDimensionValues(target.region, target.namespace, target.metricName, dimensionKey, target.dimensions);
       }
 
       return query.then($scope.transformToSegments(true)).then(results => {

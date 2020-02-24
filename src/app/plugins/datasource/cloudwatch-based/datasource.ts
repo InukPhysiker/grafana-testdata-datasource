@@ -39,7 +39,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.templateSrv = templateSrv;
     this.variables = this.templateSrv.variables;
     this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'SampleCount', 'Standard Deviation'];
-    this.standardAreas = ['1401', '1402', '1403', '1404', '1405', '1406','1407','1408','1409','1410'];
+    this.standardAreas = ['1401', '1402', '1403', '1404', '1405', '1406', '1407', '1408', '1409', '1410'];
     this.standardDevices = ['TM', 'HM', 'PT', 'IOP', 'CCG'];
     // this.summaryStatistics = ['mean', 'min', 'max','count','jitter','std','variance','popvariance'];
   }
@@ -157,7 +157,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           return {
             value: item,
             label: item,
-            text: item
+            text: item,
           };
         });
       });

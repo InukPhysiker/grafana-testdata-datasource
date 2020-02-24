@@ -10,7 +10,7 @@ import {
 } from './functions';
 
 export default class EpicsMetricFindQuery {
-  constructor(private datasource: any) { }
+  constructor(private datasource: any) {}
 
   async execute(query: any) {
     try {
@@ -55,13 +55,13 @@ export default class EpicsMetricFindQuery {
       return [];
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
-    return getMetricTypesByService(
-      metricDescriptors,
-      this.datasource.templateSrv.replace(selectedService)).map((s: { displayName: any; type: any; }) => ({
-      text: s.displayName,
-      value: s.type,
-      expandable: true,
-    }));
+    return getMetricTypesByService(metricDescriptors, this.datasource.templateSrv.replace(selectedService)).map(
+      (s: { displayName: any; type: any }) => ({
+        text: s.displayName,
+        value: s.type,
+        expandable: true,
+      })
+    );
   }
 
   async handleLabelKeysQuery({ selectedMetricType }: { [key: string]: any }) {
@@ -105,7 +105,7 @@ export default class EpicsMetricFindQuery {
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
     const { valueType, metricKind } = metricDescriptors.find(
-      (m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
+      (m: { type: any }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
     );
     return getAlignmentOptionsByMetric(valueType, metricKind).map(this.toFindQueryResult);
   }
@@ -116,7 +116,7 @@ export default class EpicsMetricFindQuery {
     }
     const metricDescriptors = await this.datasource.getMetricTypes(this.datasource.projectName);
     const { valueType, metricKind } = metricDescriptors.find(
-      (m: { type: any; }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
+      (m: { type: any }) => m.type === this.datasource.templateSrv.replace(selectedMetricType)
     );
     return getAggregationOptionsByMetric(valueType, metricKind).map(this.toFindQueryResult);
   }

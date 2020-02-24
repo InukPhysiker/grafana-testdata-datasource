@@ -14,8 +14,6 @@
 // import { EpicsJsonData, EpicsSecureJsonData } from '../types';
 // import { CancelablePromise, makePromiseCancelable } from 'app/core/utils/CancelablePromise';
 
-
-
 import React from 'react';
 import { DataSourceHttpSettings } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';

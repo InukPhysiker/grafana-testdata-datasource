@@ -22,13 +22,7 @@ interface State {
   showMeta: boolean;
 }
 
-export function QueryFieldsEditor({
-  query,
-  datasource,
-  onChange,
-  onRunQuery = () => {},
-  hideWilcard = false,
-}: React.PropsWithChildren<Props>) {
+export function QueryFieldsEditor({ query, datasource, onChange, onRunQuery = () => {}, hideWilcard = false }: React.PropsWithChildren<Props>) {
   const [state, setState] = useState<State>({
     areas: [],
     devices: [],
@@ -43,16 +37,14 @@ export function QueryFieldsEditor({
       options: datasource.variables.map(toOption),
     };
 
-    Promise.all([datasource.metricFindQuery('areas()'), datasource.metricFindQuery('devices()')]).then(
-      ([areas, devices]) => {
-        setState({
-          ...state,
-          areas: [...areas, variableOptionGroup],
-          devices: [...devices, variableOptionGroup],
-          variableOptionGroup,
-        });
-      }
-    );
+    Promise.all([datasource.metricFindQuery('areas()'), datasource.metricFindQuery('devices()')]).then(([areas, devices]) => {
+      setState({
+        ...state,
+        areas: [...areas, variableOptionGroup],
+        devices: [...devices, variableOptionGroup],
+        variableOptionGroup,
+      });
+    });
   }, []);
 
   const loadMetricNames = async () => {

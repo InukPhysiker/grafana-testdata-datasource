@@ -21,10 +21,7 @@ export const Dimensions: FunctionComponent<Props> = ({ dimensions, loadValues, l
   const [data, setData] = useState(dimensions);
 
   useEffect(() => {
-    const completeDimensions = Object.entries(data).reduce(
-      (res, [key, value]) => (value ? { ...res, [key]: value } : res),
-      {}
-    );
+    const completeDimensions = Object.entries(data).reduce((res, [key, value]) => (value ? { ...res, [key]: value } : res), {});
     if (!isEqual(completeDimensions, dimensions)) {
       onChange(completeDimensions);
     }
@@ -59,9 +56,7 @@ export const Dimensions: FunctionComponent<Props> = ({ dimensions, loadValues, l
             loadOptions={() => loadValues(key)}
             onChange={({ value: newValue }) => setData({ ...data, [key]: newValue })}
           />
-          {Object.values(data).length > 1 && index + 1 !== Object.values(data).length && (
-            <label className="gf-form-label query-keyword">AND</label>
-          )}
+          {Object.values(data).length > 1 && index + 1 !== Object.values(data).length && <label className="gf-form-label query-keyword">AND</label>}
         </Fragment>
       ))}
       {Object.values(data).every(v => v) && (

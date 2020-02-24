@@ -138,14 +138,7 @@ export const aggOptions = [
   {
     text: 'none',
     value: 'REDUCE_NONE',
-    valueTypes: [
-      ValueTypes.INT64,
-      ValueTypes.DOUBLE,
-      ValueTypes.MONEY,
-      ValueTypes.DISTRIBUTION,
-      ValueTypes.BOOL,
-      ValueTypes.STRING,
-    ],
+    valueTypes: [ValueTypes.INT64, ValueTypes.DOUBLE, ValueTypes.MONEY, ValueTypes.DISTRIBUTION, ValueTypes.BOOL, ValueTypes.STRING],
     metricKinds: [MetricKind.GAUGE, MetricKind.DELTA, MetricKind.CUMULATIVE, MetricKind.METRIC_KIND_UNSPECIFIED],
   },
   {
@@ -181,14 +174,7 @@ export const aggOptions = [
   {
     text: 'count',
     value: 'REDUCE_COUNT',
-    valueTypes: [
-      ValueTypes.INT64,
-      ValueTypes.DOUBLE,
-      ValueTypes.MONEY,
-      ValueTypes.DISTRIBUTION,
-      ValueTypes.BOOL,
-      ValueTypes.STRING,
-    ],
+    valueTypes: [ValueTypes.INT64, ValueTypes.DOUBLE, ValueTypes.MONEY, ValueTypes.DISTRIBUTION, ValueTypes.BOOL, ValueTypes.STRING],
     metricKinds: [MetricKind.GAUGE, MetricKind.DELTA, MetricKind.CUMULATIVE],
   },
   {

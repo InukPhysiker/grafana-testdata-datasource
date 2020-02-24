@@ -8,8 +8,6 @@ import { QueryField, Alias, QueryFieldsEditor } from './';
 
 // export type Props = ExploreQueryFieldProps<EpicsDatasource, EpicsQuery>;
 
-
-
 // import defaults from 'lodash/defaults';
 
 // import React, { PureComponent, ChangeEvent } from 'react';
@@ -121,9 +119,7 @@ export class QueryEditor extends PureComponent<Props, State> {
                   className="gf-form-input"
                   onBlur={onRunQuery}
                   value={query.expression || ''}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    this.onChange({ ...query, expression: event.target.value })
-                  }
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => this.onChange({ ...query, expression: event.target.value })}
                 />
               </QueryField>
             </div>
@@ -144,10 +140,7 @@ export class QueryEditor extends PureComponent<Props, State> {
             </QueryField>
           </div> */}
           <div className="gf-form">
-            <QueryField
-              label="Alias"
-              tooltip="Alias replacement variables: {{metric}}, {{stat}}, {{device}}, {{area}}, {{label}}"
-            >
+            <QueryField label="Alias" tooltip="Alias replacement variables: {{metric}}, {{stat}}, {{device}}, {{area}}, {{label}}">
               <Alias value={query.alias} onChange={(value: string) => this.onChange({ ...query, alias: value })} />
             </QueryField>
             {/* <Switch

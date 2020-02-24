@@ -23,11 +23,7 @@ export const Stats: FunctionComponent<Props> = ({ stats, values, onChange, varia
           value={value}
           options={[removeOption, ...stats, variableOptionGroup]}
           onChange={({ value }) =>
-            onChange(
-              value === removeText
-                ? values.filter((_, i) => i !== index)
-                : values.map((v, i) => (i === index ? value : v))
-            )
+            onChange(value === removeText ? values.filter((_, i) => i !== index) : values.map((v, i) => (i === index ? value : v)))
           }
         />
       ))}

@@ -26,4 +26,3 @@ export const plugin = new DataSourcePlugin<EpicsDataSource, EpicsQuery, EpicsJso
 //   CloudWatchConfigCtrl as ConfigCtrl,
 //   CloudWatchAnnotationsQueryCtrl as AnnotationsQueryCtrl,
 // };
-

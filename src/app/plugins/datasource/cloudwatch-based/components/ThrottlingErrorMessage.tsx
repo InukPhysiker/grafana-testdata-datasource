@@ -15,11 +15,7 @@ export const ThrottlingErrorMessage: FunctionComponent<Props> = ({ region }) => 
       AWS Service Quotas console
     </a>
     &nbsp;to request a quota increase or see our&nbsp;
-    <a
-      target="_blank"
-      className="text-link"
-      href={`https://grafana.com/docs/features/datasources/epicsArchiver/#service-quotas`}
-    >
+    <a target="_blank" className="text-link" href={`https://grafana.com/docs/features/datasources/epicsArchiver/#service-quotas`}>
       documentation
     </a>
     &nbsp;to learn more.

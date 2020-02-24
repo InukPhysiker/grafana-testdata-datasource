@@ -16,11 +16,7 @@ export function AnnotationQueryEditor(props: React.PropsWithChildren<Props>) {
   const { query, onChange } = props;
   return (
     <>
-      <QueryFieldsEditor
-        {...props}
-        onChange={(editorQuery: EpicsQuery) => onChange({ ...query, ...editorQuery })}
-        hideWilcard
-      ></QueryFieldsEditor>
+      <QueryFieldsEditor {...props} onChange={(editorQuery: EpicsQuery) => onChange({ ...query, ...editorQuery })} hideWilcard></QueryFieldsEditor>
       <div className="gf-form-inline">
         <Switch
           label="Enable Prefix Matching"
@@ -35,9 +31,7 @@ export function AnnotationQueryEditor(props: React.PropsWithChildren<Props>) {
               disabled={!query.prefixMatching}
               className="gf-form-input width-12"
               value={query.actionPrefix || ''}
-              onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                onChange({ ...query, actionPrefix: event.target.value })
-              }
+              onChange={(event: ChangeEvent<HTMLInputElement>) => onChange({ ...query, actionPrefix: event.target.value })}
             />
           </QueryField>
           <QueryField label="Alarm Name">
@@ -45,9 +39,7 @@ export function AnnotationQueryEditor(props: React.PropsWithChildren<Props>) {
               disabled={!query.prefixMatching}
               className="gf-form-input width-12"
               value={query.alarmNamePrefix || ''}
-              onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                onChange({ ...query, alarmNamePrefix: event.target.value })
-              }
+              onChange={(event: ChangeEvent<HTMLInputElement>) => onChange({ ...query, alarmNamePrefix: event.target.value })}
             />
           </QueryField>
           <div className="gf-form gf-form--grow">
