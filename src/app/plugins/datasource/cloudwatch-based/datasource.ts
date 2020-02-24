@@ -62,9 +62,9 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           options.maxDataPoints
         );
 
-        if (item.alias) {
-          item.alias = this.templateSrv.replace(target.alias + statistic, options.scopedVars);
-        }
+        // if (item.alias) {
+        //   item.alias = this.templateSrv.replace(target.alias + statistic, options.scopedVars);
+        // }
 
         return {
           // refId: string;
@@ -77,7 +77,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           // maxDataPoints: options.maxDataPoints,
           datasourceId: this.id,
           url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
-          alias: item.alias + '_' + statistic,
+          alias: item.metricName + '_' + statistic,
           requestId: options.requestId,
           // dashboardId: number;
           // interval: string;

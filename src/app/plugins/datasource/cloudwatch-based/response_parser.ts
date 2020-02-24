@@ -15,7 +15,7 @@ export default class ResponseParser {
         return;
       }
       data.push({
-        target: element.result.data[0].meta.name,
+        target: element.query.alias || element.result.data[0].meta.name,
         datapoints: element.result.data[0].data.map((item: any) => [item.val, item.millis]),
       });
     });
