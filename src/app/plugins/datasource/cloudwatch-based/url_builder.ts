@@ -49,7 +49,7 @@ export default class UrlBuilder {
 
 // Compute the bin size for the operators automatically based on the number of points in the plot window and (endTime - startTime).
 // function determineBinSize(intervalMs: number, maxDataPoints: number) {
-function determineBinSize(intervalMs: number) {
+function determineBinSize(intervalMs: number): number {
   const points = window.innerWidth;
   const duration = intervalMs / 1000;
   var binSize: number;
