@@ -8,7 +8,8 @@ export default class UrlBuilder {
 
     // EPICS Archiver Appliances uses the following sampling values:
     // const binSize = determineBinSize(intervalMs, maxDataPoints);
-    const binSize = determineBinSize(intervalMs);
+    // const binSize = determineBinSize(intervalMs);
+    const binSize = intervalMs/1000;
 
     let retrievalParameters = '';
 
@@ -49,20 +50,20 @@ export default class UrlBuilder {
 
 // Compute the bin size for the operators automatically based on the number of points in the plot window and (endTime - startTime).
 // function determineBinSize(intervalMs: number, maxDataPoints: number) {
-function determineBinSize(intervalMs: number): number {
-  const points = window.innerWidth;
-  const duration = intervalMs / 1000;
-  var binSize: number;
-  if (duration <= 2 * points) {
-    return 0;
-  }
+// function determineBinSize(intervalMs: number): number {
+//   const points = window.innerWidth;
+//   const duration = intervalMs / 1000;
+//   var binSize: number;
+//   if (duration <= 2 * points) {
+//     return 0;
+//   }
 
-  const potentialBinSizes = [5, 10, 15, 30, 60, 120, 180, 300, 600, 1200, 1800, 3600, 7200, 14400, 21600, 43200, 86400];
-  potentialBinSizes.some(potentialBinSize => {
-    binSize = potentialBinSize;
-    return (duration / potentialBinSize) <= 2 * points;
-  });
+//   const potentialBinSizes = [5, 10, 15, 30, 60, 120, 180, 300, 600, 1200, 1800, 3600, 7200, 14400, 21600, 43200, 86400];
+//   potentialBinSizes.some(potentialBinSize => {
+//     binSize = potentialBinSize;
+//     return (duration / potentialBinSize) <= 2 * points;
+//   });
 
-  return binSize;
+//   return binSize;
 
-}
+// }
