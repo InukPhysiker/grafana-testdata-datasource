@@ -1,36 +1,15 @@
 import React, { PureComponent, ChangeEvent } from 'react';
-// import { ExploreQueryFieldProps } from '@grafana/data';
-// import { Input, ValidationEvents, EventsWithValidation, Switch } from '@grafana/ui';
 import { Input } from '@grafana/ui';
-import { EpicsQuery } from '../types';
+import { EpicsQuery, EpicsJsonData } from '../types';
 import EpicsDataSource from '../datasource';
 import { QueryField, Alias, QueryFieldsEditor } from './';
-
-// export type Props = ExploreQueryFieldProps<EpicsDatasource, EpicsQuery>;
-
-// import defaults from 'lodash/defaults';
-
-// import React, { PureComponent, ChangeEvent } from 'react';
-// import { FormField } from '@grafana/ui';
 import { QueryEditorProps } from '@grafana/data';
-// import { DataSource } from '../datasource';
-// import { EpicsQuery, EpicsJsonData, defaultQuery } from '../types';
-import { EpicsJsonData } from '../types';
 
 type Props = QueryEditorProps<EpicsDataSource, EpicsQuery, EpicsJsonData>;
 
 interface State {
   showMeta: boolean;
 }
-
-// const idValidationEvents: ValidationEvents = {
-//   [EventsWithValidation.onBlur]: [
-//     {
-//       rule: value => new RegExp(/^$|^[a-z][a-zA-Z0-9_]*$/).test(value),
-//       errorMessage: 'Invalid format. Only alphanumeric characters and underscores are allowed',
-//     },
-//   ],
-// };
 
 export class QueryEditor extends PureComponent<Props, State> {
   state: State = { showMeta: false };
@@ -58,10 +37,6 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.area = '';
     }
 
-    // if (!query.id) {
-    //   query.id = '';
-    // }
-
     if (!query.alias) {
       query.alias = '';
     }
@@ -69,10 +44,6 @@ export class QueryEditor extends PureComponent<Props, State> {
     if (!query.statistics || !query.statistics.length) {
       query.statistics = ['Average'];
     }
-
-    // if (!query.hasOwnProperty('matchExact')) {
-    //   query.matchExact = true;
-    // }
 
     return state;
   }
@@ -84,31 +55,12 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   render() {
-    // const { data, query, onRunQuery } = this.props;
     const { query, onRunQuery } = this.props;
-    // const { showMeta } = this.state;
-    // const metaDataExist = data && Object.values(data).length && data.state === 'Done';
     return (
       <>
         <QueryFieldsEditor {...this.props}></QueryFieldsEditor>
         {query.statistics.length <= 1 && (
           <div className="gf-form-inline">
-            {/* <div className="gf-form">
-              <QueryField
-                label="Id"
-                tooltip="Id can include numbers, letters, and underscore, and must start with a lowercase letter."
-              >
-                <Input
-                  className="gf-form-input width-8"
-                  onBlur={onRunQuery}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    this.onChange({ ...query, id: event.target.value })
-                  }
-                  validationEvents={idValidationEvents}
-                  value={query.id || ''}
-                />
-              </QueryField>
-            </div> */}
             <div className="gf-form gf-form--grow">
               <QueryField
                 className="gf-form--grow"
@@ -143,51 +95,10 @@ export class QueryEditor extends PureComponent<Props, State> {
             <QueryField label="Alias" tooltip="Alias replacement variables: {{metric}}, {{stat}}, {{device}}, {{area}}, {{label}}">
               <Alias value={query.alias} onChange={(value: string) => this.onChange({ ...query, alias: value })} />
             </QueryField>
-            {/* <Switch
-              label="Match Exact"
-              labelClass="query-keyword"
-              tooltip="Only show metrics that exactly match all defined dimension names."
-              checked={query.matchExact}
-              onChange={() => this.onChange({ ...query, matchExact: !query.matchExact })}
-            /> */}
-            {/* <label className="gf-form-label">
-              <a
-                onClick={() =>
-                  metaDataExist &&
-                  this.setState({
-                    showMeta: !showMeta,
-                  })
-                }
-              >
-                <i className={`fa fa-caret-${showMeta ? 'down' : 'right'}`} /> {showMeta ? 'Hide' : 'Show'} Query
-                Preview
-              </a>
-            </label> */}
           </div>
           <div className="gf-form gf-form--grow">
             <div className="gf-form-label gf-form-label--grow" />
           </div>
-          {/* {showMeta && metaDataExist && (
-            <table className="filter-table form-inline">
-              <thead>
-                <tr>
-                  <th>Metric Data Query ID</th>
-                  <th>Metric Data Query Expression</th>
-                  <th>Period</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {data.series[0].meta.gmdMeta.map(({ ID, Expression, Period }: any) => (
-                  <tr key={ID}>
-                    <td>{ID}</td>
-                    <td>{Expression}</td>
-                    <td>{Period}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )} */}
         </div>
       </>
     );

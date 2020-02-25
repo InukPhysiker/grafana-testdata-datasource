@@ -1,17 +1,10 @@
-// import angular from 'angular';
 import _ from 'lodash';
-
-// import * as dateMath from '@grafana/data';
-// import kbn from 'app/core/utils/kbn';
-
-// import defaults from 'lodash/defaults';
 
 import ResponseParser from './response_parser';
 
 import UrlBuilder from './url_builder';
 
-// import { DataSourceApi, DataQueryRequest, DataSourceInstanceSettings } from '@grafana/ui/src/types';
-import { DataQueryRequest, DataQueryResponse, DataSourceApi, DataSourceInstanceSettings } from '@grafana/data';
+import { DataSourceApi, DataQueryRequest, DataQueryResponse, DataSourceInstanceSettings } from '@grafana/data';
 
 import { EpicsQuery, EpicsJsonData } from './types';
 
@@ -24,7 +17,6 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   baseUrl: string;
   url: string;
   servlet: string;
-  // Cloudwatch
   standardStatistics: any;
   variables: any;
   standardAreas: any;
@@ -38,33 +30,20 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
     this.variables = this.templateSrv.variables;
-    this.standardStatistics = ['Average', 'Maximum', 'Minimum', 'SampleCount', 'Standard Deviation'];
+    this.standardStatistics = ['Average', 'RAW', 'Maximum', 'Minimum', 'SampleCount', 'Standard Deviation'];
     this.standardAreas = ['1401', '1402', '1403', '1404', '1405', '1406', '1407', '1408', '1409', '1410'];
     this.standardDevices = ['TM', 'HM', 'PT', 'IOP', 'CCG'];
     // this.summaryStatistics = ['mean', 'min', 'max','count','jitter','std','variance','popvariance'];
   }
 
   async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
-    // const queries: any[] = [];
-    // const streams: Array<Observable<DataQueryResponse>> = [];
-
     const queries = _.filter(options.targets, item => {
       return item.hide !== true && item.metricName && item.metricName !== this.defaultDropdownValue;
     }).map(target => {
       const item = target;
 
       return Object.values(item.statistics).map((statistic: string) => {
-        const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(
-          item.metricName,
-          statistic,
-          options.range,
-          options.intervalMs,
-          options.maxDataPoints
-        );
-
-        // if (item.alias) {
-        //   item.alias = this.templateSrv.replace(target.alias + statistic, options.scopedVars);
-        // }
+        const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(item.metricName, statistic, options.range, options.intervalMs);
 
         return {
           // refId: string;
@@ -135,7 +114,6 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   // }
 
   async metricFindQuery(query: string) {
-    // let region;
     let pvstring;
 
     const areaQuery = query.match(/^areas\(\)/);
@@ -171,19 +149,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     return Promise.resolve([]);
   }
 
-  // async getMetrics(namespace: string, region?: string) {
-  //   if (!namespace) {
-  //     return [];
-  //   }
-
-  //   return this.doMetricQueryRequest('metrics', {
-  //     region: this.templateSrv.replace(this.getActualRegion(region)),
-  //     namespace: this.templateSrv.replace(namespace),
-  //   });
-  // }
-
   getPVNames(pvstring: string) {
-    // const templatedQuery = this.templateSrv.replace(query);
     return this.backendSrv
       .datasourceRequest({
         url: this.url + '/retrieval/bpl/getMatchingPVs?limit=36&pv=' + pvstring + '*',

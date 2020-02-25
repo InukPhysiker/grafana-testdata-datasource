@@ -3,7 +3,6 @@ import { SelectableValue } from '@grafana/data';
 import { Segment, SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
-// import { Stats, Dimensions, QueryInlineField } from './';
 import { Stats, QueryInlineField } from './';
 
 export type Props = {
@@ -64,20 +63,6 @@ export function QueryFieldsEditor({ query, datasource, onChange, onRunQuery = ()
     onRunQuery();
   };
 
-  // Load dimension values based on current selected dimensions.
-  // Remove the new dimension key and all dimensions that has a wildcard as selected value
-  // const loadDimensionValues = (newKey: string) => {
-  //   const { [newKey]: value, ...dim } = query.dimensions;
-  //   const newDimensions = Object.entries(dim).reduce(
-  //     (result, [key, value]) => (value === '*' ? result : { ...result, [key]: value }),
-  //     {}
-  //   );
-  //   return datasource
-  //     .getDimensionValues(query.region, query.namespace, query.metricName, newKey, newDimensions)
-  //     .then(values => (values.length ? [{ value: '*', text: '*', label: '*' }, ...values] : values))
-  //     .then(appendTemplateVariables);
-  // };
-
   const { areas, devices, variableOptionGroup } = state;
   return (
     <>
@@ -121,15 +106,6 @@ export function QueryFieldsEditor({ query, datasource, onChange, onRunQuery = ()
               variableOptionGroup={variableOptionGroup}
             />
           </QueryInlineField>
-
-          {/* <QueryInlineField label="Dimensions">
-            <Dimensions
-              dimensions={query.dimensions}
-              onChange={dimensions => onQueryChange({ ...query, dimensions })}
-              loadKeys={() => datasource.getDimensionKeys(query.namespace, query.region).then(appendTemplateVariables)}
-              loadValues={loadDimensionValues}
-            />
-          </QueryInlineField> */}
         </>
       )}
     </>
