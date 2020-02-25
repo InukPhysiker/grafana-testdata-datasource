@@ -9,7 +9,7 @@ export default class UrlBuilder {
     // EPICS Archiver Appliances uses the following sampling values:
     // const binSize = determineBinSize(intervalMs, maxDataPoints);
     // const binSize = determineBinSize(intervalMs);
-    const binSize = intervalMs/1000;
+    const binSize = intervalMs / 1000;
 
     let retrievalParameters = '';
 
