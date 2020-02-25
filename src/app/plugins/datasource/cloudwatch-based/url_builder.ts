@@ -58,7 +58,7 @@ function determineBinSize(intervalMs: number): number {
   }
 
   const potentialBinSizes = [5, 10, 15, 30, 60, 120, 180, 300, 600, 1200, 1800, 3600, 7200, 14400, 21600, 43200, 86400];
-  potentialBinSizes.some(function (potentialBinSize, index, _arr) {
+  potentialBinSizes.some(function (potentialBinSize, _arr) {
     binSize = potentialBinSize;
     return (duration / potentialBinSize) <= 2 * points;
   });
