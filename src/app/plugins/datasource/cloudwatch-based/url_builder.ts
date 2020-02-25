@@ -1,6 +1,6 @@
 export default class UrlBuilder {
   static buildArchiveRetrievalUrl(pvname: string, operator: string, range: any, intervalMs: number) {
-    const binSize = intervalMs / 1000;
+    const binSize = Math.round(intervalMs / 1000);
 
     let retrievalParameters = '';
 
