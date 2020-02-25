@@ -2,8 +2,8 @@
 import { DataQuery, SelectableValue, DataSourceJsonData } from '@grafana/data';
 
 export interface EpicsQuery extends DataQuery {
+  operators: string[];
   queryText?: string;
-  operator: 'min' | 'max' | 'mean';
   // alias?: string;
   // pvname: string;
   constant: number;
@@ -12,7 +12,7 @@ export interface EpicsQuery extends DataQuery {
   device: string;
   metricName: string;
   dimensions: { [key: string]: string | string[] };
-  statistics: string[];
+  // statistics: string[];
   period: string;
   expression: string;
   alias: string;
@@ -43,13 +43,13 @@ export interface EpicsSecureJsonData {
 }
 
 // Stackdriver code
-export enum MetricFindQueryTypes {
-  Services = 'services',
-  MetricTypes = 'metricTypes',
-  LabelKeys = 'labelKeys',
-  LabelValues = 'labelValues',
-  ResourceTypes = 'resourceTypes',
-  Aggregations = 'aggregations',
-  Aligners = 'aligners',
-  AlignmentPeriods = 'alignmentPeriods',
-}
+// export enum MetricFindQueryTypes {
+//   Services = 'services',
+//   MetricTypes = 'metricTypes',
+//   LabelKeys = 'labelKeys',
+//   LabelValues = 'labelValues',
+//   ResourceTypes = 'resourceTypes',
+//   Aggregations = 'aggregations',
+//   Aligners = 'aligners',
+//   AlignmentPeriods = 'alignmentPeriods',
+// }

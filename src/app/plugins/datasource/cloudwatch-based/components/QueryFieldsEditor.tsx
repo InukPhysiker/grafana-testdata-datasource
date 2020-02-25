@@ -98,14 +98,22 @@ export function QueryFieldsEditor({ query, datasource, onChange, onRunQuery = ()
             />
           </QueryInlineField>
 
-          <QueryInlineField label="Statistics">
+          <QueryInlineField label="Operators">
+            <Stats
+              stats={datasource.datasourceOperators.map(toOption)}
+              values={query.operators}
+              onChange={operators => onQueryChange({ ...query, operators })}
+              variableOptionGroup={variableOptionGroup}
+            />
+          </QueryInlineField>
+          {/* <QueryInlineField label="Statistics">
             <Stats
               stats={datasource.standardStatistics.map(toOption)}
               values={query.statistics}
               onChange={statistics => onQueryChange({ ...query, statistics })}
               variableOptionGroup={variableOptionGroup}
             />
-          </QueryInlineField>
+          </QueryInlineField> */}
         </>
       )}
     </>

@@ -12,7 +12,7 @@ export class EpicsQueryParameterCtrl {
       const target = $scope.target;
       target.namespace = target.namespace || '';
       target.metricName = target.metricName || '';
-      target.statistics = target.statistics || ['Average'];
+      target.statistics = target.statistics || ['mean'];
       target.dimensions = target.dimensions || {};
       target.period = target.period || '';
       target.region = target.region || 'default';

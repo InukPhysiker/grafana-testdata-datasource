@@ -41,8 +41,12 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.alias = '';
     }
 
-    if (!query.statistics || !query.statistics.length) {
-      query.statistics = ['Average'];
+    // if (!query.statistics || !query.statistics.length) {
+    //   query.statistics = ['Average'];
+    // }
+
+    if (!query.operators || !query.operators.length) {
+      query.operators = ['mean'];
     }
 
     return state;
@@ -59,7 +63,7 @@ export class QueryEditor extends PureComponent<Props, State> {
     return (
       <>
         <QueryFieldsEditor {...this.props}></QueryFieldsEditor>
-        {query.statistics.length <= 1 && (
+        {query.operators.length <= 1 && (
           <div className="gf-form-inline">
             <div className="gf-form gf-form--grow">
               <QueryField

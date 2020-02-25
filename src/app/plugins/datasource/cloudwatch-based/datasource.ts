@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import ResponseParser from './response_parser';
 
-import UrlBuilder from './url_builder';
+// import UrlBuilder from './url_builder';
 
 import { DataSourceApi, DataQueryRequest, DataQueryResponse, DataSourceInstanceSettings } from '@grafana/data';
 
@@ -17,10 +17,12 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   baseUrl: string;
   url: string;
   servlet: string;
-  standardStatistics: any;
   variables: any;
   standardAreas: any;
   standardDevices: any;
+  archiverOperators: string[];
+  customOperators: string[];
+  datasourceOperators: string[];
 
   constructor(instanceSettings: DataSourceInstanceSettings<EpicsJsonData>, backendSrv: any, templateSrv: any) {
     super(instanceSettings);
@@ -30,10 +32,11 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
     this.variables = this.templateSrv.variables;
-    this.standardStatistics = ['Average', 'RAW', 'Maximum', 'Minimum', 'SampleCount', 'Standard Deviation'];
     this.standardAreas = ['1401', '1402', '1403', '1404', '1405', '1406', '1407', '1408', '1409', '1410'];
     this.standardDevices = ['TM', 'HM', 'PT', 'IOP', 'CCG'];
-    // this.summaryStatistics = ['mean', 'min', 'max','count','jitter','std','variance','popvariance'];
+    this.archiverOperators = ['mean', 'min', 'max', 'count', 'jitter', 'std', 'variance', 'popvariance'];
+    this.customOperators = ['raw'];
+    this.datasourceOperators = [...this.archiverOperators, ...this.customOperators];
   }
 
   async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
@@ -42,8 +45,21 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     }).map(target => {
       const item = target;
 
-      return Object.values(item.statistics).map((statistic: string) => {
-        const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(item.metricName, statistic, options.range, options.intervalMs);
+      return Object.values(item.operators).map((operator: string) => {
+        // const retrievalParameters = UrlBuilder.buildArchiveRetrievalUrl(item.metricName, operator, options.range, options.intervalMs);
+
+        const binSize = Math.round(options.intervalMs / 1000);
+
+        let retrievalParameters = 'pv=';
+
+        if (this.archiverOperators.includes(operator)) {
+          retrievalParameters += operator + '_' + binSize.toString();
+        } // retrieve raw data with no down sampling
+
+        retrievalParameters += '(' + item.metricName + ')';
+        retrievalParameters += '&from=' + options.range.from.toISOString();
+        retrievalParameters += '&to=' + options.range.to.toISOString();
+        retrievalParameters += '&fetchLatestMetadata=false';
 
         return {
           // refId: string;
@@ -51,12 +67,12 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
           // key?: string;
           // datasource?: string | null;
           // metric?: any;
-          refId: target.refId + statistic,
+          refId: target.refId,
           // intervalMs: options.intervalMs,
           // maxDataPoints: options.maxDataPoints,
           datasourceId: this.id,
           url: `${this.baseUrl}${this.servlet}${retrievalParameters}`,
-          alias: item.metricName + '_' + statistic,
+          alias: item.metricName + ' ' + operator,
           requestId: options.requestId,
           // dashboardId: number;
           // interval: string;
@@ -141,9 +157,14 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
       });
     }
 
-    const statsQuery = query.match(/^statistics\(\)/);
-    if (statsQuery) {
-      return this.standardStatistics.map((s: string) => ({ value: s, label: s, text: s }));
+    // const statsQuery = query.match(/^statistics\(\)/);
+    // if (statsQuery) {
+    //   return this.standardStatistics.map((s: string) => ({ value: s, label: s, text: s }));
+    // }
+
+    const operatorQuery = query.match(/^operators\(\)/);
+    if (operatorQuery) {
+      return this.archiverOperators.map((s: string) => ({ value: s, label: s, text: s }));
     }
 
     return Promise.resolve([]);
