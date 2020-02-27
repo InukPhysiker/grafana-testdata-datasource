@@ -10,6 +10,9 @@ import { EpicsQuery, EpicsJsonData } from './types';
 
 // import EpicsMetricFindQuery from './EpicsMetricFindQuery';
 
+// Zabbix stuff
+import dataProcessor from './dataProcessor';
+
 export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJsonData> {
   backendSrv: any;
   templateSrv: any;
@@ -233,5 +236,17 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
         }
         throw error;
       });
+  }
+
+  downsampleSeries(timeseries_data: any, options: { consolidateBy: string | number; maxDataPoints: number; interval: any; }) {
+    let defaultAgg = dataProcessor.aggregationFunctions['avg'];
+    let consolidateByFunc = dataProcessor.aggregationFunctions[options.consolidateBy] || defaultAgg;
+    return _.map(timeseries_data, timeseries => {
+      if (timeseries.datapoints.length > options.maxDataPoints) {
+        timeseries.datapoints = dataProcessor
+          .groupBy(options.interval, consolidateByFunc, timeseries.datapoints);
+      }
+      return timeseries;
+    });
   }
 }
