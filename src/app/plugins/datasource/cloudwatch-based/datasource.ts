@@ -12,6 +12,8 @@ import { EpicsQuery, EpicsJsonData } from './types';
 
 // Zabbix stuff
 import dataProcessor from './dataProcessor';
+import * as utils from './utils';
+import * as metricFunctions from './metricFunctions';
 
 export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJsonData> {
   backendSrv: any;
@@ -236,6 +238,76 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
         }
         throw error;
       });
+  }
+
+  // Zabbix stuff
+
+  applyDataProcessingFunctions(timeseries_data: _.NumericDictionary<unknown>, target: { functions: any; }) {
+    let transformFunctions   = this.bindFunctionDefs(target.functions, 'Transform');
+    let aggregationFunctions = this.bindFunctionDefs(target.functions, 'Aggregate');
+    let filterFunctions      = this.bindFunctionDefs(target.functions, 'Filter');
+    let aliasFunctions       = this.bindFunctionDefs(target.functions, 'Alias');
+
+    // Apply transformation functions
+    timeseries_data = _.cloneDeep(_.map(timeseries_data, (timeseries: any) => {
+      timeseries.datapoints = utils.sequence(transformFunctions)(timeseries.datapoints);
+      return timeseries;
+    }));
+
+    // Apply filter functions
+    if (filterFunctions.length) {
+      timeseries_data = utils.sequence(filterFunctions)(timeseries_data);
+    }
+
+    // Apply aggregations
+    if (aggregationFunctions.length) {
+      let dp = _.map(timeseries_data, 'datapoints');
+      dp = utils.sequence(aggregationFunctions)(dp);
+
+      let aggFuncNames = _.map(metricFunctions.getCategories()['Aggregate'], 'name');
+      let lastAgg = _.findLast(target.functions, func => {
+        return _.includes(aggFuncNames, func.def.name);
+      });
+
+      timeseries_data = [{
+        target: lastAgg.text,
+        datapoints: dp
+      }];
+    }
+
+    // Apply alias functions
+    _.forEach(timeseries_data, utils.sequence(aliasFunctions));
+
+    // Apply Time-related functions (timeShift(), etc)
+    // Find timeShift() function and get specified trend value
+    this.applyTimeShiftFunction(timeseries_data, target);
+
+    return timeseries_data;
+  }
+
+  applyTimeShiftFunction(timeseries_data: any, target: { functions: any; }) {
+    // Find timeShift() function and get specified interval
+    let timeShiftFunc = _.find(target.functions, (func) => {
+      return func.def.name === 'timeShift';
+    });
+    if (timeShiftFunc) {
+      let shift = timeShiftFunc.params[0];
+      _.forEach(timeseries_data, (series) => {
+        series.datapoints = dataProcessor.unShiftTimeSeries(shift, series.datapoints);
+      });
+    }
+  }
+
+  bindFunctionDefs(functionDefs: any, category: string | number) {
+    var aggregationFunctions = _.map(metricFunctions.getCategories()[category], 'name');
+    var aggFuncDefs = _.filter(functionDefs, function(func) {
+      return _.includes(aggregationFunctions, func.def.name);
+    });
+  
+    return _.map(aggFuncDefs, function(func) {
+      var funcInstance = metricFunctions.createFuncInstance(func.def, func.params);
+      return funcInstance.bindFunction(dataProcessor.metricFunctions);
+    });
   }
 
   downsampleSeries(timeseries_data: any, options: { consolidateBy: string | number; maxDataPoints: number; interval: any; }) {
