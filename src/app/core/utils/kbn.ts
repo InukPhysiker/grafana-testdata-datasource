@@ -223,11 +223,7 @@ kbn.interval_to_seconds = (str: string) => {
 };
 
 kbn.query_color_dot = (color: string, diameter: string) => {
-  return (
-    '<div class="icon-circle" style="' +
-    ['display:inline-block', 'color:' + color, 'font-size:' + diameter + 'px'].join(';') +
-    '"></div>'
-  );
+  return '<div class="icon-circle" style="' + ['display:inline-block', 'color:' + color, 'font-size:' + diameter + 'px'].join(';') + '"></div>';
 };
 
 kbn.slugifyForUrl = (str: string) => {
@@ -269,13 +265,7 @@ kbn.toFixed = (value: number | null, decimals: number) => {
   return formatted;
 };
 
-kbn.toFixedScaled = (
-  value: number,
-  decimals: number,
-  scaledDecimals: number | null,
-  additionalDecimals: number,
-  ext: number
-) => {
+kbn.toFixedScaled = (value: number, decimals: number, scaledDecimals: number | null, additionalDecimals: number, ext: number) => {
   if (scaledDecimals === null) {
     return kbn.toFixed(value, decimals) + ext;
   } else {
