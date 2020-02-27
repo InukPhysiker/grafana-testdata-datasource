@@ -1,18 +1,24 @@
 import React, { PureComponent, ChangeEvent } from 'react';
-import { Input } from '@grafana/ui';
-import { EpicsQuery, EpicsJsonData } from '../types';
+import { Input, FormLabel, Select } from '@grafana/ui';
+import { EpicsQuery, EpicsJsonData, Scenario } from '../types';
 import EpicsDataSource from '../datasource';
 import { QueryField, Alias, QueryFieldsEditor } from './';
-import { QueryEditorProps } from '@grafana/data';
+import { QueryEditorProps, SelectableValue } from '@grafana/data';
 
 type Props = QueryEditorProps<EpicsDataSource, EpicsQuery, EpicsJsonData>;
 
 interface State {
   showMeta: boolean;
+  processVariableList: Scenario[];
+  currentPV: null;
 }
 
 export class QueryEditor extends PureComponent<Props, State> {
-  state: State = { showMeta: false };
+  state: State = {
+    showMeta: false,
+    processVariableList: [],
+    currentPV: null,
+  };
 
   static getDerivedStateFromProps(props: Props, state: State) {
     const { query } = props;
@@ -58,8 +64,27 @@ export class QueryEditor extends PureComponent<Props, State> {
     onRunQuery();
   }
 
+  // onProcessVariableChangeTEST = (item: SelectableValue<string>) => {
+  //   this.props.datasource.getPVNames("TM");
+  //   this.props.onChange({
+  //     ...this.props.query,
+  //     processVariable: item.value as any,
+  //   });
+  // };
+
+  onProcessVariableChange = (item: SelectableValue<string>) => {
+    this.props.onChange({
+      ...this.props.query,
+      processVariable: item.value as any,
+    });
+  };
+
   render() {
     const { query, onRunQuery } = this.props;
+
+    const options = this.state.processVariableList.map(item => ({ label: item.name, value: item.id }));
+    const current = options.find(item => item.value === query.processVariable);
+
     return (
       <>
         <QueryFieldsEditor {...this.props}></QueryFieldsEditor>
@@ -81,6 +106,14 @@ export class QueryEditor extends PureComponent<Props, State> {
             </div>
           </div>
         )}
+        <div className="gf-form-inline">
+          <div className="gf-form">
+            <FormLabel className="query-keyword" width={7}>
+              Scenario
+            </FormLabel>
+            <Select options={options} value={current} onChange={this.onProcessVariableChange} />
+          </div>
+        </div>
         <div className="gf-form-inline">
           {/* <div className="gf-form">
             <QueryField label="Period" tooltip="Minimum interval between points in seconds">

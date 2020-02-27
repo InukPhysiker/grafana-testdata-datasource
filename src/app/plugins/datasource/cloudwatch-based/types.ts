@@ -11,6 +11,7 @@ export interface EpicsQuery extends DataQuery {
   area: string;
   device: string;
   metricName: string;
+  processVariable: string;
   dimensions: { [key: string]: string | string[] };
   // statistics: string[];
   period: string;
@@ -40,6 +41,11 @@ export interface EpicsJsonData extends DataSourceJsonData {
 export interface EpicsSecureJsonData {
   accessKey: string;
   secretKey: string;
+}
+
+export interface Scenario {
+  id: string;
+  name: string;
 }
 
 // Stackdriver code
