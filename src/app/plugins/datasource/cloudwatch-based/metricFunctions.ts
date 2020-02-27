@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import $ from 'jquery';
 
-var index = [];
-var categories = {
+// {[index: string]:any}
+
+var index: {[index: string]:any} = [];
+var categories: {[index: string]:any} = {
   Transform: [],
   Aggregate: [],
   Filter: [],
@@ -12,7 +14,7 @@ var categories = {
   Special: []
 };
 
-function addFuncDef(funcDef) {
+function addFuncDef(funcDef: { name: any; category: any; params: any; defaultParams: any; shortName?: any; }) {
   funcDef.params = funcDef.params || [];
   funcDef.defaultParams = funcDef.defaultParams || [];
 
@@ -303,7 +305,12 @@ _.each(categories, function(funcList, catName) {
 });
 
 class FuncInstance {
-  constructor(funcDef, params) {
+  def: any;
+  params: any;
+  text: string;
+  // text: any;
+  // added!: boolean;
+  constructor(funcDef: { defaultParams: string | any[]; }, params: any) {
     this.def = funcDef;
 
     if (params) {
@@ -317,7 +324,7 @@ class FuncInstance {
     this.updateText();
   }
 
-  bindFunction(metricFunctions) {
+  bindFunction(metricFunctions: any) {
     var func = metricFunctions[this.def.name];
     if (func) {
 
@@ -340,9 +347,9 @@ class FuncInstance {
     }
   }
 
-  render(metricExp) {
+  render(metricExp: any) {
     var str = this.def.name + '(';
-    var parameters = _.map(this.params, function(value, index) {
+    var parameters = _.map(this.params, (value: unknown, index: string | number) => {
 
       var paramType = this.def.params[index].type;
       if (paramType === 'int' ||
@@ -357,7 +364,7 @@ class FuncInstance {
 
       return "'" + value + "'";
 
-    }, this);
+    });
 
     if (metricExp) {
       parameters.unshift(metricExp);
@@ -366,7 +373,7 @@ class FuncInstance {
     return str + parameters.join(', ') + ')';
   }
 
-  _hasMultipleParamsInString(strValue, index) {
+  _hasMultipleParamsInString(strValue: string | string[], index: number) {
     if (strValue.indexOf(',') === -1) {
       return false;
     }
@@ -374,13 +381,13 @@ class FuncInstance {
     return this.def.params[index + 1] && this.def.params[index + 1].optional;
   }
 
-  updateParam(strValue, index) {
+  updateParam(strValue: string , index: number) {
     // handle optional parameters
     // if string contains ',' and next param is optional, split and update both
     if (this._hasMultipleParamsInString(strValue, index)) {
-      _.each(strValue.split(','), function(partVal, idx) {
+      _.each(strValue.split(','), (partVal: string, idx: any) => {
         this.updateParam(partVal.trim(), idx);
-      }, this);
+      });
       return;
     }
 
@@ -407,17 +414,25 @@ class FuncInstance {
   }
 }
 
-export function createFuncInstance(funcDef, params) {
+// export function createFuncInstance(funcDef: string, params: any) {
+//   if (_.isString(funcDef)) {
+//     if (!index[funcDef]) {
+//       throw { message: 'Method not found ' + name };
+//     }
+//     funcDef = index[funcDef];
+//   }
+//   return new FuncInstance(funcDef, params);
+// }
+
+export function createFuncInstance(funcDef: any, options?: { withDefaultParams: any }, idx?: any) {
   if (_.isString(funcDef)) {
-    if (!index[funcDef]) {
-      throw { message: 'Method not found ' + name };
-    }
-    funcDef = index[funcDef];
+    funcDef = getFuncDef(funcDef);
   }
-  return new FuncInstance(funcDef, params);
+  return new FuncInstance(funcDef, options!);
 }
 
-export function getFuncDef(name) {
+
+export function getFuncDef(name: string) {
   return index[name];
 }
 
