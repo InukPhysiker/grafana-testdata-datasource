@@ -1,35 +1,35 @@
 import _ from 'lodash';
 import * as utils from './utils';
-import ts, { groupBy_perf as groupBy } from './timeseries';
+import ts, { groupByPerf as groupBy } from './timeseries';
 
-let SUM = ts.SUM;
-let COUNT = ts.COUNT;
-let AVERAGE = ts.AVERAGE;
-let MIN = ts.MIN;
-let MAX = ts.MAX;
-let MEDIAN = ts.MEDIAN;
-let PERCENTILE = ts.PERCENTILE;
+const SUM = ts.SUM;
+const COUNT = ts.COUNT;
+const AVERAGE = ts.AVERAGE;
+const MIN = ts.MIN;
+const MAX = ts.MAX;
+const MEDIAN = ts.MEDIAN;
+const PERCENTILE = ts.PERCENTILE;
 
-let downsampleSeries = ts.downsample;
-let groupBy_exported = (interval: any, groupFunc: any, datapoints: any) => groupBy(datapoints, interval, groupFunc);
-let sumSeries = ts.sumSeries;
-let delta = ts.delta;
-let rate = ts.rate;
-let scale = (factor: number, datapoints: any[]) => ts.scale_perf(datapoints, factor);
-let offset = (delta: any, datapoints: any[]) => ts.offset(datapoints, delta);
-let simpleMovingAverage = (n: number, datapoints: any) => ts.simpleMovingAverage(datapoints, n);
-let expMovingAverage = (a: number, datapoints: any[]) => ts.expMovingAverage(datapoints, a);
-let percentile = (interval: string, n: number, datapoints: string | any[]) => groupBy(datapoints, interval, _.partial(PERCENTILE, n));
+const downsampleSeries = ts.downsample;
+const groupByExported = (interval: any, groupFunc: any, datapoints: any) => groupBy(datapoints, interval, groupFunc);
+const sumSeries = ts.sumSeries;
+const delta = ts.delta;
+const rate = ts.rate;
+const scale = (factor: number, datapoints: any[]) => ts.scalePerf(datapoints, factor);
+const offset = (delta: any, datapoints: any[]) => ts.offset(datapoints, delta);
+const simpleMovingAverage = (n: number, datapoints: any) => ts.simpleMovingAverage(datapoints, n);
+const expMovingAverage = (a: number, datapoints: any[]) => ts.expMovingAverage(datapoints, a);
+const percentile = (interval: string, n: number, datapoints: string | any[]) => groupBy(datapoints, interval, _.partial(PERCENTILE, n));
 
 function limit(order: string, n: number, orderByFunc: string | number, timeseries: any) {
-  let orderByCallback = aggregationFunctions[orderByFunc];
-  let sortByIteratee = (ts: { datapoints: any; }) => {
-    let values = _.map(ts.datapoints, (point) => {
+  const orderByCallback = aggregationFunctions[orderByFunc];
+  const sortByIteratee = (ts: { datapoints: any }) => {
+    const values = _.map(ts.datapoints, point => {
       return point[0];
     });
     return orderByCallback(values);
   };
-  let sortedTimeseries = _.sortBy(timeseries, sortByIteratee);
+  const sortedTimeseries = _.sortBy(timeseries, sortByIteratee);
   if (order === 'bottom') {
     return sortedTimeseries.slice(0, n);
   } else {
@@ -39,43 +39,40 @@ function limit(order: string, n: number, orderByFunc: string | number, timeserie
 
 function removeAboveValue(n: number, datapoints: any) {
   return _.map(datapoints, point => {
-    return [
-      (point[0] > n) ? null : point[0],
-      point[1]
-    ];
+    return [point[0] > n ? null : point[0], point[1]];
   });
 }
 
 function removeBelowValue(n: number, datapoints: any) {
   return _.map(datapoints, point => {
-    return [
-      (point[0] < n) ? null : point[0],
-      point[1]
-    ];
+    return [point[0] < n ? null : point[0], point[1]];
   });
 }
 
 function transformNull(n: any, datapoints: any) {
   return _.map(datapoints, point => {
-    return [
-      (point[0] !== null) ? point[0] : n,
-      point[1]
-    ];
+    return [point[0] !== null ? point[0] : n, point[1]];
   });
 }
 
 function sortSeries(direction: any, timeseries: any[]) {
-  return _.orderBy(timeseries, [function (ts) {
-    return ts.target.toLowerCase();
-  }], direction);
+  return _.orderBy(
+    timeseries,
+    [
+      ts => {
+        return ts.target.toLowerCase();
+      },
+    ],
+    direction
+  );
 }
 
-function setAlias(alias: any, timeseries: { target: any; }) {
+function setAlias(alias: any, timeseries: { target: any }) {
   timeseries.target = alias;
   return timeseries;
 }
 
-function replaceAlias(regexp: string, newAlias: any, timeseries: { target: string; }) {
+function replaceAlias(regexp: string, newAlias: any, timeseries: { target: string }) {
   let pattern;
   if (utils.isRegex(regexp)) {
     pattern = utils.buildRegex(regexp);
@@ -83,25 +80,25 @@ function replaceAlias(regexp: string, newAlias: any, timeseries: { target: strin
     pattern = regexp;
   }
 
-  let alias = timeseries.target.replace(pattern, newAlias);
+  const alias = timeseries.target.replace(pattern, newAlias);
   timeseries.target = alias;
   return timeseries;
 }
 
-function setAliasByRegex(alias: any, timeseries: { target: string; }) {
+function setAliasByRegex(alias: any, timeseries: { target: string }) {
   timeseries.target = extractText(timeseries.target, alias);
   return timeseries;
 }
 
-function extractText(str: string , pattern: string | RegExp) {
-  var extractPattern = new RegExp(pattern);
-  var extractedValue = extractPattern.exec(str);
+function extractText(str: string, pattern: string | RegExp) {
+  const extractPattern = new RegExp(pattern);
+  const extractedValue = extractPattern.exec(str);
   // extractedValue = extractedValue[0];
   return extractedValue[0];
 }
 
 function groupByWrapper(interval: string, groupFunc: string | number, datapoints: any[]) {
-  var groupByCallback = aggregationFunctions[groupFunc];
+  const groupByCallback = aggregationFunctions[groupFunc];
   return groupBy(datapoints, interval, groupByCallback);
 }
 
@@ -110,12 +107,12 @@ function aggregateByWrapper(interval: string, aggregateFunc: string | number, da
   const flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
   const sortedPoints = ts.sortByTime(flattenedPoints);
-  let groupByCallback = aggregationFunctions[aggregateFunc];
+  const groupByCallback = aggregationFunctions[aggregateFunc];
   return groupBy(sortedPoints, interval, groupByCallback);
 }
 
-function aggregateWrapper(groupByCallback: { (values: any): any; (values: any): any; (arg0: any[]): any; }, interval: string, datapoints: any[]) {
-  var flattenedPoints = ts.flattenDatapoints(datapoints);
+function aggregateWrapper(groupByCallback: { (values: any): any; (values: any): any; (arg0: any[]): any }, interval: string, datapoints: any[]) {
+  const flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
   const sortedPoints = ts.sortByTime(flattenedPoints);
   return groupBy(sortedPoints, interval, groupByCallback);
@@ -125,28 +122,25 @@ function percentileAgg(interval: string, n: number, datapoints: any[]) {
   const flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
   const sortedPoints = ts.sortByTime(flattenedPoints);
-  let groupByCallback = _.partial(PERCENTILE, n);
+  const groupByCallback = _.partial(PERCENTILE, n);
   return groupBy(sortedPoints, interval, groupByCallback);
 }
 
 function timeShift(interval: string, range: any) {
-  let shift = utils.parseTimeShiftInterval(interval) / 1000;
+  const shift = utils.parseTimeShiftInterval(interval) / 1000;
   return _.map(range, time => {
     return time - shift;
   });
 }
 
 function unShiftTimeSeries(interval: string, datapoints: any) {
-  let unshift = utils.parseTimeShiftInterval(interval);
+  const unshift = utils.parseTimeShiftInterval(interval);
   return _.map(datapoints, dp => {
-    return [
-      dp[0],
-      dp[1] + unshift
-    ];
+    return [dp[0], dp[1] + unshift];
   });
 }
 
-let metricFunctions = {
+const metricFunctions = {
   groupBy: groupByWrapper,
   scale: scale,
   offset: offset,
@@ -174,21 +168,21 @@ let metricFunctions = {
   timeShift: timeShift,
   setAlias: setAlias,
   setAliasByRegex: setAliasByRegex,
-  replaceAlias: replaceAlias
+  replaceAlias: replaceAlias,
 };
 
-let aggregationFunctions: {[index: string]:any} = {
+const aggregationFunctions: { [index: string]: any } = {
   avg: AVERAGE,
   min: MIN,
   max: MAX,
   median: MEDIAN,
   sum: SUM,
-  count: COUNT
+  count: COUNT,
 };
 
 export default {
   downsampleSeries: downsampleSeries,
-  groupBy: groupBy_exported,
+  groupBy: groupByExported,
   AVERAGE: AVERAGE,
   MIN: MIN,
   MAX: MAX,
@@ -203,5 +197,5 @@ export default {
 
   get metricFunctions() {
     return metricFunctions;
-  }
+  },
 };

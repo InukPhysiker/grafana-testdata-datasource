@@ -20,15 +20,14 @@ export const variableRegex = /\$(\w+)|\[\[([\s\S]+?)(?::(\w+))?\]\]|\${(\w+)(?:\
  * @return {string}      expanded name, ie "CPU system time"
  */
 export function expandItemName(name: string, key: string): string {
-
   // extract params from key:
   // "system.cpu.util[,system,avg1]" --> ["", "system", "avg1"]
-  const key_params_str = key.substring(key.indexOf('[') + 1, key.lastIndexOf(']'));
-  const key_params = splitKeyParams(key_params_str);
+  const keyParamsStr = key.substring(key.indexOf('[') + 1, key.lastIndexOf(']'));
+  const keyParams = splitKeyParams(keyParamsStr);
 
   // replace item parameters
-  for (let i = key_params.length; i >= 1; i--) {
-    name = name.replace('$' + i, key_params[i - 1]);
+  for (let i = keyParams.length; i >= 1; i--) {
+    name = name.replace('$' + i, keyParams[i - 1]);
   }
   return name;
 }
@@ -45,22 +44,22 @@ export function expandItems(items: any) {
 function splitKeyParams(paramStr: any) {
   const params = [];
   let quoted = false;
-  let in_array = false;
-  const split_symbol = ',';
+  let inArray = false;
+  const splitSymbol = ',';
   let param = '';
 
   _.forEach(paramStr, symbol => {
-    if (symbol === '"' && in_array) {
+    if (symbol === '"' && inArray) {
       param += symbol;
     } else if (symbol === '"' && quoted) {
       quoted = false;
     } else if (symbol === '"' && !quoted) {
       quoted = true;
     } else if (symbol === '[' && !quoted) {
-      in_array  = true;
+      inArray = true;
     } else if (symbol === ']' && !quoted) {
-      in_array = false;
-    } else if (symbol === split_symbol && !quoted && !in_array) {
+      inArray = false;
+    } else if (symbol === splitSymbol && !quoted && !inArray) {
       params.push(param);
       param = '';
     } else {
@@ -78,11 +77,11 @@ export function containsMacro(itemName: string) {
   return MACRO_PATTERN.test(itemName);
 }
 
-export function replaceMacro(item: { name: any; hostid: any; }, macros: any) {
+export function replaceMacro(item: { name: any; hostid: any }, macros: any) {
   let itemName = item.name;
-  const item_macros = itemName.match(MACRO_PATTERN);
-  _.forEach(item_macros, macro => {
-    const host_macros = _.filter(macros, m => {
+  const itemMacros = itemName.match(MACRO_PATTERN);
+  _.forEach(itemMacros, macro => {
+    const hostMacros = _.filter(macros, m => {
       if (m.hostid) {
         return m.hostid === item.hostid;
       } else {
@@ -91,11 +90,11 @@ export function replaceMacro(item: { name: any; hostid: any; }, macros: any) {
       }
     });
 
-    const macro_def = _.find(host_macros, { macro: macro });
-    if (macro_def && macro_def.value) {
-      const macro_value = macro_def.value;
-      const macro_regex = new RegExp(escapeMacro(macro));
-      itemName = itemName.replace(macro_regex, macro_value);
+    const macroDef = _.find(hostMacros, { macro: macro });
+    if (macroDef && macroDef.value) {
+      const macroValue = macroDef.value;
+      const macroRegex = new RegExp(escapeMacro(macro));
+      itemName = itemName.replace(macroRegex, macroValue);
     }
   });
 
@@ -103,7 +102,7 @@ export function replaceMacro(item: { name: any; hostid: any; }, macros: any) {
 }
 
 function escapeMacro(macro: string) {
-  macro = macro.replace(/\$/, '\\\$');
+  macro = macro.replace(/\$/, '\\$');
   return macro;
 }
 
@@ -143,10 +142,10 @@ export function parseLegacyVariableQuery(query: string): VariableQuery {
 
   const variableQuery: VariableQuery = {
     queryType,
-    group: template.group as string || '',
-    host: template.host as string || '',
-    application: template.app as string || '',
-    item: template.item as string || '',
+    group: (template.group as string) || '',
+    host: (template.host as string) || '',
+    application: (template.app as string) || '',
+    item: (template.item as string) || '',
   };
 
   return variableQuery;
@@ -197,7 +196,7 @@ export function isTemplateVariable(str: string, templateVariables: any) {
   }
 }
 
-export function getRangeScopedVars(range: { to: { diff: (arg0: any) => any; }; from: any; }) {
+export function getRangeScopedVars(range: { to: { diff: (arg0: any) => any }; from: any }) {
   const msRange = range.to.diff(range.from);
   const sRange = Math.round(msRange / 1000);
   const regularRange = kbn.secondsToHms(msRange / 1000);
@@ -205,14 +204,14 @@ export function getRangeScopedVars(range: { to: { diff: (arg0: any) => any; }; f
     __range_ms: { text: msRange, value: msRange },
     __range_s: { text: sRange, value: sRange },
     __range: { text: regularRange, value: regularRange },
-    __range_series: {text: c.RANGE_VARIABLE_VALUE, value: c.RANGE_VARIABLE_VALUE},
+    __range_series: { text: c.RANGE_VARIABLE_VALUE, value: c.RANGE_VARIABLE_VALUE },
   };
 }
 
 export function buildRegex(str: string) {
   const matches = str.match(regexPattern);
   const pattern = matches[1];
-  const flags = matches[2] !== "" ? matches[2] : undefined;
+  const flags = matches[2] !== '' ? matches[2] : undefined;
   return new RegExp(pattern, flags);
 }
 
@@ -250,17 +249,31 @@ export function parseTimeShiftInterval(interval: string) {
  */
 export function formatAcknowledges(acknowledges: string | any[]): string {
   if (acknowledges.length) {
-    let formatted_acknowledges = '<br><br>Acknowledges:<br><table><tr><td><b>Time</b></td>'
-      + '<td><b>User</b></td><td><b>Comments</b></td></tr>';
-    _.each(_.map(acknowledges, ack => {
-      const timestamp = moment.unix(ack.clock);
-      return '<tr><td><i>' + timestamp.format("DD MMM YYYY HH:mm:ss") + '</i></td><td>' + ack.alias
-        + ' (' + ack.name + ' ' + ack.surname + ')' + '</td><td>' + ack.message + '</td></tr>';
-    }), ack => {
-      formatted_acknowledges = formatted_acknowledges.concat(ack);
-    });
-    formatted_acknowledges = formatted_acknowledges.concat('</table>');
-    return formatted_acknowledges;
+    let formatedAcknowledges = '<br><br>Acknowledges:<br><table><tr><td><b>Time</b></td>' + '<td><b>User</b></td><td><b>Comments</b></td></tr>';
+    _.each(
+      _.map(acknowledges, ack => {
+        const timestamp = moment.unix(ack.clock);
+        return (
+          '<tr><td><i>' +
+          timestamp.format('DD MMM YYYY HH:mm:ss') +
+          '</i></td><td>' +
+          ack.alias +
+          ' (' +
+          ack.name +
+          ' ' +
+          ack.surname +
+          ')' +
+          '</td><td>' +
+          ack.message +
+          '</td></tr>'
+        );
+      }),
+      ack => {
+        formatedAcknowledges = formatedAcknowledges.concat(ack);
+      }
+    );
+    formatedAcknowledges = formatedAcknowledges.concat('</table>');
+    return formatedAcknowledges;
   } else {
     return '';
   }
@@ -272,7 +285,7 @@ export function convertToZabbixAPIUrl(url: string) {
   if (url.match(zabbixAPIUrlPattern)) {
     return url;
   } else {
-    return url.replace(trimSlashPattern, "$1");
+    return url.replace(trimSlashPattern, '$1');
   }
 }
 
@@ -280,12 +293,11 @@ export function convertToZabbixAPIUrl(url: string) {
  * Wrap function to prevent multiple calls
  * when waiting for result.
  */
-export function callOnce(func: { apply: (arg0: any, arg1: IArguments) => Promise<any>; }, promiseKeeper: Promise<any>) {
+export function callOnce(func: { apply: (arg0: any, arg1: IArguments) => Promise<any> }, promiseKeeper: Promise<any>) {
   return function(this: void) {
     if (!promiseKeeper) {
       promiseKeeper = Promise.resolve(
-        func.apply(this, arguments)
-        .then((result: any) => {
+        func.apply(this, arguments).then((result: any) => {
           promiseKeeper = null;
           return result;
         })

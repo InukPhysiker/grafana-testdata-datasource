@@ -242,81 +242,84 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
 
   // Zabbix stuff
 
-  applyDataProcessingFunctions(timeseries_data: _.NumericDictionary<unknown>, target: { functions: any; }) {
-    let transformFunctions   = this.bindFunctionDefs(target.functions, 'Transform');
-    let aggregationFunctions = this.bindFunctionDefs(target.functions, 'Aggregate');
-    let filterFunctions      = this.bindFunctionDefs(target.functions, 'Filter');
-    let aliasFunctions       = this.bindFunctionDefs(target.functions, 'Alias');
+  applyDataProcessingFunctions(timeseriesData: _.NumericDictionary<unknown>, target: { functions: any }) {
+    const transformFunctions = this.bindFunctionDefs(target.functions, 'Transform');
+    const aggregationFunctions = this.bindFunctionDefs(target.functions, 'Aggregate');
+    const filterFunctions = this.bindFunctionDefs(target.functions, 'Filter');
+    const aliasFunctions = this.bindFunctionDefs(target.functions, 'Alias');
 
     // Apply transformation functions
-    timeseries_data = _.cloneDeep(_.map(timeseries_data, (timeseries: any) => {
-      timeseries.datapoints = utils.sequence(transformFunctions)(timeseries.datapoints);
-      return timeseries;
-    }));
+    timeseriesData = _.cloneDeep(
+      _.map(timeseriesData, (timeseries: any) => {
+        timeseries.datapoints = utils.sequence(transformFunctions)(timeseries.datapoints);
+        return timeseries;
+      })
+    );
 
     // Apply filter functions
     if (filterFunctions.length) {
-      timeseries_data = utils.sequence(filterFunctions)(timeseries_data);
+      timeseriesData = utils.sequence(filterFunctions)(timeseriesData);
     }
 
     // Apply aggregations
     if (aggregationFunctions.length) {
-      let dp = _.map(timeseries_data, 'datapoints');
+      let dp = _.map(timeseriesData, 'datapoints');
       dp = utils.sequence(aggregationFunctions)(dp);
 
-      let aggFuncNames = _.map(metricFunctions.getCategories()['Aggregate'], 'name');
-      let lastAgg = _.findLast(target.functions, func => {
+      const aggFuncNames = _.map(metricFunctions.getCategories()['Aggregate'], 'name');
+      const lastAgg = _.findLast(target.functions, func => {
         return _.includes(aggFuncNames, func.def.name);
       });
 
-      timeseries_data = [{
-        target: lastAgg.text,
-        datapoints: dp
-      }];
+      timeseriesData = [
+        {
+          target: lastAgg.text,
+          datapoints: dp,
+        },
+      ];
     }
 
     // Apply alias functions
-    _.forEach(timeseries_data, utils.sequence(aliasFunctions));
+    _.forEach(timeseriesData, utils.sequence(aliasFunctions));
 
     // Apply Time-related functions (timeShift(), etc)
     // Find timeShift() function and get specified trend value
-    this.applyTimeShiftFunction(timeseries_data, target);
+    this.applyTimeShiftFunction(timeseriesData, target);
 
-    return timeseries_data;
+    return timeseriesData;
   }
 
-  applyTimeShiftFunction(timeseries_data: any, target: { functions: any; }) {
+  applyTimeShiftFunction(timeseriesData: any, target: { functions: any }) {
     // Find timeShift() function and get specified interval
-    let timeShiftFunc = _.find(target.functions, (func) => {
+    const timeShiftFunc = _.find(target.functions, func => {
       return func.def.name === 'timeShift';
     });
     if (timeShiftFunc) {
-      let shift = timeShiftFunc.params[0];
-      _.forEach(timeseries_data, (series) => {
+      const shift = timeShiftFunc.params[0];
+      _.forEach(timeseriesData, series => {
         series.datapoints = dataProcessor.unShiftTimeSeries(shift, series.datapoints);
       });
     }
   }
 
   bindFunctionDefs(functionDefs: any, category: string | number) {
-    var aggregationFunctions = _.map(metricFunctions.getCategories()[category], 'name');
-    var aggFuncDefs = _.filter(functionDefs, function(func) {
+    const aggregationFunctions = _.map(metricFunctions.getCategories()[category], 'name');
+    const aggFuncDefs = _.filter(functionDefs, func => {
       return _.includes(aggregationFunctions, func.def.name);
     });
-  
-    return _.map(aggFuncDefs, function(func) {
-      var funcInstance = metricFunctions.createFuncInstance(func.def, func.params);
+
+    return _.map(aggFuncDefs, func => {
+      const funcInstance = metricFunctions.createFuncInstance(func.def, func.params);
       return funcInstance.bindFunction(dataProcessor.metricFunctions);
     });
   }
 
-  downsampleSeries(timeseries_data: any, options: { consolidateBy: string | number; maxDataPoints: number; interval: any; }) {
-    let defaultAgg = dataProcessor.aggregationFunctions['avg'];
-    let consolidateByFunc = dataProcessor.aggregationFunctions[options.consolidateBy] || defaultAgg;
-    return _.map(timeseries_data, timeseries => {
+  downsampleSeries(timeseriesData: any, options: { consolidateBy: string | number; maxDataPoints: number; interval: any }) {
+    const defaultAgg = dataProcessor.aggregationFunctions['avg'];
+    const consolidateByFunc = dataProcessor.aggregationFunctions[options.consolidateBy] || defaultAgg;
+    return _.map(timeseriesData, timeseries => {
       if (timeseries.datapoints.length > options.maxDataPoints) {
-        timeseries.datapoints = dataProcessor
-          .groupBy(options.interval, consolidateByFunc, timeseries.datapoints);
+        timeseries.datapoints = dataProcessor.groupBy(options.interval, consolidateByFunc, timeseries.datapoints);
       }
       return timeseries;
     });
