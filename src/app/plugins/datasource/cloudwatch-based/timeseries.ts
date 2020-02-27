@@ -72,7 +72,7 @@ function downsample(datapoints, time_to, ms_interval, func) {
  * datapoints: [[<value>, <unixtime>], ...]
  */
 function groupBy(datapoints, interval, groupByCallback) {
-  var ms_interval = utils.parseInterval(interval);
+  var ms_interval = utils.parseInterval(interval) as number;
 
   // Calculate frame timestamps
   var frames = _.groupBy(datapoints, function (point) {
@@ -104,7 +104,7 @@ export function groupBy_perf(datapoints, interval, groupByCallback) {
     return groupByRange(datapoints, groupByCallback);
   }
 
-  let ms_interval = utils.parseInterval(interval);
+  let ms_interval = utils.parseInterval(interval) as number;
   let grouped_series = [];
   let frame_values = [];
   let frame_value;
@@ -157,7 +157,7 @@ export function groupByRange(datapoints, groupByCallback) {
 function sumSeries(timeseries) {
 
   // Calculate new points for interpolation
-  var new_timestamps = _.uniq(_.map(_.flatten(timeseries, true), function (point) {
+  var new_timestamps = _.uniq(_.map(_.flatten(timeseries), function (point) {
     return point[1];
   }));
   new_timestamps = _.sortBy(new_timestamps);

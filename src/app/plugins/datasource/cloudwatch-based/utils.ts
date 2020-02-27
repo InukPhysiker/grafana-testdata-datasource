@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import kbn from 'grafana/app/core/utils/kbn';
+import kbn from '../../../../app/core/utils/kbn';
 import * as c from './constants';
 import { VariableQuery, VariableQueryTypes } from './types';
 
@@ -19,7 +19,7 @@ export const variableRegex = /\$(\w+)|\[\[([\s\S]+?)(?::(\w+))?\]\]|\${(\w+)(?:\
  * @param  {string} key  item key, ie system.cpu.util[,system,avg1]
  * @return {string}      expanded name, ie "CPU system time"
  */
-export function expandItemName(name, key) {
+export function expandItemName(name: string, key: string): string {
 
   // extract params from key:
   // "system.cpu.util[,system,avg1]" --> ["", "system", "avg1"]
@@ -33,7 +33,7 @@ export function expandItemName(name, key) {
   return name;
 }
 
-export function expandItems(items) {
+export function expandItems(items: any) {
   _.forEach(items, item => {
     item.item = item.name;
     item.name = expandItemName(item.item, item.key_);
@@ -42,7 +42,7 @@ export function expandItems(items) {
   return items;
 }
 
-function splitKeyParams(paramStr) {
+function splitKeyParams(paramStr: any) {
   const params = [];
   let quoted = false;
   let in_array = false;
@@ -74,7 +74,7 @@ function splitKeyParams(paramStr) {
 
 const MACRO_PATTERN = /{\$[A-Z0-9_\.]+}/g;
 
-export function containsMacro(itemName) {
+export function containsMacro(itemName: string) {
   return MACRO_PATTERN.test(itemName);
 }
 
@@ -102,14 +102,14 @@ export function replaceMacro(item, macros) {
   return itemName;
 }
 
-function escapeMacro(macro) {
+function escapeMacro(macro: string) {
   macro = macro.replace(/\$/, '\\\$');
   return macro;
 }
 
 export function parseLegacyVariableQuery(query: string): VariableQuery {
   let queryType: VariableQueryTypes;
-  const parts = [];
+  const parts: any = [];
 
   // Split query. Query structure: group.host.app.item
   _.each(splitTemplateQuery(query), part => {
@@ -157,7 +157,7 @@ export function parseLegacyVariableQuery(query: string): VariableQuery {
  * group.host.app.item -> [group, host, app, item]
  * {group}{host.com} -> [group, host.com]
  */
-export function splitTemplateQuery(query) {
+export function splitTemplateQuery(query: string) {
   const splitPattern = /\{[^\{\}]*\}|\{\/.*\/\}/g;
   let split;
 
@@ -173,7 +173,7 @@ export function splitTemplateQuery(query) {
   return split;
 }
 
-function isContainsBraces(query) {
+function isContainsBraces(query: string) {
   const bracesPattern = /^\{.+\}$/;
   return bracesPattern.test(query);
 }
@@ -181,11 +181,11 @@ function isContainsBraces(query) {
 // Pattern for testing regex
 export const regexPattern = /^\/(.*)\/([gmi]*)$/m;
 
-export function isRegex(str) {
+export function isRegex(str: string) {
   return regexPattern.test(str);
 }
 
-export function isTemplateVariable(str, templateVariables) {
+export function isTemplateVariable(str: string, templateVariables: any) {
   const variablePattern = /^\$\w+/;
   if (variablePattern.test(str)) {
     const variables = _.map(templateVariables, variable => {
@@ -209,7 +209,7 @@ export function getRangeScopedVars(range) {
   };
 }
 
-export function buildRegex(str) {
+export function buildRegex(str: string) {
   const matches = str.match(regexPattern);
   const pattern = matches[1];
   const flags = matches[2] !== "" ? matches[2] : undefined;
@@ -218,17 +218,17 @@ export function buildRegex(str) {
 
 // Need for template variables replace
 // From Grafana's templateSrv.js
-export function escapeRegex(value) {
+export function escapeRegex(value: string) {
   return value.replace(/[\\^$*+?.()|[\]{}\/]/g, '\\$&');
 }
 
-export function parseInterval(interval) {
+export function parseInterval(interval: string) {
   const intervalPattern = /(^[\d]+)(y|M|w|d|h|m|s)/g;
   const momentInterval: any[] = intervalPattern.exec(interval);
   return moment.duration(Number(momentInterval[1]), momentInterval[2]).valueOf();
 }
 
-export function parseTimeShiftInterval(interval) {
+export function parseTimeShiftInterval(interval: string) {
   const intervalPattern = /^([\+\-]*)([\d]+)(y|M|w|d|h|m|s)/g;
   const momentInterval: any[] = intervalPattern.exec(interval);
   let duration: any = 0;
@@ -248,7 +248,7 @@ export function parseTimeShiftInterval(interval) {
  * @param  {array} acknowledges array of Zabbix acknowledge objects
  * @return {string} HTML-formatted table
  */
-export function formatAcknowledges(acknowledges) {
+export function formatAcknowledges(acknowledges: string | any[]): string {
   if (acknowledges.length) {
     let formatted_acknowledges = '<br><br>Acknowledges:<br><table><tr><td><b>Time</b></td>'
       + '<td><b>User</b></td><td><b>Comments</b></td></tr>';
@@ -266,7 +266,7 @@ export function formatAcknowledges(acknowledges) {
   }
 }
 
-export function convertToZabbixAPIUrl(url) {
+export function convertToZabbixAPIUrl(url: string) {
   const zabbixAPIUrlPattern = /.*api_jsonrpc.php$/;
   const trimSlashPattern = /(.*?)[\/]*$/;
   if (url.match(zabbixAPIUrlPattern)) {
@@ -299,8 +299,8 @@ export function callOnce(func, promiseKeeper) {
  * Apply function one by one: `sequence([a(), b(), c()]) = c(b(a()))`
  * @param {*} funcsArray functions to apply
  */
-export function sequence(funcsArray) {
-  return function(result) {
+export function sequence(funcsArray: string | any[]) {
+  return function(result: any) {
     for (let i = 0; i < funcsArray.length; i++) {
       result = funcsArray[i].call(this, result);
     }
@@ -310,11 +310,11 @@ export function sequence(funcsArray) {
 
 const versionPattern = /^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:-([0-9A-Za-z\.]+))?/;
 
-export function isValidVersion(version) {
+export function isValidVersion(version: string) {
   return versionPattern.exec(version);
 }
 
-export function parseVersion(version) {
+export function parseVersion(version: string) {
   const match = versionPattern.exec(version);
   if (!match) {
     return null;
@@ -329,11 +329,11 @@ export function parseVersion(version) {
 /**
  * Replaces any space-like symbols (tabs, new lines, spaces) by single whitespace.
  */
-export function compactQuery(query) {
+export function compactQuery(query: string) {
   return query.replace(/\s+/g, ' ').trim();
 }
 
-export function getArrayDepth(a, level = 0) {
+export function getArrayDepth(a: string | any[], level = 0) {
   if (a.length === 0) {
     return 1;
   }
