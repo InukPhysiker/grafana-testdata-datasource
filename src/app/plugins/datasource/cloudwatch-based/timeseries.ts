@@ -19,7 +19,7 @@ const POINT_TIMESTAMP = 1;
 /**
  * Downsample time series by using given function (avg, min, max).
  */
-function downsample(datapoints, time_to, ms_interval, func) {
+function downsample(datapoints: string | any[], time_to: number, ms_interval: number, func: string) {
   var downsampledSeries = [];
   var timeWindow = {
     from: time_to * 1000 - ms_interval,
@@ -71,7 +71,7 @@ function downsample(datapoints, time_to, ms_interval, func) {
  * Group points by given time interval
  * datapoints: [[<value>, <unixtime>], ...]
  */
-function groupBy(datapoints, interval, groupByCallback) {
+function groupBy(datapoints: any, interval: string, groupByCallback: (arg0: any[]) => any) {
   var ms_interval = utils.parseInterval(interval) as number;
 
   // Calculate frame timestamps
@@ -95,7 +95,7 @@ function groupBy(datapoints, interval, groupByCallback) {
   }));
 }
 
-export function groupBy_perf(datapoints, interval, groupByCallback) {
+export function groupBy_perf(datapoints: string | any[], interval: string, groupByCallback: { (values: any): any; (values: any): any; (arg0: any[]): any; }) {
   if (datapoints.length === 0) {
     return [];
   }
@@ -122,10 +122,10 @@ export function groupBy_perf(datapoints, interval, groupByCallback) {
       grouped_series.push([frame_value, frame_ts]);
 
       // Move frame window to next non-empty interval and fill empty by null
-      frame_ts += ms_interval;
+      frame_ts += ms_interval as number;
       while (frame_ts < point_frame_ts) {
         grouped_series.push([null, frame_ts]);
-        frame_ts += ms_interval;
+        frame_ts += ms_interval as number;
       }
       frame_values = [point[POINT_VALUE]];
     }
@@ -137,7 +137,7 @@ export function groupBy_perf(datapoints, interval, groupByCallback) {
   return grouped_series;
 }
 
-export function groupByRange(datapoints, groupByCallback) {
+export function groupByRange(datapoints: string | any[], groupByCallback: { (values: any): any; (values: any): any; (arg0: any[]): any; (arg0: any[]): any; }) {
   const frame_values = [];
   const frame_start = datapoints[0][POINT_TIMESTAMP];
   const frame_end = datapoints[datapoints.length - 1][POINT_TIMESTAMP];
@@ -154,7 +154,7 @@ export function groupByRange(datapoints, groupByCallback) {
  * Summarize set of time series into one.
  * @param {datapoints[]} timeseries array of time series
  */
-function sumSeries(timeseries) {
+function sumSeries(timeseries: any[]) {
 
   // Calculate new points for interpolation
   var new_timestamps = _.uniq(_.map(_.flatten(timeseries), function (point) {
@@ -189,7 +189,7 @@ function sumSeries(timeseries) {
   return sortByTime(new_timeseries);
 }
 
-function scale(datapoints, factor) {
+function scale(datapoints: any, factor: number) {
   return _.map(datapoints, point => {
     return [
       point[0] * factor,
@@ -198,7 +198,7 @@ function scale(datapoints, factor) {
   });
 }
 
-function scale_perf(datapoints, factor) {
+function scale_perf(datapoints: any[], factor: number) {
   for (let i = 0; i < datapoints.length; i++) {
     datapoints[i] = [
       datapoints[i][POINT_VALUE] * factor,
@@ -209,7 +209,7 @@ function scale_perf(datapoints, factor) {
   return datapoints;
 }
 
-function offset(datapoints, delta) {
+function offset(datapoints: any[], delta: any) {
   for (let i = 0; i < datapoints.length; i++) {
     datapoints[i] = [
       datapoints[i][POINT_VALUE] + delta,
@@ -224,7 +224,7 @@ function offset(datapoints, delta) {
  * Simple delta. Calculate value delta between points.
  * @param {*} datapoints
  */
-function delta(datapoints) {
+function delta(datapoints: any[]) {
   let newSeries = [];
   let deltaValue;
   for (var i = 1; i < datapoints.length; i++) {
@@ -238,7 +238,7 @@ function delta(datapoints) {
  * Calculates rate per second. Resistant to counter reset.
  * @param {*} datapoints
  */
-function rate(datapoints) {
+function rate(datapoints: any[]) {
   let newSeries = [];
   let point, point_prev;
   let valueDelta = 0;
@@ -260,7 +260,7 @@ function rate(datapoints) {
   return newSeries;
 }
 
-function simpleMovingAverage(datapoints, n) {
+function simpleMovingAverage(datapoints: any, n: number) {
   let sma = [];
   let w_sum;
   let w_avg = null;
@@ -273,7 +273,7 @@ function simpleMovingAverage(datapoints, n) {
       w_count++;
     }
   }
-  if (w_count > 0) {
+  if (w_count > 0 && w_avg) {
     w_avg = w_avg / w_count;
   } else {
     w_avg = null;
@@ -303,7 +303,7 @@ function simpleMovingAverage(datapoints, n) {
   return sma;
 }
 
-function expMovingAverage(datapoints, n) {
+function expMovingAverage(datapoints: any[], n: number) {
   let ema = [datapoints[0]];
   let ema_prev = datapoints[0][POINT_VALUE];
   let ema_cur;
@@ -322,7 +322,7 @@ function expMovingAverage(datapoints, n) {
         w_count++;
       }
     }
-    if (w_count > 0) {
+    if (w_count > 0 && w_avg) {
       w_avg = w_avg / w_count;
       // Actually, we should set timestamp from datapoints[n-1] and start calculation of EMA from n.
       // But in order to start EMA from first point (not from Nth) we should expand time range and request N additional
@@ -351,16 +351,16 @@ function expMovingAverage(datapoints, n) {
   return ema;
 }
 
-function PERCENTILE(n, values) {
+function PERCENTILE(n: number, values: any) {
   var sorted = _.sortBy(values);
   return sorted[Math.floor(sorted.length * n / 100)];
 }
 
-function COUNT(values) {
+function COUNT(values: any) {
   return values.length;
 }
 
-function SUM(values) {
+function SUM(values: any): any {
   var sum = null;
   for (let i = 0; i < values.length; i++) {
     if (values[i] !== null) {
@@ -370,7 +370,7 @@ function SUM(values) {
   return sum;
 }
 
-function AVERAGE(values) {
+function AVERAGE(values: any) {
   let values_non_null = getNonNullValues(values);
   if (values_non_null.length === 0) {
     return null;
@@ -378,7 +378,7 @@ function AVERAGE(values) {
   return SUM(values_non_null) / values_non_null.length;
 }
 
-function getNonNullValues(values) {
+function getNonNullValues(values: any) {
   let values_non_null = [];
   for (let i = 0; i < values.length; i++) {
     if (values[i] !== null) {
@@ -388,15 +388,15 @@ function getNonNullValues(values) {
   return values_non_null;
 }
 
-function MIN(values) {
+function MIN(values: any) {
   return _.min(values);
 }
 
-function MAX(values) {
+function MAX(values: any) {
   return _.max(values);
 }
 
-function MEDIAN(values) {
+function MEDIAN(values: any) {
   var sorted = _.sortBy(values);
   return sorted[Math.floor(sorted.length / 2)];
 }
@@ -413,11 +413,11 @@ function MEDIAN(values) {
  * @param {*} timestamp
  * @param {*} ms_interval
  */
-function getPointTimeFrame(timestamp, ms_interval) {
+function getPointTimeFrame(timestamp: number, ms_interval: number) {
   return Math.floor(timestamp / ms_interval) * ms_interval;
 }
 
-function sortByTime(series) {
+function sortByTime(series: any[]) {
   return _.sortBy(series, function (point) {
     return point[1];
   });
@@ -431,7 +431,7 @@ function sortByTime(series) {
  * @param {*} series
  * @param {*} timestamps
  */
-function fillZeroes(series, timestamps) {
+function fillZeroes(series: any[], timestamps: any[]) {
   let prepend = [];
   let append = [];
   let new_point;
@@ -450,7 +450,7 @@ function fillZeroes(series, timestamps) {
 /**
  * Interpolate series with gaps
  */
-function interpolateSeries(series) {
+function interpolateSeries(series: any[]) {
   var left, right;
 
   // Interpolate series
@@ -470,7 +470,7 @@ function interpolateSeries(series) {
   return series;
 }
 
-function linearInterpolation(timestamp, left, right) {
+function linearInterpolation(timestamp: number, left: number[], right: number[]) {
   if (left[1] === right[1]) {
     return (left[0] + right[0]) / 2;
   } else {
@@ -478,7 +478,7 @@ function linearInterpolation(timestamp, left, right) {
   }
 }
 
-function findNearestRight(series, pointIndex) {
+function findNearestRight(series: any[], pointIndex: number) {
   for (var i = pointIndex; i < series.length; i++) {
     if (series[i][0] !== null) {
       return series[i];
@@ -487,7 +487,7 @@ function findNearestRight(series, pointIndex) {
   return null;
 }
 
-function findNearestLeft(series, pointIndex) {
+function findNearestLeft(series: any[], pointIndex: number) {
   for (var i = pointIndex; i > 0; i--) {
     if (series[i][0] !== null) {
       return series[i];
@@ -496,7 +496,7 @@ function findNearestLeft(series, pointIndex) {
   return null;
 }
 
-function flattenDatapoints(datapoints) {
+function flattenDatapoints(datapoints: any[]) {
   const depth = utils.getArrayDepth(datapoints);
   if (depth <= 2) {
     // Don't process if datapoints already flattened

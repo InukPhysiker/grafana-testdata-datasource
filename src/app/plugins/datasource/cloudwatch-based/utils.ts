@@ -78,7 +78,7 @@ export function containsMacro(itemName: string) {
   return MACRO_PATTERN.test(itemName);
 }
 
-export function replaceMacro(item, macros) {
+export function replaceMacro(item: { name: any; hostid: any; }, macros: any) {
   let itemName = item.name;
   const item_macros = itemName.match(MACRO_PATTERN);
   _.forEach(item_macros, macro => {
@@ -143,10 +143,10 @@ export function parseLegacyVariableQuery(query: string): VariableQuery {
 
   const variableQuery: VariableQuery = {
     queryType,
-    group: template.group || '',
-    host: template.host || '',
-    application: template.app || '',
-    item: template.item || '',
+    group: template.group as string || '',
+    host: template.host as string || '',
+    application: template.app as string || '',
+    item: template.item as string || '',
   };
 
   return variableQuery;
@@ -197,7 +197,7 @@ export function isTemplateVariable(str: string, templateVariables: any) {
   }
 }
 
-export function getRangeScopedVars(range) {
+export function getRangeScopedVars(range: { to: { diff: (arg0: any) => any; }; from: any; }) {
   const msRange = range.to.diff(range.from);
   const sRange = Math.round(msRange / 1000);
   const regularRange = kbn.secondsToHms(msRange / 1000);
@@ -280,12 +280,12 @@ export function convertToZabbixAPIUrl(url: string) {
  * Wrap function to prevent multiple calls
  * when waiting for result.
  */
-export function callOnce(func, promiseKeeper) {
-  return function() {
+export function callOnce(func: { apply: (arg0: any, arg1: IArguments) => Promise<any>; }, promiseKeeper: Promise<any>) {
+  return function(this: void) {
     if (!promiseKeeper) {
       promiseKeeper = Promise.resolve(
         func.apply(this, arguments)
-        .then(result => {
+        .then((result: any) => {
           promiseKeeper = null;
           return result;
         })
@@ -300,7 +300,7 @@ export function callOnce(func, promiseKeeper) {
  * @param {*} funcsArray functions to apply
  */
 export function sequence(funcsArray: string | any[]) {
-  return function(result: any) {
+  return function(this: void, result: any) {
     for (let i = 0; i < funcsArray.length; i++) {
       result = funcsArray[i].call(this, result);
     }
@@ -333,7 +333,7 @@ export function compactQuery(query: string) {
   return query.replace(/\s+/g, ' ').trim();
 }
 
-export function getArrayDepth(a: string | any[], level = 0) {
+export function getArrayDepth(a: any[], level = 0): number {
   if (a.length === 0) {
     return 1;
   }

@@ -11,19 +11,19 @@ let MEDIAN = ts.MEDIAN;
 let PERCENTILE = ts.PERCENTILE;
 
 let downsampleSeries = ts.downsample;
-let groupBy_exported = (interval, groupFunc, datapoints) => groupBy(datapoints, interval, groupFunc);
+let groupBy_exported = (interval: any, groupFunc: any, datapoints: any) => groupBy(datapoints, interval, groupFunc);
 let sumSeries = ts.sumSeries;
 let delta = ts.delta;
 let rate = ts.rate;
-let scale = (factor, datapoints) => ts.scale_perf(datapoints, factor);
-let offset = (delta, datapoints) => ts.offset(datapoints, delta);
-let simpleMovingAverage = (n, datapoints) => ts.simpleMovingAverage(datapoints, n);
-let expMovingAverage = (a, datapoints) => ts.expMovingAverage(datapoints, a);
-let percentile = (interval, n, datapoints) => groupBy(datapoints, interval, _.partial(PERCENTILE, n));
+let scale = (factor: number, datapoints: any[]) => ts.scale_perf(datapoints, factor);
+let offset = (delta: any, datapoints: any[]) => ts.offset(datapoints, delta);
+let simpleMovingAverage = (n: number, datapoints: any) => ts.simpleMovingAverage(datapoints, n);
+let expMovingAverage = (a: number, datapoints: any[]) => ts.expMovingAverage(datapoints, a);
+let percentile = (interval: string, n: number, datapoints: string | any[]) => groupBy(datapoints, interval, _.partial(PERCENTILE, n));
 
-function limit(order, n, orderByFunc, timeseries) {
+function limit(order: string, n: number, orderByFunc: string | number, timeseries: any) {
   let orderByCallback = aggregationFunctions[orderByFunc];
-  let sortByIteratee = (ts) => {
+  let sortByIteratee = (ts: { datapoints: any; }) => {
     let values = _.map(ts.datapoints, (point) => {
       return point[0];
     });
@@ -37,7 +37,7 @@ function limit(order, n, orderByFunc, timeseries) {
   }
 }
 
-function removeAboveValue(n, datapoints) {
+function removeAboveValue(n: number, datapoints: any) {
   return _.map(datapoints, point => {
     return [
       (point[0] > n) ? null : point[0],
@@ -46,7 +46,7 @@ function removeAboveValue(n, datapoints) {
   });
 }
 
-function removeBelowValue(n, datapoints) {
+function removeBelowValue(n: number, datapoints: any) {
   return _.map(datapoints, point => {
     return [
       (point[0] < n) ? null : point[0],
@@ -55,7 +55,7 @@ function removeBelowValue(n, datapoints) {
   });
 }
 
-function transformNull(n, datapoints) {
+function transformNull(n: any, datapoints: any) {
   return _.map(datapoints, point => {
     return [
       (point[0] !== null) ? point[0] : n,
@@ -64,18 +64,18 @@ function transformNull(n, datapoints) {
   });
 }
 
-function sortSeries(direction, timeseries) {
+function sortSeries(direction: any, timeseries: any[]) {
   return _.orderBy(timeseries, [function (ts) {
     return ts.target.toLowerCase();
   }], direction);
 }
 
-function setAlias(alias, timeseries) {
+function setAlias(alias: any, timeseries: { target: any; }) {
   timeseries.target = alias;
   return timeseries;
 }
 
-function replaceAlias(regexp, newAlias, timeseries) {
+function replaceAlias(regexp: string, newAlias: any, timeseries: { target: string; }) {
   let pattern;
   if (utils.isRegex(regexp)) {
     pattern = utils.buildRegex(regexp);
@@ -88,24 +88,24 @@ function replaceAlias(regexp, newAlias, timeseries) {
   return timeseries;
 }
 
-function setAliasByRegex(alias, timeseries) {
+function setAliasByRegex(alias: any, timeseries: { target: string; }) {
   timeseries.target = extractText(timeseries.target, alias);
   return timeseries;
 }
 
-function extractText(str, pattern) {
+function extractText(str: string , pattern: string | RegExp) {
   var extractPattern = new RegExp(pattern);
   var extractedValue = extractPattern.exec(str);
-  extractedValue = extractedValue[0];
-  return extractedValue;
+  // extractedValue = extractedValue[0];
+  return extractedValue[0];
 }
 
-function groupByWrapper(interval, groupFunc, datapoints) {
+function groupByWrapper(interval: string, groupFunc: string | number, datapoints: any[]) {
   var groupByCallback = aggregationFunctions[groupFunc];
   return groupBy(datapoints, interval, groupByCallback);
 }
 
-function aggregateByWrapper(interval, aggregateFunc, datapoints) {
+function aggregateByWrapper(interval: string, aggregateFunc: string | number, datapoints: any[]) {
   // Flatten all points in frame and then just use groupBy()
   const flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
@@ -114,14 +114,14 @@ function aggregateByWrapper(interval, aggregateFunc, datapoints) {
   return groupBy(sortedPoints, interval, groupByCallback);
 }
 
-function aggregateWrapper(groupByCallback, interval, datapoints) {
+function aggregateWrapper(groupByCallback: { (values: any): any; (values: any): any; (arg0: any[]): any; }, interval: string, datapoints: any[]) {
   var flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
   const sortedPoints = ts.sortByTime(flattenedPoints);
   return groupBy(sortedPoints, interval, groupByCallback);
 }
 
-function percentileAgg(interval, n, datapoints) {
+function percentileAgg(interval: string, n: number, datapoints: any[]) {
   const flattenedPoints = ts.flattenDatapoints(datapoints);
   // groupBy_perf works with sorted series only
   const sortedPoints = ts.sortByTime(flattenedPoints);
@@ -129,14 +129,14 @@ function percentileAgg(interval, n, datapoints) {
   return groupBy(sortedPoints, interval, groupByCallback);
 }
 
-function timeShift(interval, range) {
+function timeShift(interval: string, range: any) {
   let shift = utils.parseTimeShiftInterval(interval) / 1000;
   return _.map(range, time => {
     return time - shift;
   });
 }
 
-function unShiftTimeSeries(interval, datapoints) {
+function unShiftTimeSeries(interval: string, datapoints: any) {
   let unshift = utils.parseTimeShiftInterval(interval);
   return _.map(datapoints, dp => {
     return [
@@ -177,7 +177,7 @@ let metricFunctions = {
   replaceAlias: replaceAlias
 };
 
-let aggregationFunctions = {
+let aggregationFunctions: {[index: string]:any} = {
   avg: AVERAGE,
   min: MIN,
   max: MAX,
