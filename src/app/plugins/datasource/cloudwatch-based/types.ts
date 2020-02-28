@@ -18,6 +18,8 @@ export interface EpicsQuery extends DataQuery {
   expression: string;
   alias: string;
   matchExact: boolean;
+  functions: any[];
+  target: any;
 }
 
 export interface AnnotationQuery extends EpicsQuery {
@@ -49,16 +51,16 @@ export interface Scenario {
 }
 
 // Stackdriver code
-// export enum MetricFindQueryTypes {
-//   Services = 'services',
-//   MetricTypes = 'metricTypes',
-//   LabelKeys = 'labelKeys',
-//   LabelValues = 'labelValues',
-//   ResourceTypes = 'resourceTypes',
-//   Aggregations = 'aggregations',
-//   Aligners = 'aligners',
-//   AlignmentPeriods = 'alignmentPeriods',
-// }
+export enum MetricFindQueryTypes {
+  Services = 'services',
+  MetricTypes = 'metricTypes',
+  LabelKeys = 'labelKeys',
+  LabelValues = 'labelValues',
+  ResourceTypes = 'resourceTypes',
+  Aggregations = 'aggregations',
+  Aligners = 'aligners',
+  AlignmentPeriods = 'alignmentPeriods',
+}
 
 // Zabbix types
 
