@@ -26,7 +26,7 @@ export function zabbixFunctionEditor($compile: any, templateSrv: any) {
       const func = $scope.func;
       let scheduledRelink = false;
       let paramCountAtLink = 0;
-      let cancelBlur: NodeJS.Timeout = null;
+      let cancelBlur: any = null;
 
       ctrl.handleRemoveFunction = (func: any) => {
         ctrl.removeFunction(func);
