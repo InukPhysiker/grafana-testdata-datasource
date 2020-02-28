@@ -10,6 +10,7 @@ type Props = QueryEditorProps<EpicsDataSource, EpicsQuery, EpicsJsonData>;
 interface State {
   showMeta: boolean;
   processVariableList: Scenario[];
+  // functionList: any[];
   currentPV: null;
 }
 
@@ -55,6 +56,10 @@ export class QueryEditor extends PureComponent<Props, State> {
       query.operators = ['mean'];
     }
 
+    if (!query.functions || !query.functions.length){
+      query.functions = [''];
+    }
+
     return state;
   }
 
@@ -78,6 +83,49 @@ export class QueryEditor extends PureComponent<Props, State> {
       processVariable: item.value as any,
     });
   };
+
+// Zabbix stuff
+
+  targetChanged() {
+    this.initFilters();
+    this.parseTarget();
+    this.panelCtrl.refresh();
+  }
+
+  addFunction(funcDef: any) {
+    var newFunc = metricFunctions.createFuncInstance(funcDef);
+    newFunc.added = true;
+    this.target.functions.push(newFunc);
+
+    this.moveAliasFuncLast();
+
+    if (newFunc.params.length && newFunc.added ||
+      newFunc.def.params.length === 0) {
+      this.targetChanged();
+    }
+  }
+
+  removeFunction(func: any) {
+    this.props.query.target.functions = _.without(this.props.query.target.functions, func);
+    this.targetChanged();
+  }
+
+  moveFunction(func: any, offset: any) {
+    const index = this.props.query.target.functions.indexOf(func);
+    _.move(this.props.query.target.functions, index, index + offset);
+    this.targetChanged();
+  }
+
+  moveAliasFuncLast() {
+    var aliasFunc = _.find(this.props.query.target.functions, func => {
+      return func.def.category === 'Alias';
+    });
+
+    if (aliasFunc) {
+      this.props.query.target.functions = _.without(this.props.query.target.functions, aliasFunc);
+      this.props.query.target.functions.push(aliasFunc);
+    }
+  }
 
   render() {
     const { query, onRunQuery } = this.props;
