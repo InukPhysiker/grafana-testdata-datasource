@@ -109,6 +109,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     return Promise.all(promises).then(results => {
       return new ResponseParser(results).parseArchiverResponse();
     });
+    
   }
 
   doQueries(queries: any) {
@@ -242,6 +243,34 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
 
   // Zabbix stuff
 
+    /**
+   * Query history for numeric items
+   */
+  // queryNumericDataForItems(items: any, target: { functions: any; }, timeRange: any, useTrends: any, options: { valueType: string; consolidateBy: string; }) {
+  //   let getHistoryPromise;
+  //   options.valueType = this.getTrendValueType(target);
+  //   // options.consolidateBy = getConsolidateBy(target) || options.valueType;
+
+  //   if (useTrends) {
+  //     getHistoryPromise = this.zabbix.getTrends(items, timeRange, options);
+  //   } else {
+  //     getHistoryPromise = this.zabbix.getHistoryTS(items, timeRange, options);
+  //   }
+
+  //   return getHistoryPromise
+  //   .then((timeseries: any) => this.applyDataProcessingFunctions(timeseries, target))
+  //   .then((timeseries: any) => this.downsampleSeries(timeseries, options));
+  // }
+
+  getTrendValueType(target: { functions: any; }) {
+    // Find trendValue() function and get specified trend value
+    var trendFunctions = _.map(metricFunctions.getCategories()['Trends'], 'name');
+    var trendValueFunc = _.find(target.functions, func => {
+      return _.includes(trendFunctions, func.def.name);
+    });
+    return trendValueFunc ? trendValueFunc.params[0] : "avg";
+  }
+
   applyDataProcessingFunctions(timeseriesData: _.NumericDictionary<unknown>, target: { functions: any }) {
     const transformFunctions = this.bindFunctionDefs(target.functions, 'Transform');
     const aggregationFunctions = this.bindFunctionDefs(target.functions, 'Aggregate');
@@ -314,7 +343,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     });
   }
 
-  downsampleSeries(timeseriesData: any, options: { consolidateBy: string | number; maxDataPoints: number; interval: any }) {
+  downsampleSeries(timeseriesData: any, options: any) {
     const defaultAgg = dataProcessor.aggregationFunctions['avg'];
     const consolidateByFunc = dataProcessor.aggregationFunctions[options.consolidateBy] || defaultAgg;
     return _.map(timeseriesData, timeseries => {
