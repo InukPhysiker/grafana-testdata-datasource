@@ -28,6 +28,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
   archiverOperators: string[];
   customOperators: string[];
   datasourceOperators: string[];
+  datasourceFunctions: string[];
 
   constructor(instanceSettings: DataSourceInstanceSettings<EpicsJsonData>, backendSrv: any, templateSrv: any) {
     super(instanceSettings);
@@ -170,6 +171,11 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     const operatorQuery = query.match(/^operators\(\)/);
     if (operatorQuery) {
       return this.archiverOperators.map((s: string) => ({ value: s, label: s, text: s }));
+    }
+
+    const functionsQuery = query.match(/^functions\(\)/);
+    if (functionsQuery) {
+      return this.datasourceFunctions.map((s: string) => ({ value: s, label: s, text: s }));
     }
 
     return Promise.resolve([]);
