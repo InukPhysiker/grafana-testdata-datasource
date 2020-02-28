@@ -243,25 +243,6 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
 
   // Zabbix stuff
 
-    /**
-   * Query history for numeric items
-   */
-  // queryNumericDataForItems(items: any, target: { functions: any; }, timeRange: any, useTrends: any, options: { valueType: string; consolidateBy: string; }) {
-  //   let getHistoryPromise;
-  //   options.valueType = this.getTrendValueType(target);
-  //   // options.consolidateBy = getConsolidateBy(target) || options.valueType;
-
-  //   if (useTrends) {
-  //     getHistoryPromise = this.zabbix.getTrends(items, timeRange, options);
-  //   } else {
-  //     getHistoryPromise = this.zabbix.getHistoryTS(items, timeRange, options);
-  //   }
-
-  //   return getHistoryPromise
-  //   .then((timeseries: any) => this.applyDataProcessingFunctions(timeseries, target))
-  //   .then((timeseries: any) => this.downsampleSeries(timeseries, options));
-  // }
-
   getTrendValueType(target: { functions: any; }) {
     // Find trendValue() function and get specified trend value
     var trendFunctions = _.map(metricFunctions.getCategories()['Trends'], 'name');
