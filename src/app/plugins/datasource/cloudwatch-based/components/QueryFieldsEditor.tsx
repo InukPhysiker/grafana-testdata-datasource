@@ -3,7 +3,7 @@ import { SelectableValue } from '@grafana/data';
 import { Segment, SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
-import { Stats, QueryInlineField } from './';
+import { Stats, QueryInlineField, FunctionEditor } from './';
 
 export type Props = {
   query: EpicsQuery;
@@ -114,6 +114,32 @@ export function QueryFieldsEditor({ query, datasource, onChange, onRunQuery = ()
               variableOptionGroup={variableOptionGroup}
             />
           </QueryInlineField> */}
+
+          <QueryInlineField label="Operators">
+            <Stats
+              stats={datasource.datasourceOperators.map(toOption)}
+              values={query.operators}
+              onChange={operators => onQueryChange({ ...query, operators })}
+              variableOptionGroup={variableOptionGroup}
+            />
+          </QueryInlineField>
+
+          {/* <!-- Metric processing functions --> */}
+          <div className="gf-form-inline" ng-show="ctrl.target.mode == editorMode.METRICS || ctrl.target.mode == editorMode.ITEMID || ctrl.target.mode == editorMode.ITSERVICE">
+            <div className="gf-form">
+              <label className="gf-form-label query-keyword width-7">Functions</label>
+            </div>
+            <div ng-repeat="func in ctrl.target.functions" className="gf-form">
+              <span zabbix-function-editor className="gf-form-label query-part" ng-hide="func.hidden"></span>
+            </div>
+            <div className="gf-form dropdown" add-metric-function>
+            </div>
+            <div className="gf-form gf-form--grow">
+              <div className="gf-form-label gf-form-label--grow"></div>
+            </div>
+          </div>
+
+
         </>
       )}
     </>
