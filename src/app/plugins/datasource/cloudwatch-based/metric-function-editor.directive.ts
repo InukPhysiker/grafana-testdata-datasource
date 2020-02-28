@@ -6,7 +6,7 @@ import { FunctionEditor } from './components/FunctionEditor';
 import angular from 'angular';
 
 /** @ngInject */
-export function zabbixFunctionEditor($compile, templateSrv) {
+export function zabbixFunctionEditor($compile: any, templateSrv: any) {
   const funcSpanTemplate = `
     <zbx-function-editor
       func="func"
@@ -15,31 +15,32 @@ export function zabbixFunctionEditor($compile, templateSrv) {
       onMoveRight="ctrl.handleMoveRight"
     /><span>(</span>
   `;
-  const paramTemplate = '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
+  const paramTemplate =
+    '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
 
   return {
     restrict: 'A',
-    link: function postLink($scope, elem) {
+    link: function postLink($scope: any, elem: JQuery) {
       const $funcLink = $(funcSpanTemplate);
       const ctrl = $scope.ctrl;
       const func = $scope.func;
       let scheduledRelink = false;
       let paramCountAtLink = 0;
-      let cancelBlur = null;
+      let cancelBlur: NodeJS.Timeout = null;
 
-      ctrl.handleRemoveFunction = func => {
+      ctrl.handleRemoveFunction = (func: any) => {
         ctrl.removeFunction(func);
       };
 
-      ctrl.handleMoveLeft = func => {
+      ctrl.handleMoveLeft = (func: any) => {
         ctrl.moveFunction(func, -1);
       };
 
-      ctrl.handleMoveRight = func => {
+      ctrl.handleMoveRight = (func: any) => {
         ctrl.moveFunction(func, 1);
       };
 
-      function clickFuncParam(this: any, paramIndex) {
+      function clickFuncParam(this: any, paramIndex: string | number) {
         /*jshint validthis:true */
 
         const $link = $(this);
@@ -75,7 +76,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
         }
       }
 
-      function paramDef(index) {
+      function paramDef(index: number) {
         if (index < func.def.params.length) {
           return func.def.params[index];
         }
@@ -85,7 +86,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
         return {};
       }
 
-      function switchToLink(inputElem, paramIndex) {
+      function switchToLink(inputElem: any, paramIndex: number) {
         /*jshint validthis:true */
         const $input = $(inputElem);
 
@@ -119,7 +120,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
       }
 
       // this = input element
-      function inputBlur(this: any, paramIndex) {
+      function inputBlur(this: any, paramIndex: number) {
         /*jshint validthis:true */
         const inputElem = this;
         // happens long before the click event on the typeahead options
@@ -129,7 +130,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
         }, 200);
       }
 
-      function inputKeyPress(this: any, paramIndex, e) {
+      function inputKeyPress(this: any, paramIndex: any, e: any) {
         /*jshint validthis:true */
         if (e.which === 13) {
           $(this).blur();
@@ -141,7 +142,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
         this.style.width = (3 + this.value.length) * 8 + 'px';
       }
 
-      function addTypeahead($input, paramIndex) {
+      function addTypeahead($input: any, paramIndex: number) {
         $input.attr('data-provide', 'typeahead');
 
         let options = paramDef(paramIndex).options;
@@ -155,7 +156,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
           source: options,
           minLength: 0,
           items: 20,
-          updater: value => {
+          updater: (value: any) => {
             $input.val(value);
             switchToLink($input[0], paramIndex);
             return value;
