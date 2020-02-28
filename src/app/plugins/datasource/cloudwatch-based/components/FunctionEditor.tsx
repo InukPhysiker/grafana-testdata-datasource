@@ -78,9 +78,7 @@ class FunctionEditor extends React.PureComponent<FunctionEditorProps, FunctionEd
                     hidePopper();
                   }}
                   onMouseEnter={showPopper}
-                  renderArrow={({ arrowProps, placement }) => (
-                    <div className="popper__arrow" data-placement={placement} {...arrowProps} />
-                  )}
+                  renderArrow={({ arrowProps, placement }) => <div className="popper__arrow" data-placement={placement} {...arrowProps} />}
                 />
               )}
 

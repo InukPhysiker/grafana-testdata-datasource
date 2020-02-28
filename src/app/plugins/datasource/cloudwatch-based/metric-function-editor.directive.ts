@@ -15,8 +15,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
       onMoveRight="ctrl.handleMoveRight"
     /><span>(</span>
   `;
-  const paramTemplate =
-    '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
+  const paramTemplate = '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
 
   return {
     restrict: 'A',
@@ -198,11 +197,7 @@ export function zabbixFunctionEditor($compile, templateSrv) {
           }
 
           const $paramLink = $(
-            '<a ng-click="" class="graphite-func-param-link' +
-              (last ? ' query-part__last' : '') +
-              '">' +
-              (hasValue ? paramValue : '&nbsp;') +
-              '</a>'
+            '<a ng-click="" class="graphite-func-param-link' + (last ? ' query-part__last' : '') + '">' + (hasValue ? paramValue : '&nbsp;') + '</a>'
           );
           const $input = $(paramTemplate);
           $input.attr('placeholder', param.name);

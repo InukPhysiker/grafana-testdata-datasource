@@ -109,7 +109,6 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     return Promise.all(promises).then(results => {
       return new ResponseParser(results).parseArchiverResponse();
     });
-    
   }
 
   doQueries(queries: any) {
@@ -243,13 +242,13 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
 
   // Zabbix stuff
 
-  getTrendValueType(target: { functions: any; }) {
+  getTrendValueType(target: { functions: any }) {
     // Find trendValue() function and get specified trend value
     const trendFunctions = _.map(metricFunctions.getCategories()['Trends'], 'name');
     const trendValueFunc = _.find(target.functions, func => {
       return _.includes(trendFunctions, func.def.name);
     });
-    return trendValueFunc ? trendValueFunc.params[0] : "avg";
+    return trendValueFunc ? trendValueFunc.params[0] : 'avg';
   }
 
   applyDataProcessingFunctions(timeseriesData: _.NumericDictionary<unknown>, target: { functions: any }) {
