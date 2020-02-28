@@ -3,7 +3,8 @@ import { SelectableValue } from '@grafana/data';
 import { Segment, SegmentAsync } from '@grafana/ui';
 import { EpicsQuery, SelectableStrings } from '../types';
 import EpicsDatasource from '../datasource';
-import { Stats, QueryInlineField, FunctionEditor } from './';
+import { Stats, QueryInlineField } from './';
+// import { FunctionEditorControlsProps, FunctionEditorControls } from './FunctionEditorControls';
 
 export type Props = {
   query: EpicsQuery;
