@@ -14,7 +14,8 @@ export function graphiteFuncEditor($compile: any, templateSrv: any) {
       onMoveRight="ctrl.handleMoveRight"
     /><span>(</span>
   `;
-  const paramTemplate = '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
+  const paramTemplate =
+    '<input type="text" style="display:none"' + ' class="input-small tight-form-func-param"></input>';
 
   return {
     restrict: 'A',
