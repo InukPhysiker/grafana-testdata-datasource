@@ -2,6 +2,7 @@
 import { DataQuery, SelectableValue, DataSourceJsonData } from '@grafana/data';
 
 export interface EpicsQuery extends DataQuery {
+  metricFunctions: any;
   operators: string[];
   queryText?: string;
   // alias?: string;
