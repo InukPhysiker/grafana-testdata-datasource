@@ -30,7 +30,10 @@ const FunctionHelpButton = (props: { description: string; name: string; onDescri
     <span
       className="pointer fa fa-question-circle"
       onClick={() => {
-        window.open(DOCS_FUNC_REF_URL + '#' + props.name, '_blank');
+        window.open(
+          DOCS_FUNC_REF_URL + '#'+ props.name,
+          '_blank'
+        );
       }}
     />
   );
@@ -52,7 +55,11 @@ export const FunctionEditorControls = (
       }}
     >
       <span className="pointer fa fa-arrow-left" onClick={() => onMoveLeft(func)} />
-      <FunctionHelpButton name={func.def.name} description={func.def.description} onDescriptionShow={onDescriptionShow} />
+      <FunctionHelpButton
+        name={func.def.name}
+        description={func.def.description}
+        onDescriptionShow={onDescriptionShow}
+      />
       <span className="pointer fa fa-remove" onClick={() => onRemove(func)} />
       <span className="pointer fa fa-arrow-right" onClick={() => onMoveRight(func)} />
     </div>
