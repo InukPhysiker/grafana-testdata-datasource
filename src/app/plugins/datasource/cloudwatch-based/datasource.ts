@@ -43,6 +43,7 @@ export default class EpicsDataSource extends DataSourceApi<EpicsQuery, EpicsJson
     this.archiverOperators = ['mean', 'min', 'max', 'count', 'jitter', 'std', 'variance', 'popvariance'];
     this.customOperators = ['raw'];
     this.datasourceOperators = [...this.archiverOperators, ...this.customOperators];
+    this.datasourceFunctions = ['Integral','Derivative'];
   }
 
   async query(options: DataQueryRequest<EpicsQuery>): Promise<DataQueryResponse> {
