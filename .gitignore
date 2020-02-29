@@ -47,3 +47,8 @@ src/app/plugins/datasource/postgres/
 src/app/plugins/datasource/prometheus/
 src/app/plugins/datasource/sql/
 src/app/plugins/datasource/stackdriver/
+
+*-graphite.*
+*-testdata.*
+*-cloudwatch.*
+src/app/plugins/datasource/cloudwatch-based/configuration-graphite/*
