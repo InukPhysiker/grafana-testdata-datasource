@@ -10,6 +10,7 @@
       "@grafana/slate-react": ["../node_modules/@types/slate-react"],
       "app": ["app/"]
     },
+    "moduleResolution": "node",
     "strictNullChecks": false
   }
 }
