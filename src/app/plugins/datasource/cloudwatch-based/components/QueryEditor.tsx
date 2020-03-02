@@ -31,11 +31,11 @@ export class QueryEditor extends PureComponent<Props, State> {
   // this.props.datasource = props.datasource;
 
   editorModes = [
-    {value: 'num',       text: 'Metrics',     mode: c.MODE_METRICS},
-    {value: 'text',      text: 'Text',        mode: c.MODE_TEXT},
-    {value: 'itservice', text: 'IT Services', mode: c.MODE_ITSERVICE},
-    {value: 'itemid',    text: 'Item ID',     mode: c.MODE_ITEMID},
-    {value: 'triggers',  text: 'Triggers',    mode: c.MODE_TRIGGERS}
+    { value: 'num', text: 'Metrics', mode: c.MODE_METRICS },
+    { value: 'text', text: 'Text', mode: c.MODE_TEXT },
+    { value: 'itservice', text: 'IT Services', mode: c.MODE_ITSERVICE },
+    { value: 'itemid', text: 'Item ID', mode: c.MODE_ITEMID },
+    { value: 'triggers', text: 'Triggers', mode: c.MODE_TRIGGERS },
   ];
 
   target: any;
@@ -146,7 +146,7 @@ export class QueryEditor extends PureComponent<Props, State> {
   // Zabbix stuff
 
   initFilters() {
-    let itemtype: { [index: string]: any } = _.find(this.editorModes, { 'mode': this.target.mode });
+    let itemtype: { [index: string]: any } = _.find(this.editorModes, { mode: this.target.mode });
     itemtype = itemtype ? itemtype.value : null;
     return Promise.all([
       // this.suggestGroups(),
@@ -158,7 +158,7 @@ export class QueryEditor extends PureComponent<Props, State> {
 
   // Get list of metric names for bs-typeahead directive
   getMetricNames(metricList: string | number, addAllValue: any) {
-    let metrics = _.uniq(_.map(this.metric[metricList], 'name'));
+    const metrics = _.uniq(_.map(this.metric[metricList], 'name'));
 
     // Add template variables
     _.forEach(this.props.datasource.variables, variable => {
@@ -204,7 +204,7 @@ export class QueryEditor extends PureComponent<Props, State> {
   //       return apps;
   //     });
   // }
-  
+
   // suggestItems(itemtype = 'num') {
   //   let groupFilter = this.replaceTemplateVars(this.target.group.filter);
   //   let hostFilter = this.replaceTemplateVars(this.target.host.filter);
@@ -239,7 +239,7 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   onTargetBlur() {
-    var newTarget = _.cloneDeep(this.target);
+    const newTarget = _.cloneDeep(this.target);
     if (!_.isEqual(this.oldTarget, this.target)) {
       this.oldTarget = newTarget;
       this.targetChanged();
@@ -247,7 +247,7 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   oldTarget(oldTarget: any, target: any) {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   onVariableChange() {
@@ -285,14 +285,13 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   addFunction(funcDef: any) {
-    var newFunc = this.props.query.metricFunctions.createFuncInstance(funcDef);
+    const newFunc = this.props.query.metricFunctions.createFuncInstance(funcDef);
     newFunc.added = true;
     this.target.functions.push(newFunc);
 
     this.moveAliasFuncLast();
 
-    if (newFunc.params.length && newFunc.added ||
-      newFunc.def.params.length === 0) {
+    if ((newFunc.params.length && newFunc.added) || newFunc.def.params.length === 0) {
       this.targetChanged();
     }
   }
@@ -309,7 +308,7 @@ export class QueryEditor extends PureComponent<Props, State> {
   // }
 
   moveAliasFuncLast() {
-    var aliasFunc = _.find(this.target.functions, func => {
+    const aliasFunc = _.find(this.target.functions, func => {
       return func.def.category === 'Alias';
     });
 
@@ -329,11 +328,11 @@ export class QueryEditor extends PureComponent<Props, State> {
   }
 
   renderQueryOptionsText() {
-    var optionsMap: { [index: string]: any } = {
-      showDisabledItems: "Show disabled items",
-      skipEmptyValues: "Skip empty values"
+    const optionsMap: { [index: string]: any } = {
+      showDisabledItems: 'Show disabled items',
+      skipEmptyValues: 'Skip empty values',
     };
-    var options: string[] = [];
+    const options: string[] = [];
     _.forOwn(this.target.options, (value, key) => {
       if (value) {
         if (value === true) {
@@ -341,11 +340,11 @@ export class QueryEditor extends PureComponent<Props, State> {
           options.push(optionsMap[key]);
         } else {
           // Show "option = value" for another options
-          options.push(optionsMap[key] + " = " + value);
+          options.push(optionsMap[key] + ' = ' + value);
         }
       }
     });
-    return "Options: " + options.join(', ');
+    return 'Options: ' + options.join(', ');
   }
 
   /**
@@ -361,9 +360,8 @@ export class QueryEditor extends PureComponent<Props, State> {
   //   this.targetChanged();
   // }
 
-
   suggestProcessVariables() {
-    return this.props.datasource.getPVNames("TM1408");
+    return this.props.datasource.getPVNames('TM1408');
   }
 
   render() {
