@@ -18,6 +18,6 @@
     "@grafana/ui": "next",
     "@types/angular": "^1.6.57",
     "@types/lodash": "latest",
-    "angular": "^1.7.9"
+    "angular": "^1.8.0"
   }
 }
